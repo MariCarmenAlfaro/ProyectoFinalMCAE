@@ -1,0 +1,102 @@
+<div class="row">
+  <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" routerLink="./"><img src="../../assets/imgs/logotipoHipica.jpg" alt="" width="75"
+          height="81"> Hípica Alfaro</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="mynavbar">
+
+        <ul class="navbar-nav me-auto">
+
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/quienes-somos">¿Quiénes
+              somos?</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/servicios">Servicios</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/contact">Contacto</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/menu-bar">Menú Bar</a>
+          </li>
+
+          <!-- <li class="nav-item" *ngIf="!loginService.user" >
+              <a class="nav-link" routerLink="/login">Access</a>
+            </li> -->
+            
+           
+          <li class="nav-item" *ngIf="!loginService.user">
+            <button type="button" class="btn btn-primary login" (click)="showDialog()" >
+              Acceso
+            </button>
+          </li>
+
+          <!-- TODO no se que hace aqui el login -->
+          <!-- <app-login></app-login> -->
+
+          <ng-container *ngIf="loginService.user">
+            <ng-container *ngIf="loginService.user.userType =='Admin'">
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">  {{loginService.user.userName}}</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" routerLink="/clases">Clases Privadas</a></li>
+                  <li><a class="dropdown-item" routerLink="/gestion">Gestion</a></li>
+                  
+                </ul>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"> Gestion</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" routerLink="/clases">Pagos</a></li>
+                  <li><a class="dropdown-item" routerLink="/gestion">Bar</a></li>
+                  <li><a class="dropdown-item" routerLink="/clases">Gestion Usuarios</a></li>
+                  <li><a class="dropdown-item" routerLink="/clases">Precios</a></li>
+                </ul>
+              </li>
+            </ng-container>
+            <ng-container *ngIf="loginService.user.userType =='Dueño'">
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">  {{loginService.user.userName}}</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" routerLink="/perfil">Perfil</a></li>
+                  <li><a class="dropdown-item" routerLink="/caballo">Caballo</a></li>
+                </ul>
+              </li>
+            </ng-container>
+            <ng-container *ngIf="loginService.user.userType =='Alumno'">
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">  {{loginService.user.userName}}</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" routerLink="/perfil">Perfil</a></li>
+                 
+                </ul>
+              </li>
+            </ng-container>
+            <li class="nav-item" (click)="logout()">
+              <a class="nav-link">Logout</a>
+            </li>
+          </ng-container>
+          
+          
+       
+        </ul>
+
+       
+      </div>
+
+
+    </div>
+
+
+
+  </nav>
+</div>
+
+<p-dialog header="Header" [(visible)]="this.loginService.showModal" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
+ <app-login ></app-login>
+</p-dialog>

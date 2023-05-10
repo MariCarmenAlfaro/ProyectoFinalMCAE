@@ -1,0 +1,42 @@
+
+
+
+  <div>
+    <form class="row g-3 fromReserva" [formGroup]="loginForm">
+      <div class="modal-body">
+        <div class="form-floating mb-3">
+          <input type="email" class="form-control" id="floatingInput" class="form-control"
+            formControlName="emailAddress" placeholder="name@example.com">
+          <label for="floatingInput">Correo electrónico</label>
+        </div>
+        <div class="form-floating">
+          <input type="password" class="form-control" id="floatingPassword" placeholder="Password"
+            formControlName="psswdUser">
+          <label for="floatingPassword">Contraseña</label>
+        </div>
+      </div>
+
+      <p *ngIf="errorMessage">¡El usuario o contraseña no es correcto!</p>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary"  (click)="this.loginService.showModal = false">Cerrar</button>
+        <button type="submit" class="btn btn-primary guardarLogin"
+     (click)="loginBack()" 
+        >Guardar</button>
+
+      </div>
+    </form>
+  </div>
+
+<!-- 
+<p-button (click)="showDialog()" icon="pi pi-external-link" label="Show"></p-button>
+<p-dialog header="Header" [(visible)]="visible" [style]="{ width: '50vw' }">
+    <ng-template pTemplate="header">
+        <span class="text-xl font-bold">Header Content</span>
+    </ng-template>
+    <p>
+    Hola
+    </p>
+    <ng-template pTemplate="footer">
+        <p-button icon="pi pi-check" (click)="visible = false" label="Ok" styleClass="p-button-text"></p-button>
+    </ng-template>
+</p-dialog> -->

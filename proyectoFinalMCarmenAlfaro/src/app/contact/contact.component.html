@@ -1,0 +1,65 @@
+
+  <div class="contacto">
+    <h2>¡Como localizarnos!</h2>
+    <br>
+    <h4>Contacto</h4>
+    <p><i class="bi bi-telephone"></i> Telefono: <strong>693582471</strong>
+    </p>
+    <p><i class="bi bi-envelope-paper-heart"></i> Correo electronico:
+      <a class="rrss" href="https://mail.google.com/mail/?view=cm&source=mailto&cc=[hipicaalfaro@gmail.com]" target="_blank">hipicaalfaro@gmail.com</a></p>
+
+    <p><i class="bi bi-instagram"></i> Intagram: <a class="rrss" href="https://www.instagram.com/hipicaalfaro/" target="_blank"> @hipicaalfaro</a>
+    </p>
+    <br>
+    <h4>Ubicación</h4>
+    <p> <i class="bi bi-geo-alt"></i><a href="https://goo.gl/maps/eyezBzkXnHMDUqRe8" class="rrss" target="_blank"> Calle de la diversión, Nº1, CP, 07184, Calviá, Illes Balears</a>
+    </p>
+    <br>
+    <h4>Horario</h4>
+    <p>Lunes a Viernes de 10h-13h y 16h-19h </p>
+    <p>Sábado de 10h-13h </p>
+   <p> Domingo Descanso</p>
+<br>
+    <h5>Para informacion más concreta ¡no dudes en enviarnos tus dudas!</h5>
+<!--    <form action="/action_page.php">-->
+<!--      <div class="mb-3 mt-3">-->
+<!--        <label for=""> Nombre (obligatorio)</label> <br>-->
+<!--        <input type="text" name=""  placeholder="Hípica Alfaro"><br>-->
+<!--        <label for="">Email (obligatorio)</label> <br>-->
+<!--        <input type="email" name=""  placeholder="hipicaalfaro@gmail.com"><br>-->
+<!--        <label for=""> Comentario: </label>-->
+<!--        <textarea class="form-control areaComent" rows="5" id="comment" name="text" placeholder="Hola! Soy Mari y mi consulta es..."></textarea>-->
+<!--      </div>-->
+<!--      <button type="submit" class="btnEnviar">Enviar</button>-->
+<!--    </form>-->
+
+
+    <form [formGroup]="profileForm">
+
+      <div class="form-group ">
+      <label for="name">Nombre: </label>
+      <input id="name" type="text" formControlName="name" placeholder="Hípica Alfaro">
+      </div>
+
+      <div class="form-group">
+      <label for="email">Email: </label>
+      <input id="email" type="text" formControlName="email"  placeholder="mari.alfaro@gmail.com">
+      </div>
+
+      <div class="form-group">
+        <label for="comment">Comentarios: </label>
+        <textarea class="form-control areaComent" rows="5" id="comment" formControlName="comment" name="text" placeholder="Hola! Soy Mari y mi consulta es..."></textarea>
+      </div>
+
+
+
+      <button type="button"  class="btn btn-primary btnEnviar" (click)="onSubmit()" [disabled]="profileForm.status!='VALID'">Enviar</button>
+<!--      TODO meter validaciones-->
+      {{profileForm.status }}
+
+    </form>
+
+
+
+  </div>
+

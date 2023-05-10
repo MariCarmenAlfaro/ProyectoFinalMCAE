@@ -1,0 +1,86 @@
+@import "primeng/resources/themes/lara-light-blue/theme.css";
+@import "primeng/resources/primeng.css";
+
+
+/* You can add global styles to this file, and also import other style files */
+*{ 
+    margin: 0;
+    padding: 0;
+    font-family: 'Playfair Display', serif;
+}
+
+÷//TODO borrar cuerpo no se usa
+.cuerpo{
+    background-color: white;
+    min-height: 90vh;
+    width: 100%;
+    display: flex;
+}
+.piePagina{
+    background-color: rgb(0, 0, 0);
+    height: 10vh;
+}
+.columnaIzq{
+    float:left;
+    min-height: 90vh;
+    width:10%;
+    background-color: white;
+
+}
+.centro{
+    min-height:90vh;
+    width:80%;
+    background-color: rgb(255, 123, 184);
+   
+}
+.columnaDere{
+    
+    min-height: 90vh;
+    width:10%;
+    background-color: white;
+}
+.contenedor{
+    background-color: rgb(124, 124, 124);
+    min-height: 100vh;
+   
+}
+.fotoMontañaIzq{
+    background-image: url('../src/assets/imgs/herradurasFondo.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    text-align: right;
+}
+.fotoMontañaDere{
+    background-image: url('../src/assets/imgs/herradurasFondo.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+  
+    
+}
+button.login{
+    border-radius: 30%;
+    background-color: rgba(255, 255, 255, 0.25);
+    border-color: rgb(255, 78, 190);
+    margin: 1%;
+    --bs-btn-bg: #0d6dfd00;
+}
+button.btn-primary{
+    --bs-btn-hover-bg: rgb(255, 78, 190);
+    --bs-btn-border-color: rgb(255, 78, 190);
+    --bs-btn-active-bg: rgb(255, 52, 181);
+    --bs-btn-active-border-color:  rgb(253, 56, 181);
+    --bs-btn-hover-border-color: rgb(255, 78, 190);
+}
+
+.guardarLogin{
+    background-color:rgba(255, 78, 190, 0.765) ;
+    border-color: rgb(255, 78, 190);
+}
+a.nav-link,.navbar-brand{
+    color: rgb(255, 78, 190);
+}
+.personal{
+    display: flex;
+   margin-right: 0;
+
+}

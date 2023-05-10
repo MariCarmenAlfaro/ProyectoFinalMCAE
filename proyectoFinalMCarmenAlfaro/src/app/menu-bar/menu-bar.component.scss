@@ -1,0 +1,21 @@
+.encabezadoBar{
+  background-color:  #212529;
+  color: rgb(255, 78, 190);
+  padding: 2% 5%;
+  display: flex;
+  justify-content: space-between;
+}
+.preciosBar{
+  text-align: right;
+}
+.card{
+  display: inline;
+  float: left;
+  margin: 2%;
+}
+
+.bar{
+  width: 90%;
+  margin: auto;
+  margin-top: 2%;
+}

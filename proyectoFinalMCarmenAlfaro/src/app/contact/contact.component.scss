@@ -1,0 +1,33 @@
+
+.btnEnviar {
+  background-color:rgba(0, 0, 0, 0.554) ;
+  color: white;
+  padding: 1%;
+  border-radius: 30%;
+  border-color:rgba(0, 0, 0, 0.554) ;
+}
+.btnEnviar:active, .btnEnviar:hover{
+  background-color:rgba(0, 0, 0, 0.793) ;
+}
+.form-control{
+  width: 50%;
+}
+.rrss{
+  color: black;
+}
+.rrss:hover{
+  color:  rgb(255, 213, 240)
+}
+*{ 
+  margin: 0;
+  padding: 0;
+  font-family: 'Playfair Display', serif;
+}
+.contacto {
+  margin: 0.5rem;
+  margin: 2% 3%;
+}
+
+#name, #email, #comment{
+  margin: 4px;
+}
