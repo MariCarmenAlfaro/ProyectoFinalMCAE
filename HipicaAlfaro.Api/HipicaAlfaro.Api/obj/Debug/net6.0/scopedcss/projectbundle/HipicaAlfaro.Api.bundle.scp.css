@@ -1,0 +1,49 @@
+/* _content/HipicaAlfaro.Api/Views/Shared/_Layout.cshtml.rz.scp.css */
+/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+
+a.navbar-brand[b-kjxbwtm1rt] {
+  white-space: normal;
+  text-align: center;
+  word-break: break-all;
+}
+
+a[b-kjxbwtm1rt] {
+  color: #0077cc;
+}
+
+.btn-primary[b-kjxbwtm1rt] {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+.nav-pills .nav-link.active[b-kjxbwtm1rt], .nav-pills .show > .nav-link[b-kjxbwtm1rt] {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+.border-top[b-kjxbwtm1rt] {
+  border-top: 1px solid #e5e5e5;
+}
+.border-bottom[b-kjxbwtm1rt] {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow[b-kjxbwtm1rt] {
+  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+button.accept-policy[b-kjxbwtm1rt] {
+  font-size: 1rem;
+  line-height: inherit;
+}
+
+.footer[b-kjxbwtm1rt] {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  white-space: nowrap;
+  line-height: 60px;
+}

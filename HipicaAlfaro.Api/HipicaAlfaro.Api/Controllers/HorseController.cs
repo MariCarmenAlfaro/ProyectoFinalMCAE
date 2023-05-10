@@ -1,0 +1,100 @@
+﻿using Dapper;
+using HipicaAlfaro.Api.Models;
+using Microsoft.AspNetCore.Mvc;
+using MySql.Data.MySqlClient;
+using System;
+using System.Collections.Generic;
+
+namespace HipicaAlfaro.Api.Controllers
+{
+    [Route("Horse")]
+    [ApiController]
+    public class HorseController : ControllerBase
+    {
+        private readonly string _connection = @"Server=localhost;Password=1234;Database=horseClubDB;Uid=root;";
+
+        [HttpGet]
+        public IActionResult ReadAll()
+        {
+            IEnumerable<Horse> list = null;
+            using (var db = new MySqlConnection(_connection))
+            {
+                var sql = "SELECT horseId, horseName, barnNum, foodType, horseType, observation, cameraUrl, registrationDate, ownerId FROM horses;";
+
+                list = db.Query<Horse>(sql);
+            }
+            return Ok(list);
+        }
+
+        [HttpGet("{id}")]
+        public IActionResult ReadById(int id)
+        {
+            Horse horse = null;
+            using (var db = new MySqlConnection(_connection))
+            {
+                var sql = "SELECT horseId, horseName, barnNum, foodType, horseType, observation, cameraUrl, registrationDate, ownerId FROM horses WHERE horseId = @HorseId;";
+                horse = db.QueryFirstOrDefault<Horse>(sql, new { HorseId = id });
+            }
+            if (horse == null)
+            {
+                return NotFound();
+            }
+            return Ok(horse);
+        }
+
+        [HttpPost]
+        public IActionResult Create(Horse horse)
+        {
+            int result = 0;
+            using (var db = new MySqlConnection(_connection))
+            {
+                var sql = "INSERT INTO horses (horseName, barnNum, foodType, horseType, observation, cameraUrl, registrationDate, ownerId) VALUES (@HorseName, @BarnNum, @FoodType, @HorseType, @Observation, @CameraUrl, @RegistrationDate, @OwnerId);";
+
+                result = db.Execute(sql, horse);
+            }
+            return Ok(result > 0);
+        }
+
+        [HttpPut("{id}")]
+        public bool Update(int id, Horse horse)
+        {
+            var horseToUpdate = ReadById(id);
+            if (horseToUpdate == null)
+            {
+                return false;
+            }
+
+            horse.HorseId = id;
+
+            using (var db = new MySqlConnection(_connection))
+            {
+                var sql = "UPDATE horses SET horseName = @HorseName, barnNum = @BarnNum, foodType = @FoodType, horseType = @HorseType, observation = @Observation, cameraUrl = @CameraUrl, registrationDate = @RegistrationDate, ownerId = @OwnerId WHERE horseId = @HorseId;";
+                var rowsUpdate = db.Execute(sql, horse);
+                return rowsUpdate > 0;
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public ActionResult<bool> Delete(int id)
+        {
+            var horseToDelete = ReadById(id);
+            if (horseToDelete == null)
+            {
+                return NotFound();
+            }
+            using (var db = new MySqlConnection(_connection))
+            {
+                var sql = "DELETE FROM horses WHERE horseId = @HorseId;";
+                int rowsDelete = db.Execute(sql, new { HorseId = id });
+                if (rowsDelete == 1)
+                {
+                    return Ok(true);
+                }
+                else
+                {
+                    return Ok(false);
+                }
+            }
+        }
+    }
+}
