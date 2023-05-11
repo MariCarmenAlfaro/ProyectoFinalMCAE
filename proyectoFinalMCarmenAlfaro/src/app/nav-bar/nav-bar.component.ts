@@ -25,6 +25,7 @@ export class NavBarComponent implements OnInit {
   logout(){
     this.loginService.user = null
     window.localStorage.removeItem("user");
+    
   }
 
 }

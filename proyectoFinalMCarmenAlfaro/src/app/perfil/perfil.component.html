@@ -1,4 +1,17 @@
 <div class="perfil">
-<h1>Perfil ejemplo</h1>
+<h3>Datos personales</h3>
+<p>Nombre: {{this.datosUser.userName}}</p>
+<p> Fecha de registro: {{this.datosUser.registrationDate}}</p>
+<p>Correo electronico: {{this.datosUser.emailAddress}}</p>
 
+<ng-container *ngIf="!userType">
+<p> Día de clase: {{this.datosUser.classDay}} a las {{this.datosUser.classHour}}</p>
+
+<p>Tu nivel es: {{this.datosUser.classLevel}}</p>
+
+</ng-container>
+<p>Tu mensualidad es de: </p>
+<ng-container *ngIf="userType">
+    Espero que tu y tu caballo esteis comodos 
+</ng-container>
 </div>

@@ -8,5 +8,6 @@ namespace HipicaAlfaro.Api.Models
         public string ClassDay { get; set; }
         public string ClassHour { get; set; }
         public string? ClassLevel { get; set; }
+        public int? ClubId { get; set; }
     }
 }

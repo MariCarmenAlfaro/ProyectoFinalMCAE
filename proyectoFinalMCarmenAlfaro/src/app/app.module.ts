@@ -19,6 +19,12 @@ import { ClasesComponent } from './clases/clases.component';
 import { PrivadosComponent } from './privados/privados.component';
 import { GestionComponent } from './gestion/gestion.component';
 import { DialogModule } from 'primeng/dialog';
+import { TableModule } from 'primeng/table';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ToastModule } from 'primeng/toast';
+
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -43,7 +49,10 @@ import { DialogModule } from 'primeng/dialog';
     ReactiveFormsModule,
     HttpClientModule,
     CalendarModule, 
-     DialogModule
+    DialogModule,
+    TableModule,
+    ConfirmDialogModule,
+    ToastModule
     
     
   ],

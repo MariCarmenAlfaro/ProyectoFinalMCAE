@@ -1,1 +1,119 @@
-<p>caballo works!</p>
+<div class="col-12">
+<div class="col-12 my-3"><p-button label="Añadir caballo" (click)="this.createForm(null)"></p-button></div>
+
+<div class="col-12" *ngIf="this.horses.length > 0">
+    <p-table [value]="this.horses" [tableStyle]="{'min-width': '50rem'}">
+        <ng-template pTemplate="header" let-columns>
+            <tr>
+                <th>Nombre </th>
+                <th>Barrera</th>
+                <th>Comida</th>
+                <th>Tipo</th>
+                <th>Dueño</th>
+                <th>Camara</th>
+                <th>Observaciones</th>
+                <th>Registro</th>
+                <th>Acciones</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-horse let-columns="columns">
+            <tr>
+                <td>{{horse.horseName}}</td>
+                <td>{{horse.barnNum}}</td>
+                <td>{{horse.foodType}}</td>
+                <td>{{horse.horseType}}</td>
+                <td>{{horse.ownerId}}</td>
+                <td>{{horse.cameraUrl}}</td>
+                <td>{{horse.observation}}</td>
+                <td>{{horse.registrationDate}}</td>
+                <td>
+                    <p-button (click)="selectHorse(horse)" icon="pi pi-external-link" label="Edit"></p-button>
+
+                    <p-button (click)="deleteHorseDialog(horse.horseId)" label="Delete"></p-button></td>
+                    
+               
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+</div>
+
+
+<p-dialog header="Header" [(visible)]="showDialog" [breakpoints]="{ '960px': '75vw' }" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
+    <div class="col-12">
+        <p>Editar caballo</p>
+        <div *ngIf="this.currentHorse">
+            <form class="row g-3 fromReserva" [formGroup]="form">
+                <div class="modal-body">
+                  <div class="form-floating mb-3">
+                    <input type="text" class="form-control"  class="form-control"
+                      formControlName="barnNum" >
+                    <label for="barnNum">Barrera</label>
+                  </div>
+                  <div class="form-floating">
+                    <input type="text" class="form-control" placeholder="Password"
+                      formControlName="cameraUrl">
+                    <label for="cameraUrl">Camara</label>
+                  </div>
+                  <div class="form-floating mb-3">
+                    <input type="text" class="form-control"  class="form-control"
+                      formControlName="foodType" >
+                    <label for="foodType">Comidao</label>
+                  </div>
+                  <div class="form-floating">
+                    <input type="text" class="form-control" placeholder="Password"
+                      formControlName="horseId">
+                    <label for="horseId">Id</label>
+                  </div>
+                  <div class="form-floating mb-3">
+                    <input type="text" class="form-control"  class="form-control" placeholder="Nombre"
+                      formControlName="horseName" >
+                    <label for="horseName">Nombre</label>
+                  </div>
+                  <div class="form-floating">
+                    <input type="text" class="form-control" placeholder="Password"
+                      formControlName="horseType">
+                    <label for="horseType">Contraseña</label>
+                  </div>
+                  <div class="form-floating mb-3">
+                    <input type="text" class="form-control"  class="form-control"
+                      formControlName="observation" >
+                    <label for="observation">Correo electrónico</label>
+                  </div>
+                  <div class="form-floating">
+                    <input type="text" class="form-control" placeholder="Password"
+                      formControlName="ownerId">
+                    <label for="ownerId">Contraseña</label>
+                  </div>
+                  <div class="form-floating mb-3">
+                    <input type="text" class="form-control"  class="form-control"
+                      formControlName="registrationDate" >
+                    <label for="registrationDate">Correo electrónico</label>
+                  </div>
+                  
+                </div>
+          
+               
+                <div class="modal-footer">
+                 
+                  <button type="submit" class="btn btn-primary guardarLogin"
+               (click)="updateHorse()" 
+                  >Guardar</button>
+          
+                </div>
+              </form>
+        </div>
+    </div>
+</p-dialog>
+
+<p-toast></p-toast>
+<p-confirmDialog #cd [style]="{width: '50vw'}">
+    <ng-template pTemplate="header">
+        <h3>Header Content</h3>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <button type="button" pButton icon="pi pi-times" label="No" (click)="cd.reject()"></button>
+        <button type="button" pButton icon="pi pi-check" label="Yes" (click)="cd.accept()"></button>
+    </ng-template>
+</p-confirmDialog>

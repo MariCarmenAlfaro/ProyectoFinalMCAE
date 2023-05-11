@@ -10,6 +10,7 @@ import { PerfilComponent } from './perfil/perfil.component';
 import { ClasesComponent } from './clases/clases.component';
 import { PrivadosComponent } from './privados/privados.component';
 import { GestionComponent } from './gestion/gestion.component';
+import { CaballoComponent } from './caballo/caballo.component';
 
 
 const routes: Routes = [
@@ -23,7 +24,9 @@ const routes: Routes = [
   { path: 'perfil', component: PerfilComponent },
   { path: 'clases', component: ClasesComponent },
   { path: 'privados', component: PrivadosComponent }, 
-   { path: 'gestion', component: GestionComponent }
+   { path: 'gestion', component: GestionComponent },
+   { path: 'caballos', component: CaballoComponent }
+
 ];
 
 @NgModule({

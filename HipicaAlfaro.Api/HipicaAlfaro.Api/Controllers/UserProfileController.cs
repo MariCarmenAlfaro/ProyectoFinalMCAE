@@ -3,6 +3,7 @@ using HipicaAlfaro.Api.Models;
 using Microsoft.AspNetCore.Mvc;
 using MySql.Data.MySqlClient;
 using Org.BouncyCastle.Asn1.Ocsp;
+using System.Net.Mail;
 
 namespace HipicaAlfaro.Api.Controllers
 {
@@ -110,32 +111,36 @@ namespace HipicaAlfaro.Api.Controllers
             }
         }
 
-        [HttpGet("/extended/{id}")]
-        public ActionResult<UserExtended> ReadByIdExtended(int id)
+        [HttpGet("/extendedAlumno/{id}")]
+        public  ActionResult<UserExtended> ReadByIdExtendedAlumno(int id)
         {
-            using (var conexion = new MySqlConnection(_connection))
+             using (var conexion = new MySqlConnection(_connection))
             {
-                conexion.Open();
-                var query = @"SELECT *
-                     FROM userProfile 
-                     LEFT JOIN classUser ON userProfile.userId = classUser.userId 
-                     LEFT JOIN classes ON classUser.classId = classes.classId 
-                     WHERE userProfile.userId = @id";
 
-                var resultado = conexion.Query<UserExtended, ClassUser, Class, UserExtended>(
-                    query,
-                    (usuario, classUser, classes) =>
-                    {
-                        usuario.ClassUsers = classUser;
-                        usuario.Classes = classes;
-                        return usuario;
-                    },
-                    new { userId = id }
-                    
-                ).Distinct().FirstOrDefault();
+                  var query = "SELECT userProfile.userId as UserId, userProfile.userName as UserName,userProfile.userType as UserType, userProfile.registrationDate as RegistrationDate, userProfile.emailAddress as EmailAddress, userProfile.psswdUser as PsswdUser, userProfile.clubId as ClubId, classUser.id as Id, classUser.userId as UserId,classUser.classId as ClassId, classUser.clubId as ClubId, classes.classId as ClassId, classes.classDay as ClassDay, classes.classHour as ClassHour , classes.classLevel as ClassLevel, classes.clubId as ClubId FROM userProfile LEFT JOIN classUser ON userProfile.userId = classUser.userId LEFT JOIN classes ON classUser.classId = classes.classId WHERE userProfile.userId =@id;";
 
-                return resultado;
+              var  resultado =  conexion.QuerySingleOrDefault<UserExtended>(query, new { id });
+
+
+              
+                return  resultado;
             }
         }
+        //[HttpGet("/extendedOwner/{id}")]
+        //public ActionResult<UserExtended> ReadByIdExtendedOwner(int id)
+        //{
+        //    using (var conexion = new MySqlConnection(_connection))
+        //    {
+
+        //        var query = "";
+        //        var resultado = conexion.QuerySingleOrDefault<UserExtended>(query, new { id });
+
+
+
+        //        return resultado;
+        //    }
+        //}
+
+
     }
 }

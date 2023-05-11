@@ -10,5 +10,6 @@ namespace HipicaAlfaro.Api.Models
         public DateTimeOffset RegistrationDate { get; set; }
         public string EmailAddress { get; set; }
         public string PsswdUser { get; set; }
+        public int? ClubId { get; set; }
     }
 }
