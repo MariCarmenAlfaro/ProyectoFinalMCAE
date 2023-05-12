@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { UserProfile } from '../entities/userProfile/userProfile.interface';
-import { LoginService } from '../services/login.service';
+import { LoginService } from './login.service';
 // import { DialogModule } from 'primeng/dialog';
 @Component({
   selector: 'app-login',

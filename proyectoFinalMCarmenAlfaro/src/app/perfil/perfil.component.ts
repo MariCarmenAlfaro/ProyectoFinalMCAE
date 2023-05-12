@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { PerfilService } from './perfil.service';
-import { LoginService } from '../services/login.service';
+import { LoginService } from '../login/login.service';
 import { UserProfile } from '../entities/userProfile/userProfile.interface';
-
+import { FieldsetModule } from 'primeng/fieldset';
 @Component({
   selector: 'app-perfil',
   templateUrl: './perfil.component.html',
@@ -11,7 +11,8 @@ import { UserProfile } from '../entities/userProfile/userProfile.interface';
 export class PerfilComponent implements OnInit {
   usuario: UserProfile;
   datosUser: any;
-  userType: boolean=false;
+  datosPagos:any;
+  userType: boolean = false;
   constructor(
     public perfilService: PerfilService,
     public loginService: LoginService
@@ -20,25 +21,41 @@ export class PerfilComponent implements OnInit {
   ngOnInit(): void {
     this.readUserLocalStorage();
     this.usuario = JSON.parse(window.localStorage.getItem('user'));
+    this.readUserClass();
+    this.readMoneyMonth();
   }
   readUserLocalStorage() {
-    
+    this.usuario = JSON.parse(window.localStorage.getItem('user'));
     console.log();
-    if(this.usuario.userType=="Alumno"){
+    if (this.usuario.userType == 'Alumno') {
       this.readUserClass();
-    }else if(this.usuario.userType=="Dueño"){
-
+    } else if (
+      this.usuario.userType == 'Dueño' ||
+      this.usuario.userType == 'Admin'
+    ) {
+      this.userType = true;
     }
   }
   readUserClass() {
-    this.perfilService.getReadByIdExtendedAlumno(this.usuario.userId).subscribe((rs) => {
-      this.datosUser = rs;
-    });
+    this.usuario = JSON.parse(window.localStorage.getItem('user'));
+    this.perfilService
+      .getReadByIdExtendedAlumno(this.usuario.userId)
+      .subscribe((rs) => {
+        this.datosUser = rs;
+      });
   }
-  readUserById(){
+  readUserById() {
     this.perfilService.getReadById(this.usuario.userId).subscribe((rs) => {
       this.datosUser = rs;
     });
-    this.userType=true;
+  }
+  readMoneyMonth() {
+    this.usuario = JSON.parse(window.localStorage.getItem('user'));
+    this.perfilService
+      .getReadMoneyMonthById(this.usuario.userId)
+      .subscribe((rs) => {
+        this.datosPagos = rs;
+        console.log(this.datosPagos)
+      });
   }
 }

@@ -17,4 +17,8 @@ export class PerfilService {
     var url = this.baseUrl + `/extendedAlumno/${id}`;
     return this.http.get<any>(url);
   }
+  public getReadMoneyMonthById(id: number) {
+    var url = this.baseUrl + `/moneyMonth/${id}`;
+    return this.http.get<any>(url);
+  }
 }

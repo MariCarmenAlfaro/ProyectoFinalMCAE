@@ -4,7 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using MySql.Data.MySqlClient;
 using Org.BouncyCastle.Asn1.Ocsp;
 using System.Net.Mail;
-
+using System.Text;
+using System.Data.SqlClient;
+using System.Security.Cryptography;
 namespace HipicaAlfaro.Api.Controllers
 {
     [Route("User")]
@@ -44,12 +46,24 @@ namespace HipicaAlfaro.Api.Controllers
         [HttpPost]
         public IActionResult Create(UserProfile userProfile)
         {
+            var contra = userProfile.PsswdUser;
+            SHA256 sha256 = SHA256.Create();
+            byte[] hash = sha256.ComputeHash(Encoding.UTF8.GetBytes(contra));
+            string hexHash = BitConverter.ToString(hash).Replace("-", "");
             int result = 0;
             using (var db = new MySqlConnection(_connection))
             {
-                var sql = "INSERT INTO UserProfile (userName, userType, registrationDate, emailAddress, psswdUser) VALUES (@UserName, @UserType, @RegistrationDate, @EmailAddress, @PsswdUser);";
+                var sql = @"INSERT INTO UserProfile (userName, userType, registrationDate, emailAddress, psswdUser) VALUES (@UserName, @UserType, @RegistrationDate, @EmailAddress, @PsswdUser);";
 
-                result = db.Execute(sql, userProfile);
+                result = db.Execute(sql, new
+                {
+                    UserName = userProfile.UserName,
+                    UserType = userProfile.UserType,
+                    RegistrationDate = userProfile.RegistrationDate,
+                    EmailAddress = userProfile.EmailAddress,
+                    PsswdUser = hexHash
+                });
+
             }
             return Ok(result > 0);
         }
@@ -101,45 +115,65 @@ namespace HipicaAlfaro.Api.Controllers
         {
             using (var db = new MySqlConnection(_connection))
             {
-                var sql = "SELECT * FROM userProfile WHERE emailAddress = @EmailAddress AND psswdUser = @Password";
-                var userProfile = db.QuerySingleOrDefault<UserProfile>(sql, new { EmailAddress = emailAddress, Password = password });
+                var sql = "SELECT * FROM userProfile WHERE emailAddress = @EmailAddress";
+                var userProfile = db.QuerySingleOrDefault<UserProfile>(sql, new { EmailAddress = emailAddress });
 
                 if (userProfile == null)
+                {
                     return BadRequest("Correo electrónico o contraseña incorrectos");
+                }
 
-                return Ok(userProfile);
+                string hexHash = userProfile.PsswdUser;
+
+                // Comparar la versión hash de la contraseña proporcionada por el usuario con la versión hash almacenada en la base de datos
+                SHA256 sha256 = SHA256.Create();
+                byte[] hash = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+                string hexInputHash = BitConverter.ToString(hash).Replace("-", "");
+
+                if (hexInputHash != hexHash)
+                {
+                    // La contraseña es incorrecta
+                    return BadRequest("Correo electrónico o contraseña incorrectos");
+                }
+                else
+                {
+                    // La contraseña es correcta
+                    return Ok(userProfile);
+                }
             }
         }
+
 
         [HttpGet("/extendedAlumno/{id}")]
-        public  ActionResult<UserExtended> ReadByIdExtendedAlumno(int id)
+        public ActionResult<UserExtended> ReadByIdExtendedAlumno(int id)
         {
-             using (var conexion = new MySqlConnection(_connection))
+            using (var conexion = new MySqlConnection(_connection))
             {
 
-                  var query = "SELECT userProfile.userId as UserId, userProfile.userName as UserName,userProfile.userType as UserType, userProfile.registrationDate as RegistrationDate, userProfile.emailAddress as EmailAddress, userProfile.psswdUser as PsswdUser, userProfile.clubId as ClubId, classUser.id as Id, classUser.userId as UserId,classUser.classId as ClassId, classUser.clubId as ClubId, classes.classId as ClassId, classes.classDay as ClassDay, classes.classHour as ClassHour , classes.classLevel as ClassLevel, classes.clubId as ClubId FROM userProfile LEFT JOIN classUser ON userProfile.userId = classUser.userId LEFT JOIN classes ON classUser.classId = classes.classId WHERE userProfile.userId =@id;";
+                var query = "SELECT userProfile.userId as UserId, userProfile.userName as UserName,userProfile.userType as UserType, userProfile.registrationDate as RegistrationDate, userProfile.emailAddress as EmailAddress, userProfile.psswdUser as PsswdUser, userProfile.clubId as ClubId, classUser.id as Id, classUser.userId as UserId,classUser.classId as ClassId, classUser.clubId as ClubId, classes.classId as ClassId, classes.classDay as ClassDay, classes.classHour as ClassHour , classes.classLevel as ClassLevel, classes.clubId as ClubId FROM userProfile LEFT JOIN classUser ON userProfile.userId = classUser.userId LEFT JOIN classes ON classUser.classId = classes.classId WHERE userProfile.userId =@id;";
 
-              var  resultado =  conexion.QuerySingleOrDefault<UserExtended>(query, new { id });
+                var resultado = conexion.QuerySingleOrDefault<UserExtended>(query, new { id });
 
 
-              
-                return  resultado;
+
+                return resultado;
             }
         }
-        //[HttpGet("/extendedOwner/{id}")]
-        //public ActionResult<UserExtended> ReadByIdExtendedOwner(int id)
-        //{
-        //    using (var conexion = new MySqlConnection(_connection))
-        //    {
+        [HttpGet("/moneyMonth/{id}")]
+        public ActionResult<PriceForService> ReadMoneyMonthById(int id)
+        {
+            using (var conexion = new MySqlConnection(_connection))
+            {
 
-        //        var query = "";
-        //        var resultado = conexion.QuerySingleOrDefault<UserExtended>(query, new { id });
+                var query = "select payDate, payMethod, typeService, price from  payments inner join prices on payments.priceId = prices.priceId where payments.userId=@id;";
+
+                var resultado = conexion.QuerySingleOrDefault<PriceForService>(query, new { id });
 
 
 
-        //        return resultado;
-        //    }
-        //}
+                return resultado;
+            }
+        }
 
 
     }

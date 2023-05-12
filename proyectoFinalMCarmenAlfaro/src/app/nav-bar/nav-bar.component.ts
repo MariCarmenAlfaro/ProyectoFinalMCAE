@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { LoginService } from '../services/login.service';
+import { LoginService } from '../login/login.service';
 
 
 @Component({
@@ -25,7 +25,7 @@ export class NavBarComponent implements OnInit {
   logout(){
     this.loginService.user = null
     window.localStorage.removeItem("user");
-    
+
   }
 
 }

@@ -1,17 +1,27 @@
 <div class="perfil">
-<h3>Datos personales</h3>
-<p>Nombre: {{this.datosUser.userName}}</p>
-<p> Fecha de registro: {{this.datosUser.registrationDate}}</p>
-<p>Correo electronico: {{this.datosUser.emailAddress}}</p>
+  
+    <p-fieldset>
+        <ng-template pTemplate="header">
+            <div class="flex align-items-center text-primary">
+                <span class="pi pi-user mr-2"></span>
+                <span class="font-bold text-lg perfil">{{this.datosUser.userName}}</span>
+            </div>
+        </ng-template>
+        <p> Fecha de registro: {{this.datosUser.registrationDate}}</p>
+        <p>Correo electronico: {{this.datosUser.emailAddress}}</p>
 
-<ng-container *ngIf="!userType">
-<p> Día de clase: {{this.datosUser.classDay}} a las {{this.datosUser.classHour}}</p>
+        <ng-container *ngIf="!this.userType">
+            <p> Día de clase: {{this.datosUser.classDay}} a las {{this.datosUser.classHour}}</p>
 
-<p>Tu nivel es: {{this.datosUser.classLevel}}</p>
+            <p>Tu nivel es: {{this.datosUser.classLevel}}</p>
 
-</ng-container>
-<p>Tu mensualidad es de: </p>
-<ng-container *ngIf="userType">
-    Espero que tu y tu caballo esteis comodos 
-</ng-container>
+        </ng-container>
+        <p>Tu mensualidad es de: {{this.datosPagos.price}} euros </p>
+        <p>Por tu servicio con nosotros: {{this.datosPagos.typeService}} </p>
+        <p>Lo pagaste: {{this.datosPagos.payDate}} </p>
+        <p>Fue abonado del método: {{this.datosPagos.payMethod}} euros </p>
+
+       
+    </p-fieldset>
+
 </div>

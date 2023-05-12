@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ReservationExcService } from '../services/reservation-exc.service';
+import { ReservationExcService } from './reservation-exc.service';
 import { ReservationExc } from '../entities/reservationExc.interface';
 
 @Component({

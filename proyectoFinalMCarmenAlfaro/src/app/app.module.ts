@@ -22,6 +22,10 @@ import { DialogModule } from 'primeng/dialog';
 import { TableModule } from 'primeng/table';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { FieldsetModule } from 'primeng/fieldset';
+import { SidebarModule } from 'primeng/sidebar';
+
 
 
 
@@ -52,7 +56,11 @@ import { ToastModule } from 'primeng/toast';
     DialogModule,
     TableModule,
     ConfirmDialogModule,
-    ToastModule
+    ToastModule,
+    ProgressSpinnerModule,
+    FieldsetModule,
+    SidebarModule
+  
     
     
   ],

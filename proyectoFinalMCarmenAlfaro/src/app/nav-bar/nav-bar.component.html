@@ -44,19 +44,20 @@
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">  {{loginService.user.userName}}</a>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" routerLink="/clases">Clases Privadas</a></li>
-                  <li><a class="dropdown-item" routerLink="/gestion">Gestion</a></li>
+                  <li><a class="dropdown-item" routerLink="/perfil">Perfil</a></li>
+                 
                   
                 </ul>
               </li>
               <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"> Gestion</a>
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"> Gestión</a>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" routerLink="/clases">Pagos</a></li>
-                  <li><a class="dropdown-item" routerLink="/gestion">Bar</a></li>
-                  <li><a class="dropdown-item" routerLink="/clases">Gestion Usuarios</a></li>
-                  <li><a class="dropdown-item" routerLink="/caballos">Gestion Caballos</a></li>
-                  <li><a class="dropdown-item" routerLink="/clases">Precios</a></li>
+                     <li><a class="dropdown-item" routerLink="/gestion">Usuarios</a></li>
+                  <li><a class="dropdown-item" routerLink="/caballos">Caballos</a></li>
+                  <li><a class="dropdown-item" routerLink="/pagos">Pagos</a></li>
+                  <li><a class="dropdown-item" routerLink="/menu-bar">Bar</a></li>
+               
+                  <li><a class="dropdown-item" routerLink="/precios">Precios</a></li>
                 </ul>
               </li>
             </ng-container>
@@ -98,6 +99,6 @@
   </nav>
 </div>
 
-<p-dialog header="Header" [(visible)]="this.loginService.showModal" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
+<p-dialog header="¡Bienvenid@!" [(visible)]="this.loginService.showModal" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
  <app-login ></app-login>
 </p-dialog>

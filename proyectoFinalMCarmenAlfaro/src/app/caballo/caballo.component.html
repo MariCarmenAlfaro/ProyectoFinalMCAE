@@ -1,8 +1,11 @@
 <div class="col-12">
 <div class="col-12 my-3"><p-button label="Añadir caballo" (click)="this.createForm(null)"></p-button></div>
 
+<div class="col-12" *ngIf="this.horses.length <= 0">
+    <p-progressSpinner aria-label="Loading"></p-progressSpinner>
+</div>
 <div class="col-12" *ngIf="this.horses.length > 0">
-    <p-table [value]="this.horses" [tableStyle]="{'min-width': '50rem'}">
+    <p-table [value]="this.horses" [tableStyle]="{'min-width': '50rem'}" >
         <ng-template pTemplate="header" let-columns>
             <tr>
                 <th>Nombre </th>
@@ -38,65 +41,74 @@
 </div>
 
 </div>
-
-
-<p-dialog header="Header" [(visible)]="showDialog" [breakpoints]="{ '960px': '75vw' }" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
+<p-sidebar [(visible)]="showDialog">
     <div class="col-12">
-        <p>Editar caballo</p>
+        <p *ngIf="this.createNewHorse === true">Guardar nuevo caballo</p>
+        <p *ngIf="this.createNewHorse === false">Actualizar caballo</p>
         <div *ngIf="this.currentHorse">
-            <form class="row g-3 fromReserva" [formGroup]="form">
+            <form class="row g-3 f  romReserva" [formGroup]="form">
                 <div class="modal-body">
-                  <div class="form-floating mb-3">
-                    <input type="text" class="form-control"  class="form-control"
+                    <div class="form-floating mb-2">
+                        <input type="text" class="form-control"  placeholder="Nombre"
+                          formControlName="horseName" >
+                        <label for="horseName">Nombre</label>
+                      </div>
+                  <div class="form-floating mb-2">
+                    <input type="text" class="form-control"  placeholder="Barrera"
                       formControlName="barnNum" >
                     <label for="barnNum">Barrera</label>
                   </div>
-                  <div class="form-floating">
-                    <input type="text" class="form-control" placeholder="Password"
+                  <div class="form-floating mb-2">
+                    <input type="text" class="form-control" placeholder="Camara"
                       formControlName="cameraUrl">
                     <label for="cameraUrl">Camara</label>
                   </div>
-                  <div class="form-floating mb-3">
-                    <input type="text" class="form-control"  class="form-control"
+                  <div class="form-floating mb-2">
+                    <input type="text" class="form-control"  placeholder="Comida"
                       formControlName="foodType" >
-                    <label for="foodType">Comidao</label>
+                    <label for="foodType">Comida</label>
                   </div>
-                  <div class="form-floating">
-                    <input type="text" class="form-control" placeholder="Password"
+
+                  <div class="form-floating mb-2">
+                    <input type="text" class="form-control" placeholder="Observaciones"
+                      formControlName="observation" >
+                    <label for="observation">Observaciones</label>
+                  </div>
+
+                  <ng-container *ngIf="this.createNewHorse === false">
+                    
+                  
+                
+                   <div class="form-floating mb-2">
+                    <input type="text" class="form-control" placeholder="Tipo"
+                      formControlName="horseType">
+                    <label for="horseType">Tipo</label>
+                  </div> 
+                  <div class="form-floating mb-2">
+                    <input type="text" class="form-control" placeholder="Dueño"
+                      formControlName="ownerId">
+                    <label for="ownerId">Dueño</label>
+                  </div>
+                </ng-container>
+                 <!-- <div class="form-floating mb-2">
+                    <input type="text" class="form-control"  placeholder="Fecha registro"
+                      formControlName="registrationDate" >
+                    <label for="registrationDate">Fecha registro</label>
+                  </div>
+                  -->
+                  <!--<div class="form-floating mb-2" >
+                    <input type="text" class="form-control" placeholder="Id"
                       formControlName="horseId">
                     <label for="horseId">Id</label>
-                  </div>
-                  <div class="form-floating mb-3">
-                    <input type="text" class="form-control"  class="form-control" placeholder="Nombre"
-                      formControlName="horseName" >
-                    <label for="horseName">Nombre</label>
-                  </div>
-                  <div class="form-floating">
-                    <input type="text" class="form-control" placeholder="Password"
-                      formControlName="horseType">
-                    <label for="horseType">Contraseña</label>
-                  </div>
-                  <div class="form-floating mb-3">
-                    <input type="text" class="form-control"  class="form-control"
-                      formControlName="observation" >
-                    <label for="observation">Correo electrónico</label>
-                  </div>
-                  <div class="form-floating">
-                    <input type="text" class="form-control" placeholder="Password"
-                      formControlName="ownerId">
-                    <label for="ownerId">Contraseña</label>
-                  </div>
-                  <div class="form-floating mb-3">
-                    <input type="text" class="form-control"  class="form-control"
-                      formControlName="registrationDate" >
-                    <label for="registrationDate">Correo electrónico</label>
-                  </div>
+                  </div> -->
                   
                 </div>
           
                
                 <div class="modal-footer">
-                 
+                    <button type="submit" class="btn btn-primary "
+                    (click)="this.showDialog = false" 
+                       >Cerrar</button>
                   <button type="submit" class="btn btn-primary guardarLogin"
                (click)="updateHorse()" 
                   >Guardar</button>
@@ -105,10 +117,12 @@
               </form>
         </div>
     </div>
-</p-dialog>
+</p-sidebar>
+
+
 
 <p-toast></p-toast>
-<p-confirmDialog #cd [style]="{width: '50vw'}">
+<p-confirmDialog #cd [style]="{width:'50vw'}">
     <ng-template pTemplate="header">
         <h3>Header Content</h3>
     </ng-template>
