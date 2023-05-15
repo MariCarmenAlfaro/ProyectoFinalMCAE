@@ -53,7 +53,8 @@ namespace HipicaAlfaro.Api.Controllers
             int result = 0;
             using (var db = new MySqlConnection(_connection))
             {
-                var sql = @"INSERT INTO UserProfile (userName, userType, registrationDate, emailAddress, psswdUser) VALUES (@UserName, @UserType, @RegistrationDate, @EmailAddress, @PsswdUser);";
+                var sql = @"INSERT INTO UserProfile (userName, userType, registrationDate, emailAddress, psswdUser)
+                             VALUES (@UserName, @UserType, @RegistrationDate, @EmailAddress, @PsswdUser);";
 
                 result = db.Execute(sql, new
                 {
@@ -144,8 +145,8 @@ namespace HipicaAlfaro.Api.Controllers
         }
 
 
-        [HttpGet("/extendedAlumno/{id}")]
-        public ActionResult<UserExtended> ReadByIdExtendedAlumno(int id)
+        [HttpGet("/userExtendedClasses/{id}")]
+        public ActionResult<UserExtended> ReadByUserIdExtended(int id)
         {
             using (var conexion = new MySqlConnection(_connection))
             {
@@ -159,8 +160,8 @@ namespace HipicaAlfaro.Api.Controllers
                 return resultado;
             }
         }
-        [HttpGet("/moneyMonth/{id}")]
-        public ActionResult<PriceForService> ReadMoneyMonthById(int id)
+        [HttpGet("/priceForServiceUser/{id}")]
+        public ActionResult<PriceForService> ReadPriceForServiceByUserId(int id)
         {
             using (var conexion = new MySqlConnection(_connection))
             {
@@ -174,7 +175,7 @@ namespace HipicaAlfaro.Api.Controllers
                 return resultado;
             }
         }
-
-
     }
+
 }
+

@@ -20,13 +20,13 @@ export class PerfilComponent implements OnInit {
 
   ngOnInit(): void {
     this.readUserLocalStorage();
-    this.usuario = JSON.parse(window.localStorage.getItem('user'));
-    this.readUserClass();
+    this.readUserById();
     this.readMoneyMonth();
   }
+
   readUserLocalStorage() {
     this.usuario = JSON.parse(window.localStorage.getItem('user'));
-    console.log();
+ 
     if (this.usuario.userType == 'Alumno') {
       this.readUserClass();
     } else if (
@@ -36,6 +36,14 @@ export class PerfilComponent implements OnInit {
       this.userType = true;
     }
   }
+  readUserById() {
+    this.usuario = JSON.parse(window.localStorage.getItem('user'));
+    console.log(this.usuario)
+    this.perfilService.getReadById(this.usuario.userId).subscribe((rs) => {
+      this.datosUser = rs;
+      console.log(this.datosUser)
+    });
+  }
   readUserClass() {
     this.usuario = JSON.parse(window.localStorage.getItem('user'));
     this.perfilService
@@ -43,11 +51,6 @@ export class PerfilComponent implements OnInit {
       .subscribe((rs) => {
         this.datosUser = rs;
       });
-  }
-  readUserById() {
-    this.perfilService.getReadById(this.usuario.userId).subscribe((rs) => {
-      this.datosUser = rs;
-    });
   }
   readMoneyMonth() {
     this.usuario = JSON.parse(window.localStorage.getItem('user'));

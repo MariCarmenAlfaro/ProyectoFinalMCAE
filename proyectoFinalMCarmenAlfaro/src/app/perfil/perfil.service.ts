@@ -8,17 +8,19 @@ import { UserProfile } from '../entities/userProfile/userProfile.interface';
 export class PerfilService {
   baseUrl: string = 'https://localhost:7089';
   constructor(private http: HttpClient) {}
+
+
   public getReadById(id: number) {
-    var url = this.baseUrl + `//${id}`;
+    var url = this.baseUrl + `/User/${id}`;
     return this.http.get<any>(url);
   }
 
   public getReadByIdExtendedAlumno(id: number) {
-    var url = this.baseUrl + `/extendedAlumno/${id}`;
+    var url = this.baseUrl + `/userExtendedClasses/${id}`;
     return this.http.get<any>(url);
   }
   public getReadMoneyMonthById(id: number) {
-    var url = this.baseUrl + `/moneyMonth/${id}`;
+    var url = this.baseUrl + `/priceForServiceUser/${id}`;
     return this.http.get<any>(url);
   }
 }

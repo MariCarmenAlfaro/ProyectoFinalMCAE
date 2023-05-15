@@ -1,64 +1,97 @@
 import { Component, OnInit } from '@angular/core';
-
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { GestionService } from './gestion.service';
 @Component({
   selector: 'app-gestion',
   templateUrl: './gestion.component.html',
-  styleUrls: ['./gestion.component.scss']
+  styleUrls: ['./gestion.component.scss'],
 })
 export class GestionComponent implements OnInit {
-  password: string='';
+  psswdUser: string = '';
   newUser: any;
-  createUser: boolean
-  constructor(public gestionService: GestionService) { }
-  newUserForm = new FormGroup({
-    name: new FormControl('', Validators.required),
-    type: new FormControl('', Validators.required),
-    date: new FormControl('', Validators.required),
-    email: new FormControl('', Validators.required)
-
-})
+  users: any[];
+  createUser: boolean;
+  messageCreation: boolean;
+  showDialog= false;
+  form: FormGroup;
+  constructor(public gestionService: GestionService) {}
+  
   ngOnInit(): void {
+    this.createFormUser()
+    this.readAll()
   }
 
   generatePassword() {
-    const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    const chars =
+      'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     const passwordLength = 8;
-  
-  
+
     for (let i = 0; i < passwordLength; i++) {
       const randomIndex = Math.floor(Math.random() * chars.length);
-      this.password += chars[randomIndex];
+      this.psswdUser += chars[randomIndex];
     }
-  
-    return this.password;
+
+    return this.psswdUser;
   }
 
-   postNewUser(){
-   
-    var name = this.newUserForm.get('name').value;
-    var type = this.newUserForm.get('type').value;
-    var date = this.newUserForm.get('date').value;
-    var email = this.newUserForm.get('email').value;
-    var password = this.password;
-    this.newUser={name, type, date, email,password}
-    console.log(this.newUser)
-    this.gestionService.postNewUser(this.newUser).subscribe(
-      rs=> {
-      this.createUser= rs;
-      console.log(this.createUser)
-     
-  }) 
+  readAll() {
+    this.gestionService.readAllUser().subscribe((rs) => {
+      this.users = rs;
+    });
+  }
 
+  clear(table) {
+    table.clear();
+}
+showCreateForm(){
+  this.form = new FormGroup({
+    userName: new FormControl(''),
+    userType: new FormControl(''),
+    registrationDate: new FormControl(''),
+    emailAddress: new FormControl(''),
+    psswdUser: new FormControl(''),
+  });
+  this.showDialog=true;
+
+}
+
+createFormUser(){
+  this.form = new FormGroup({
+    userName: new FormControl(''),
+    userType: new FormControl(''),
+    registrationDate: new FormControl(''),
+    emailAddress: new FormControl(''),
+    psswdUser: new FormControl(''),
+  });
+}
+  postNewUser() {
+    
+    // var userName = this.newUserForm.get('userName').value;
+    // var userType = this.newUserForm.get('userType').value;
+    // var registrationDate = this.newUserForm.get('registrationDate').value;
+    // var emailAddress = this.newUserForm.get('emailAddress').value;
+    // var psswdUser = this.newUserForm.get('psswdUser').value;
+    // this.newUser = {
+    //   userName,
+    //   userType,
+    //   registrationDate,
+    //   emailAddress,
+    //   psswdUser,
+    // };
+    
+    // console.log(this.newUser);
+    this.gestionService.postNewUser(this.form.value).subscribe((rs) => {
+      this.createUser = rs;
+      console.log(rs);
+      if (this.createUser) {
+        this.messageCreation = true;
+      } else {
+        this.messageCreation = false;
+      }
+    });
+    
   }
 }
-import { catchError } from 'rxjs/operators';
-import { of } from 'rxjs';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { GestionService } from './gestion.service';
-
-
-
-
 
 // ...
 //Esto es para que si a la hora de insertar se viola la resticcion del correo devuelva un fallo y q muestre mensajito
@@ -79,4 +112,3 @@ import { GestionService } from './gestion.service';
 //     })
 //   );
 // }
-

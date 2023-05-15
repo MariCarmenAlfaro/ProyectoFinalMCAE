@@ -96,20 +96,17 @@ namespace HipicaAlfaro.Api.Controllers
                 }
             }
         }
-        [HttpGet("/owner/{id}")]
+        [HttpGet("owner/{id}")]
         public IActionResult ReadByOwnerId(int id)
         {
-            Horse horse = null;
+            IEnumerable<Horse> list = null;
             using (var db = new MySqlConnection(_connection))
             {
                 var sql = "SELECT horseId, horseName, barnNum, foodType, horseType, observation, cameraUrl, registrationDate, ownerId FROM horses WHERE ownerId = @id;";
-                horse = db.QueryFirstOrDefault<Horse>(sql, new { id });
+                
+                list = db.Query<Horse>(sql, new { id });
             }
-            if (horse == null)
-            {
-                return NotFound();
-            }
-            return Ok(horse);
+            return Ok(list);
         }
     }
 }
