@@ -16,6 +16,24 @@ export class CaballosService {
       url
     )
   }
+public getHorseByOnwerId(id){
+  var url= this.baseUrl+`/Horse/owner/${id}`;
+  return this.http.get<any[]>(
+    url
+  )
+}
+public createHorse(horse){
+  var url= this.baseUrl+`/Horse`;
+  return this.http.post<boolean>(
+    url,horse
+  )
+}
+public updateHorse(horse){
+  var url= this.baseUrl+`/Horse/${horse.horseId}`;
+  return this.http.put<boolean>(
+    url,horse
+  )
+}
 
   public deleteHorse(idHorse){
     var url= this.baseUrl+`/Horse/${idHorse}`;

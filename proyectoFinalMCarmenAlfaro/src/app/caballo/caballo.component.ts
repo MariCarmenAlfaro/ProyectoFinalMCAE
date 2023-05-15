@@ -7,6 +7,7 @@ import {
 } from 'primeng/api';
 
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UserProfile } from '../entities/userProfile/userProfile.interface';
 
 @Component({
   selector: 'app-caballo',
@@ -20,24 +21,89 @@ export class CaballoComponent implements OnInit {
     private confirmationService: ConfirmationService,
     private messageService: MessageService
   ) {}
-
+  usuario: UserProfile;
   createNewHorse = false;
   showDialog = false;
   horses = [];
   currentHorse = null;
   form: FormGroup;
+  userTypeAdmin: boolean = false;
+  userTypeOwner: boolean = false;
 
   ngOnInit(): void {
-    this.getAllHorses();
+    this.knowUserType();
+  }
+  knowUserType() {
+    this.usuario = JSON.parse(window.localStorage.getItem('user'));
+    if (this.usuario.userType == 'Admin') {
+      this.userTypeAdmin = true;
+      this.getAllHorses();
+    } else if (this.usuario.userType == 'Dueño') {
+      this.userTypeOwner = true;
+      this.readHorseByOwnerId();
+    }
+  }
+  readHorseByOwnerId() {
+    this.usuario = JSON.parse(window.localStorage.getItem('user'));
+    this.caballosService
+      .getHorseByOnwerId(this.usuario.userId)
+      .subscribe((rs) => {
+        this.horses = rs;
+        console.log(this.horses);
+      });
   }
   updateHorse() {
     if (this.createNewHorse) {
-      this.form.controls.horseType.setValue("Clase");
+      this.form.controls.horseType.setValue('Clase');
+      this.caballosService.createHorse(this.form.value).subscribe(
+        (rs) => {
+          if (rs) {
+            console.log('Ok');
+            this.getAllHorses();
+            this.showDialog=false;
+            this.messageService.add({
+              severity: 'info',
+              summary: 'Insercción correcta',
+              detail: 'Caballo creado correctamente.',
+            });
+          } else {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Rejected',
+              detail: 'Error al intentar insertar el caballo',
+            });
+          }
+        },
+        (error) => {
+          console.error(error);
+          //this.errorMessage=true;
+        }
+      );
+    } else {
+      this.caballosService.updateHorse(this.form.value).subscribe(rs=>{
+        if (rs) {
+          console.log('Ok');
+        this.getAllHorses();
+          this.showDialog=false;
+          this.messageService.add({
+            severity: 'info',
+            summary: 'Modifición correcta',
+            detail: 'Caballo modificado correctamente.',
+          });
+        } else {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Rejected',
+            detail: 'Error al intentar modficar el caballo',
+          });
+        }
+      })
+
     }
 
-    console.log(" caballo guardado ")
-    console.log( this.form.value)
-    console.log(this.currentHorse)
+    console.log(' caballo guardado ');
+    console.log(this.form.value);
+    console.log(this.currentHorse);
     //TODO llamada al back
   }
 
@@ -58,15 +124,14 @@ export class CaballoComponent implements OnInit {
     } else {
       this.createNewHorse = true;
       this.form = new FormGroup({
-        barnNum: new FormControl(''),
-        cameraUrl: new FormControl(''),
-        foodType: new FormControl(''),
-        horseId: new FormControl(null),
         horseName: new FormControl(''),
+        barnNum: new FormControl(''),
+        foodType: new FormControl(''),
         horseType: new FormControl(''),
         observation: new FormControl(''),
+        cameraUrl: new FormControl(''),
+        registrationDate: new FormControl(''),
         ownerId: new FormControl(null),
-        registrationDate: new FormControl(null),
       });
 
       this.currentHorse = true;
@@ -77,6 +142,7 @@ export class CaballoComponent implements OnInit {
   }
 
   getAllHorses() {
+    debugger;
     this.caballosService.getAllHorses().subscribe(
       (response) => {
         this.horses = response;
@@ -128,17 +194,11 @@ export class CaballoComponent implements OnInit {
       },
       reject: (type) => {
         switch (type) {
-          case ConfirmEventType.REJECT:
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Rejected',
-              detail: 'You have rejected',
-            });
-            break;
+        
           case ConfirmEventType.CANCEL:
             this.messageService.add({
               severity: 'warn',
-              summary: 'Cancelled',
+              summary: 'Cancelado',
               detail: 'You have cancelled',
             });
             break;

@@ -1,35 +1,124 @@
-<button type="submit" (click)="generatePassword()">Generar contraseña</button>
-<p>{{this.password}}</p>
 
-<form class="row g-3 f  romReserva" [formGroup]="newUserForm">
-    <div class="modal-body">
-        <div class="form-floating mb-2">
-            <input type="text" class="form-control" placeholder="" formControlName="name">
-            <label for="name">Nombre</label>
-        </div>
-        <div class="form-floating mb-2">
-            <input type="text" class="form-control" placeholder="" formControlName="type">
-            <label for="type">Tipo</label>
-        </div>
-        <div class="form-floating mb-2">
-            <input type="date" class="form-control" placeholder="" formControlName="date">
-            <label for="date">Fecha</label>
-        </div>
-        <div class="form-floating mb-2">
-            <input type="email" class="form-control" placeholder="" formControlName="email">
-            <label for="email">Email</label>
-        </div>
-        <div class="form-floating mb-2">
-            <input type="text" class="form-control" placeholder="{{this.password}}" formControlName="password">
-            <label for="password">{{this.password}}</label>
-            <p>{{this.password}}</p>
-        </div>
 
+<div class="col-12 my-3">
+    <p-button label="Registrar usuario" (click)="this.showCreateForm()"></p-button>
+</div>
+
+
+
+
+<ng-container *ngIf="users">
+    <p-table
+    #dt1
+    [value]="users"
+    dataKey="id"
+    [rows]="10"
+    [showCurrentPageReport]="true"
+    [rowsPerPageOptions]="[10, 25, 50]"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    [globalFilterFields]="['userName', 'emailAddress', 'userType']"
+>
+    <ng-template pTemplate="caption">
+        <div class="flex">
+            <button pButton label="Clear" class="p-button-outlined" icon="pi pi-filter-slash" (click)="clear(dt1)"></button>
+           
+        </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+        <tr>
+            <th style="min-width:15rem">
+                <div class="flex align-items-center">
+                    Nombre
+                    <p-columnFilter type="text" field="userName" display="menu"></p-columnFilter>
+                </div>
+            </th>
+            <th style="min-width:15rem">
+                <div class="flex align-items-center">
+                    Correo electronico
+                    <p-columnFilter type="text" field="emailAddress" display="menu"></p-columnFilter>
+                </div>
+            </th>
+            <th style="min-width:15rem">
+                <div class="flex align-items-center">
+                    Tipo
+                    <p-columnFilter type="text" field="userType" display="menu"></p-columnFilter>
+                </div>
+            </th>
+    
+            <th style="width: 3rem">
+                <div class="flex align-items-center">
+                     EDIT
+                </div>
+            </th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-user>
+        <tr>
+            <td>
+                {{ user.userName }}
+            </td>
+            <td>
+        
+                <span class="ml-1 vertical-align-middle">{{ user.emailAddress }}</span>
+            </td>
+            <td>
+
+                <span class="ml-1 vertical-align-middle">{{ user.userType }}</span>
+            </td>
+            <td>
+           Edit
+            </td>
+     
+          
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+        <tr>
+            <td colspan="7">No customers found.</td>
+        </tr>
+    </ng-template>
+</p-table>
+</ng-container>
+
+
+<p-sidebar [(visible)]="showDialog">
+    <p-button  (click)="generatePassword()">Generar contraseña</p-button>
+    <div class="col-12">
+        <form class="row g-3 f  romReserva" [formGroup]="form">
+            <div class="modal-body">
+              <div class="form-floating mb-2">
+                <input type="text" class="form-control" placeholder="Usuario" formControlName="userName">
+                <label for="userName">Usuario</label>
+              </div>
+              <div class="form-floating mb-2">
+                <input type="text" class="form-control" placeholder="Tipo" formControlName="userType">
+                <label for="userType">Tipo</label>
+              </div>
+              <div class="form-floating mb-2">
+                <input type="text" class="form-control" placeholder="Fecha registro" formControlName="registrationDate">
+                <label for="registrationDate">Fecha registro</label>
+              </div>
+              <div class="form-floating mb-2">
+                <input type="text" class="form-control" placeholder="Correo" formControlName="emailAddress">
+                <label for="emailAddress">Correo</label>
+              </div>
+    
+              <div class="form-floating mb-2">
+                <input type="text" class="form-control" placeholder="Contraseña" formControlName="psswdUser">
+                <label for="psswdUser">Contraseña</label>
+              </div>
+
+            </div>
+    
+
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary " (click)="this.showDialog = false">Cerrar</button>
+    
+              <button type="submit" class="btn btn-primary guardarLogin" (click)="postNewUser()">Guardar</button>
+    
+            </div>
+          </form>
     </div>
-
-    <div class="modal-footer">
-
-        <button type="submit" class="btn btn-primary guardarLogin" (click)="postNewUser()">Guardar</button>
-
-    </div>
-</form>
+    <!-- <p *ngIf="messageCreation">USUARIO REGISTRADO</p>
+    <p *ngIf="!messageCreation">Oops, ha habido algun error en el registro.</p>     -->
+    </p-sidebar>

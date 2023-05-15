@@ -14,5 +14,8 @@ export class GestionService {
     var url = `${this.baseUrl}/User`;
     return this.http.post<any>(url,body) ;
   }
- 
+ public readAllUser(){
+  var url = `${this.baseUrl}/User`;
+    return this.http.get<any>(url) ;
+ }
 }
