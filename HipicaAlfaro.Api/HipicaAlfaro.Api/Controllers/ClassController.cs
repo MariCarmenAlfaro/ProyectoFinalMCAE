@@ -17,7 +17,7 @@ namespace HipicaAlfaro.Api.Controllers
             IEnumerable<Class> list = null;
             using (var db = new MySqlConnection(_connection))
             {
-                var sql = "SELECT classDay, classHour, classLevel FROM classes;";
+                var sql = "SELECT classId, classDay, classHour, classLevel FROM classes;";
 
                 list = db.Query<Class>(sql);
             }
@@ -54,15 +54,14 @@ namespace HipicaAlfaro.Api.Controllers
             return Ok(result > 0);
         }
 
-        [HttpPut("{id}")]
-        public bool Update(int id, Class classes)
+        [HttpPut]
+        public bool Update(int id,Class classes)
         {
             var classToUpdate = ReadById(id);
             if (classToUpdate == null)
             {
                 return false;
             }
-
             classes.ClassId = id;
 
             using (var db = new MySqlConnection(_connection))
