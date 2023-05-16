@@ -18,20 +18,21 @@
 
     </p-fieldset>
     <ng-container *ngIf="!this.userType">
-    <p-fieldset class="containerPerfil">
-        <ng-template pTemplate="header">
-            <div class="flex align-items-center text-primary">
-                <span class="pi pi-user mr-2"></span>
-                <span class="font-bold text-lg perfilDatos">Clase</span>
-            </div>
-        </ng-template>
+        <p-fieldset class="containerPerfil">
+            <ng-template pTemplate="header">
+                <div class="flex align-items-center text-primary">
+                    <span class="pi pi-user mr-2"></span>
+                    <span class="font-bold text-lg perfilDatos">Clase</span>
+                </div>
+            </ng-template>
 
-        <p> Día de clase: {{this.datosUser.classDay}} a las {{this.datosUser.classHour}}</p>
+            <p> Día de clase: {{this.datosUser.classDay}} a las {{this.datosUser.classHour}}</p>
 
-        <p>Tu nivel es: {{this.datosUser.classLevel}}</p>
+            <p>Tu nivel es: {{this.datosUser.classLevel}}</p>
 
-    </p-fieldset>
+        </p-fieldset>
     </ng-container>
+
 
 
     <ng-container *ngIf="this.datosPagos">
@@ -49,5 +50,55 @@
         </p-fieldset>
 
     </ng-container>
+    <p-button styleClass="p-button-outlined btnFormulario" (click)="mostrarFormulario()">Solicitud cambios</p-button>
+
+    <p-sidebar [(visible)]="showForm">
+
+        <ng-template pTemplate="header">
+            <div class="flex align-items-center text-primary">
+                <span class="pi pi-user mr-2"></span>
+                <span class="font-bold text-lg perfilDatos">Solicitud de cambios</span>
+            </div>
+        </ng-template>
+        <ng-container *ngIf="this.formClass">
+            <form [formGroup]="changeForm">
+                <p>Si desea cambiar su dia u hora de clase, ¡solicítelo desde aquí!</p>
+                <p>Por favor, intruduzca claramente el día de la semana o la hora a la que quiere cambiar</p>
+                <p>NO se aceptaran cambios sin dos días de antelación a la clase</p>
+
+                <div class="form-group">
+                    <label for="comment">Escriba quí el cambio: </label>
+                    <textarea class="form-control areaComent" rows="5" id="peticion" formControlName="peticion"
+                        name="text"
+                        placeholder="¡Hola! Me gustaría poder acudir a clase los viernes a las..."></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary " (click)="this.showForm = false">Cerrar</button>
+          
+                    <button type="submit" class="btn btn-primary guardarLogin" (click)="insertComent()">Guardar</button>
+          
+                  </div>
+            </form>
+        </ng-container>
+        <ng-container *ngIf="this.formBarn">
+            <form [formGroup]="changeForm">
+                <p>Si desea cambiar la cuadra o alimentación de su caballo,¡ solicítelo desde aquí!</p>
+                <div class="form-group">
+                    <label for="comment">Escriba quí el cambio: </label>
+                    <textarea class="form-control areaComent" rows="5" id="peticion" formControlName="peticion"
+                        name="text"
+                        placeholder="¡Hola! Me gustaría que 'Pequitas' pudiera estar en el establo..."></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary " (click)="this.showForm= false">Cerrar</button>
+          
+                    <button type="submit" class="btn btn-primary guardarLogin" (click)="insertComent()">Guardar</button>
+          
+                  </div>
+            </form>
+        </ng-container>
+
+    </p-sidebar>
+
 
 </div>

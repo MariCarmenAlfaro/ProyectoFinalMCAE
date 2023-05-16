@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ReservationExcService } from './reservation-exc.service';
+import { ReservationExcService } from './servicios.service';
 import { ReservationExc } from '../entities/reservationExc.interface';
 
 @Component({
@@ -46,5 +46,12 @@ export class ServiciosComponent implements OnInit {
         
     
     console.log(this.excursionForm.value);
+    
+  }
+  readPrices() {
+    this.reservationService.readPrices().subscribe((rs) => {
+      rs;
+      console.log(rs);
+    });
   }
 }

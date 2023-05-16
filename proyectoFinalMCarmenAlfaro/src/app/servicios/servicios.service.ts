@@ -22,5 +22,8 @@ export class ReservationExcService {
       excursionType: type    }
     return this.http.post<boolean>(url, reserv);
    }
-
+public readPrices(){
+  const url = `${this.baseUrl}/Prices`;
+  return this.http.get<any>(url);
+}
 }
