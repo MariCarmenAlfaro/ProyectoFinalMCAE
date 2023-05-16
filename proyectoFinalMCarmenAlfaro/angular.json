@@ -23,6 +23,7 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "aot": true,
+            "sourceMap": true,
             "assets": [
               "src/favicon.ico",
               "src/assets"
@@ -42,7 +43,7 @@
               ],
               "optimization": true,
               "outputHashing": "all",
-              "sourceMap": false,
+              "sourceMap": true,
               "extractCss": true,
               "namedChunks": false,
               "extractLicenses": true,
@@ -66,8 +67,7 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "proyectoFinalMCarmenAlfaro:build",
-            "proxyConfig": "proxy.conf.json"
+            "browserTarget": "proyectoFinalMCarmenAlfaro:build"
 
           },
           "configurations": {
@@ -129,6 +129,9 @@
   },
   "defaultProject": "proyectoFinalMCarmenAlfaro",
   "cli": {
-    "analytics": "d01784e0-73df-4109-8573-f87c13d2989c"
+    "analytics": "d01784e0-73df-4109-8573-f87c13d2989c",
+    "cache": {
+      "enabled": false
+    }
   }
 }

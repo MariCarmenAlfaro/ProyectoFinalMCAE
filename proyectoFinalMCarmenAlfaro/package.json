@@ -1,7 +1,7 @@
 {
   "name": "proyecto-final-mcarmen-alfaro",
   "version": "1.0.0-SNAPSHOT",
-  "license": "MIT",
+  
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -10,10 +10,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/primefaces/primeng-quickstart-cli.git"
-  },
+ "private":true,
   "dependencies": {
     "@angular/animations": "^15.2.0",
     "@angular/cdk": "^15.2.0",
