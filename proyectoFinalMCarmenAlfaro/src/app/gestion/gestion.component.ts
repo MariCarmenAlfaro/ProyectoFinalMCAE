@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { GestionService } from './gestion.service';
+import { CaballosService } from '../caballo/caballos.service';
 @Component({
   selector: 'app-gestion',
   templateUrl: './gestion.component.html',
@@ -14,10 +15,39 @@ export class GestionComponent implements OnInit {
   messageCreation: boolean;
   showDialog= false;
   form: FormGroup;
-  constructor(public gestionService: GestionService) {}
+  showAddHorseToUser = false;
+  showCreateUser = false;
+  showPaymentForm = false
+  formHorseOwner: FormGroup;
+  paymentForm: FormGroup;
+  typeServices = []
+  currentUserId
+  
+
+  userTypes = [
+    { name: 'Alumno' },
+    { name: 'Dueño' },
+    { name: 'Admin' }  
+];
+
+  foodHorseTypes = [
+    { name: 'Hierba' },
+    { name: 'Forraje' },
+    { name: 'Heno' },
+    { name: 'Paja' }
+  ]
+
+  payMethods = [
+    { name: 'Efectivo' },
+    { name: 'Tarjeta' },
+  ]
+
+
+  constructor(
+    public gestionService: GestionService,
+    public caballosService: CaballosService,) {}
   
   ngOnInit(): void {
-    this.createFormUser()
     this.readAll()
   }
 
@@ -44,6 +74,7 @@ export class GestionComponent implements OnInit {
     table.clear();
 }
 showCreateForm(){
+
   this.form = new FormGroup({
     userName: new FormControl(''),
     userType: new FormControl(''),
@@ -51,39 +82,26 @@ showCreateForm(){
     emailAddress: new FormControl(''),
     psswdUser: new FormControl(''),
   });
+  this.showPaymentForm = false
+  this.showAddHorseToUser = false;
+  this.showCreateUser = true;
   this.showDialog=true;
 
 }
 
-createFormUser(){
-  this.form = new FormGroup({
-    userName: new FormControl(''),
-    userType: new FormControl(''),
-    registrationDate: new FormControl(''),
-    emailAddress: new FormControl(''),
-    psswdUser: new FormControl(''),
-  });
-}
+
   postNewUser() {
     
-    // var userName = this.newUserForm.get('userName').value;
-    // var userType = this.newUserForm.get('userType').value;
-    // var registrationDate = this.newUserForm.get('registrationDate').value;
-    // var emailAddress = this.newUserForm.get('emailAddress').value;
-    // var psswdUser = this.newUserForm.get('psswdUser').value;
-    // this.newUser = {
-    //   userName,
-    //   userType,
-    //   registrationDate,
-    //   emailAddress,
-    //   psswdUser,
-    // };
-    
-    // console.log(this.newUser);
+    let typeUser = this.form.controls.userType.value.name
+    this.form.controls.userType.setValue(typeUser)
+   
     this.gestionService.postNewUser(this.form.value).subscribe((rs) => {
       this.createUser = rs;
       console.log(rs);
       if (this.createUser) {
+        //TODO obtener el userId real del back
+        this.currentUserId = 17
+        this.correctUserCreated(typeUser)
         this.messageCreation = true;
       } else {
         this.messageCreation = false;
@@ -91,7 +109,112 @@ createFormUser(){
     });
     
   }
+
+  correctUserCreated(typeUser){
+    if(typeUser === "Admin"){
+
+    }
+    if(typeUser === "Alumno"){
+      alert("Alumno")
+    }
+    if(typeUser === "Dueño"){
+     // añadir 
+     this.showCreateUser = false
+     this.showPaymentForm = false
+     this.formHorseOwner = new FormGroup({
+      horseName: new FormControl(''),
+      barnNum: new FormControl(''),
+      foodType: new FormControl(''),
+      horseType: new FormControl('Privado'),
+      observation: new FormControl(''),
+      cameraUrl: new FormControl(''),
+      registrationDate: new FormControl(''),
+      ownerId: new FormControl(this.currentUserId),
+    });
+     this.showAddHorseToUser = true
+    }
+  }
+
+  savePrivateHorse(){
+    console.log(this.formHorseOwner.value)
+    this.caballosService.createHorse(this.formHorseOwner.value).subscribe(
+      (rs) => {
+        if (rs) {     
+          console.log("Caballo guardado")  
+          //añadir pago
+          this.createPaymentForm()
+        } 
+      },
+      (error) => {
+        console.error(error);
+       
+      }
+    );
+  }
+
+  createPaymentForm(){
+// obtener tipos de pago
+this.gestionService.getTypesServicesPrice().subscribe(
+  (rs) => {
+    if (rs) {    
+      
+     this.typeServices = rs
+     console.log(this.typeServices) 
+
+     if(this.currentUserId){
+      this.paymentForm = new FormGroup({
+        userId: new FormControl(this.currentUserId),
+        payDate: new FormControl(''),
+        priceId: new FormControl(''),
+        payMethod: new FormControl(''),
+        isPaid: new FormControl(false),
+      });
+      this.showCreateUser = false
+      this.showAddHorseToUser = false
+      this.showPaymentForm = true
+      
+      
+     }
+     
+     
+    } 
+  },
+  (error) => {
+    console.error(error);
+   
+  }
+);
+
+  }
+
+
+  savePayment(){
+  // guardar el pago
+  console.log(this.paymentForm.value)
+
+  this.gestionService.createNewPayment(this.paymentForm.value).subscribe(
+    (rs) => {
+      if (rs) {    
+        console.log("pago realizado")
+        console.log(rs)
+        //volvemos a hacer la llamada de usuarios para ver el nuevo usuario
+        //cerramos los modals/dialogs/forms
+        this.readAll()
+        this.showCreateUser = false
+        this.showAddHorseToUser = false
+        this.showPaymentForm = false
+        this.showDialog = false
+      } 
+    },
+    (error) => {
+      console.error(error);
+     
+    }
+  );
+  }
 }
+
+
 
 // ...
 //Esto es para que si a la hora de insertar se viola la resticcion del correo devuelva un fallo y q muestre mensajito

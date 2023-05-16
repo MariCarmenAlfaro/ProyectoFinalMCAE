@@ -62,8 +62,7 @@
                 <label for="cameraUrl">Camara</label>
               </div>
               <div class="form-floating mb-2">
-                <input type="text" class="form-control" placeholder="Comida" formControlName="foodType">
-                <label for="foodType">Comida</label>
+                <p-dropdown formControlName="foodType" [options]="foodHorseTypes" optionLabel="name" optionValue="name" placeholder="Comida"></p-dropdown>
               </div>
 
               <div class="form-floating mb-2">

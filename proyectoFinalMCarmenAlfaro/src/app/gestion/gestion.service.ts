@@ -18,4 +18,14 @@ export class GestionService {
   var url = `${this.baseUrl}/User`;
     return this.http.get<any>(url) ;
  }
+
+ public getTypesServicesPrice(){
+  var url = `${this.baseUrl}/Price`;
+    return this.http.get<any>(url) ;
+ }
+
+ public createNewPayment(body:any) {
+  var url = `${this.baseUrl}/Payment`;
+  return this.http.post<any>(url,body) ;
+}
 }

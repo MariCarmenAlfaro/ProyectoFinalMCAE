@@ -29,6 +29,12 @@ export class CaballoComponent implements OnInit {
   form: FormGroup;
   userTypeAdmin: boolean = false;
   userTypeOwner: boolean = false;
+  foodHorseTypes = [
+    { name: 'Hierba' },
+    { name: 'Forraje' },
+    { name: 'Heno' },
+    { name: 'Paja' }
+  ]
 
   ngOnInit(): void {
     this.knowUserType();
@@ -142,7 +148,6 @@ export class CaballoComponent implements OnInit {
   }
 
   getAllHorses() {
-    debugger;
     this.caballosService.getAllHorses().subscribe(
       (response) => {
         this.horses = response;

@@ -12,7 +12,7 @@ import { ServiciosComponent } from './servicios/servicios.component';
 import { HomeComponent } from './home/home.component';
 import {ReactiveFormsModule} from "@angular/forms";
 import { LoginComponent } from './login/login.component';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { PerfilComponent } from './perfil/perfil.component';
 import { CaballoComponent } from './caballo/caballo.component';
 import { ClasesComponent } from './clases/clases.component';
@@ -25,6 +25,9 @@ import { ToastModule } from 'primeng/toast';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { FieldsetModule } from 'primeng/fieldset';
 import { SidebarModule } from 'primeng/sidebar';
+import { DropdownModule } from 'primeng/dropdown';
+import { CheckboxModule } from 'primeng/checkbox';
+
 
 
 
@@ -48,7 +51,6 @@ import { SidebarModule } from 'primeng/sidebar';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-
     AppRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
@@ -59,9 +61,11 @@ import { SidebarModule } from 'primeng/sidebar';
     ToastModule,
     ProgressSpinnerModule,
     FieldsetModule,
-    SidebarModule
+    SidebarModule,
+    DropdownModule,
+    CheckboxModule
   
-    
+
     
   ],
 

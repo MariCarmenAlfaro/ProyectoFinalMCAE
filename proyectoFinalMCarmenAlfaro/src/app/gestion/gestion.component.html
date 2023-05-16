@@ -82,43 +82,126 @@
 
 
 <p-sidebar [(visible)]="showDialog">
-    <p-button  (click)="generatePassword()">Generar contraseña</p-button>
-    <div class="col-12">
-        <form class="row g-3 f  romReserva" [formGroup]="form">
-            <div class="modal-body">
-              <div class="form-floating mb-2">
-                <input type="text" class="form-control" placeholder="Usuario" formControlName="userName">
-                <label for="userName">Usuario</label>
-              </div>
-              <div class="form-floating mb-2">
-                <input type="text" class="form-control" placeholder="Tipo" formControlName="userType">
-                <label for="userType">Tipo</label>
-              </div>
-              <div class="form-floating mb-2">
-                <input type="text" class="form-control" placeholder="Fecha registro" formControlName="registrationDate">
-                <label for="registrationDate">Fecha registro</label>
-              </div>
-              <div class="form-floating mb-2">
-                <input type="text" class="form-control" placeholder="Correo" formControlName="emailAddress">
-                <label for="emailAddress">Correo</label>
-              </div>
-    
-              <div class="form-floating mb-2">
-                <input type="text" class="form-control" placeholder="Contraseña" formControlName="psswdUser">
-                <label for="psswdUser">Contraseña</label>
-              </div>
+    <ng-container *ngIf="showCreateUser">
+        <p-button  (click)="generatePassword()">Generar contraseña</p-button>
+        <div class="col-12">
+            <form class="row g-3 f  romReserva" [formGroup]="form">
+                <div class="modal-body">
+                <div class="form-floating mb-2">
+                    <input type="text" class="form-control" placeholder="Usuario" formControlName="userName">
+                    <label for="userName">Nombre</label>
+                </div>
+               
+                <div class="form-floating mb-2">
+                    <p-dropdown formControlName="userType" [options]="userTypes" optionLabel="name" placeholder="Tipo usuario"></p-dropdown>
+                </div>
+                <div class="form-floating mb-2">
+                    
+                    <input type="date" class="form-control" placeholder="Fecha registro" formControlName="registrationDate">
+                    <label for="registrationDate">Fecha registro</label>
+                </div>
+                <div class="form-floating mb-2">
+                    <input type="text" class="form-control" placeholder="Correo" formControlName="emailAddress">
+                    <label for="emailAddress">Correo</label>
+                </div>
+        
+                <div class="form-floating mb-2">
+                    <input type="password" class="form-control" placeholder="Contraseña" formControlName="psswdUser">
+                    <label for="psswdUser">Contraseña</label>
+                </div>
 
-            </div>
+                </div>
+        
+
+                <div class="modal-footer">
+                <button type="submit" class="btn btn-primary " (click)="this.showDialog = false">Cerrar</button>
+        
+                <button type="submit" class="btn btn-primary guardarLogin" (click)="postNewUser()">Guardar</button>
+        
+                </div>
+            </form>
+        </div>
+    </ng-container>
+
+    <ng-container *ngIf="showAddHorseToUser">
+        <div class="col-12">
+            <p>Crear caballo privado</p>
+            <form class="row g-3 f  romReserva" [formGroup]="formHorseOwner">
+                <div class="modal-body">
+                  <div class="form-floating mb-2">
+                    <input type="text" class="form-control" placeholder="Nombre" formControlName="horseName">
+                    <label for="horseName">Nombre</label>
+                  </div>
+                  <div class="form-floating mb-2">
+                    <input type="text" class="form-control" placeholder="Barrera" formControlName="barnNum">
+                    <label for="barnNum">Barrera</label>
+                  </div>
+                  <div class="form-floating mb-2">
+                    <input type="text" class="form-control" placeholder="Camara" formControlName="cameraUrl">
+                    <label for="cameraUrl">Camara</label>
+                  </div>
+                  <div class="form-floating mb-2">
+                    <p-dropdown formControlName="foodType" [options]="foodHorseTypes" optionLabel="name" optionValue="name" placeholder="Comida"></p-dropdown>
+                  </div>
+    
+                  <div class="form-floating mb-2">
+                    <input type="text" class="form-control" placeholder="Observaciones" formControlName="observation">
+                    <label for="observation">Observaciones</label>
+                  </div>
+                     <div class="form-floating mb-2">
+                        <input type="date" class="form-control"  placeholder="Fecha registro"
+                          formControlName="registrationDate" >
+                        <label for="registrationDate">Fecha registro</label>
+                      </div>
+
+                </div>
     
 
-            <div class="modal-footer">
-              <button type="submit" class="btn btn-primary " (click)="this.showDialog = false">Cerrar</button>
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary guardarLogin" (click)="savePrivateHorse()">Guardar</button>
     
-              <button type="submit" class="btn btn-primary guardarLogin" (click)="postNewUser()">Guardar</button>
-    
-            </div>
-          </form>
-    </div>
+                </div>
+              </form>
+        </div>
+    </ng-container>
+
+    <ng-container *ngIf="showPaymentForm">
+      
+        <div class="col-12">
+            <p>Nuevo pago</p>
+            <form class="row g-3 f  romReserva" [formGroup]="paymentForm">
+                <div class="modal-body">
+                <div class="form-floating mb-2">
+                    <input type="date" class="form-control" placeholder="Fecha de pago" formControlName="payDate">
+                    <label for="payDate">Fecha de pago</label>
+                </div>
+               
+                <div class="form-floating mb-2">
+                    <p-dropdown formControlName="priceId" [options]="typeServices" optionLabel="typeService" optionValue="priceId" placeholder="Tipo servicio"></p-dropdown>
+                </div>
+                <div class="form-floating mb-2">
+                    <p-dropdown formControlName="payMethod" [options]="payMethods" optionLabel="name" optionValue="name" placeholder="Metodo de pago"></p-dropdown>
+                    
+                </div>
+                <div class="form-floating mb-2">
+                    <p-checkbox formControlName="isPaid" value="Pagado" inputId="isPaid" [binary]="true"></p-checkbox>
+                    <label for="isPaid">Pagado</label>
+                </div>
+        
+               
+
+                </div>
+        
+
+                <div class="modal-footer">
+               
+        
+                <button type="submit" class="btn btn-primary guardarLogin" (click)="savePayment()">Guardar</button>
+        
+                </div>
+            </form>
+        </div>
+    </ng-container>
     <!-- <p *ngIf="messageCreation">USUARIO REGISTRADO</p>
     <p *ngIf="!messageCreation">Oops, ha habido algun error en el registro.</p>     -->
     </p-sidebar>
