@@ -6,8 +6,9 @@ import {
   ConfirmEventType,
 } from 'primeng/api';
 
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+
 import { UserProfile } from '../entities/userProfile/userProfile.interface';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-caballo',

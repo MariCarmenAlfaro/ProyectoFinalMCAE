@@ -2,6 +2,29 @@
 @import "primeng/resources/primeng.css";
 @import "primeicons/primeicons.css";
 
+// botón circulo
+
+.p-button.button-circle {
+    
+    background-color: #fad3e7;
+    color: #ec4899;
+    border-radius: 25%;
+    border-color:#ec4899;
+    width: 2rem;
+    height: 2rem;
+    &:enabled:not(:focus):hover,
+    &:focus {
+        border-color:#ec4899;
+        background-color: #ec4899;
+        color:white
+    }
+
+    span {
+      font-size: 1rem;
+    }
+
+    
+  }
 
 
 /* You can add global styles to this file, and also import other style files */

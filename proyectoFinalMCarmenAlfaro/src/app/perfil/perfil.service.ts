@@ -23,4 +23,5 @@ export class PerfilService {
     var url = this.baseUrl + `/priceForServiceUser/${id}`;
     return this.http.get<any>(url);
   }
+  
 }

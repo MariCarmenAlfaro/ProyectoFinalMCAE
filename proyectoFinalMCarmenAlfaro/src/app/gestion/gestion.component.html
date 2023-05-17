@@ -5,8 +5,6 @@
 </div>
 
 
-
-
 <ng-container *ngIf="users">
     <p-table
     #dt1
@@ -26,30 +24,35 @@
     </ng-template>
     <ng-template pTemplate="header">
         <tr>
-            <th style="min-width:15rem">
+            <th>
                 <div class="flex align-items-center">
                     Nombre
                     <p-columnFilter type="text" field="userName" display="menu"></p-columnFilter>
                 </div>
             </th>
-            <th style="min-width:15rem">
+            <th>
                 <div class="flex align-items-center">
                     Correo electronico
                     <p-columnFilter type="text" field="emailAddress" display="menu"></p-columnFilter>
                 </div>
             </th>
-            <th style="min-width:15rem">
+            <th>
                 <div class="flex align-items-center">
                     Tipo
                     <p-columnFilter type="text" field="userType" display="menu"></p-columnFilter>
                 </div>
             </th>
-    
-            <th style="width: 3rem">
+            <th>
                 <div class="flex align-items-center">
-                     EDIT
+                     Caballos
                 </div>
             </th>
+            <th>
+                <div class="flex align-items-center">
+                     Acciones
+                </div>
+            </th>
+     
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-user>
@@ -58,17 +61,53 @@
                 {{ user.userName }}
             </td>
             <td>
-        
                 <span class="ml-1 vertical-align-middle">{{ user.emailAddress }}</span>
             </td>
             <td>
-
                 <span class="ml-1 vertical-align-middle">{{ user.userType }}</span>
             </td>
             <td>
-           Edit
+               
+                <ng-container *ngIf="user.userType === 'Dueño'">
+                    <button
+                    class="button-circle "
+                    icon="pi pi-eye"
+                    (click)="showHorsesDisplay(user.userId)"
+                    pButton
+                    pTooltip="Ver caballos"
+                    tooltipPosition="top"
+                  ></button>
+                </ng-container>
             </td>
-     
+            <td>
+                <div class="row">
+                   <div class="col-6"> 
+                    <button
+                    class="button-circle "
+                    icon="pi pi-info"
+                    (click)="showInfoUser(user)"
+                    pButton
+                    pTooltip="+ info"
+                    tooltipPosition="top"
+                  ></button>
+                </div>
+                <div class="col-6">
+                    <button
+                    class="button-circle "
+                    icon="pi pi-trash"
+                    (click)=deleteUserDialog(user.userId)
+                    pButton
+                    pTooltip="Borrar"
+                    tooltipPosition="top"
+                  ></button>
+                </div> 
+                </div>
+                
+               
+            
+                
+                
+            </td>
           
         </tr>
     </ng-template>
@@ -80,7 +119,55 @@
 </p-table>
 </ng-container>
 
+<p-sidebar [(visible)]="showDialogUser">
+    <div class="col-12" *ngIf="currentUser && showInfoUserDiv">
+        <p>{{currentUser.userId}}</p>
+        <p>{{currentUser.userName}}</p>
+        <p>{{currentUser.userType}}</p>
+        <p>{{currentUser.emailAddress}}</p>
+        <p>{{currentUser.registrationDate}}</p>
 
+        <p-button label="Editar" (click)="mostrarEditarUsuario(currentUser)"></p-button>
+    </div>
+
+    <div class="col-12" *ngIf="showEditUser">
+        <p>Editar usuario</p>
+        <form class="row g-3 f  romReserva" [formGroup]="updateUserForm">
+            <div class="modal-body">
+            <div class="form-floating mb-2">
+                <input type="text" class="form-control" placeholder="Usuario" formControlName="userName">
+                <label for="userName">Nombre</label>
+            </div>
+           
+            <div class="form-floating mb-2">
+                <p-dropdown formControlName="userType" [options]="userTypes" optionLabel="name" placeholder="Tipo usuario"></p-dropdown>
+            </div>
+            <div class="form-floating mb-2">
+                
+                <input type="date" class="form-control" placeholder="Fecha registro" formControlName="registrationDate">
+                <label for="registrationDate">Fecha registro</label>
+            </div>
+            <div class="form-floating mb-2">
+                <input type="text" class="form-control" placeholder="Correo" formControlName="emailAddress">
+                <label for="emailAddress">Correo</label>
+            </div>
+    
+            
+
+            </div>
+    
+
+            <div class="modal-footer">
+            <button type="submit" class="btn btn-primary " 
+            (click)="this.showDialogUser = false">Cancelar</button>
+    
+            <button type="submit" class="btn btn-primary guardarLogin" (click)="updateUser()">Guardar</button>
+    
+            </div>
+        </form>
+    </div>
+
+</p-sidebar>
 <p-sidebar [(visible)]="showDialog">
     <ng-container *ngIf="showCreateUser">
         <p-button  (click)="generatePassword()">Generar contraseña</p-button>
@@ -156,7 +243,6 @@
 
                 </div>
     
-
                 <div class="modal-footer">
                   <button type="submit" class="btn btn-primary guardarLogin" (click)="savePrivateHorse()">Guardar</button>
     
@@ -205,3 +291,73 @@
     <!-- <p *ngIf="messageCreation">USUARIO REGISTRADO</p>
     <p *ngIf="!messageCreation">Oops, ha habido algun error en el registro.</p>     -->
     </p-sidebar>
+
+    <p-sidebar [(visible)]="horsesDisplay">
+        <div class="col-12">
+            <button
+                    class="button-circle "
+                    icon="pi pi-plus"
+                    (click)="addHorseByUser()"
+                    pButton
+                    pTooltip="Añadir caballo"
+                    tooltipPosition="top"
+                  ></button>
+            <ng-container *ngIf="horsesUser.length > 0">
+               <h1>Caballos</h1> 
+               <div class="col-12 m-1" *ngFor="let horse of horsesUser">
+                <p-panel header="{{horse.horseName}} ({{horse.horseId}})">
+                    <p>{{horse.foodType}}</p>
+                <p>{{horse.cameraUrl}}</p>
+                <p>{{horse.observation}}</p>
+                <p>{{horse.registrationDate}}</p>
+                </p-panel>
+               
+               
+              
+
+               </div>
+            </ng-container>
+            <span *ngIf="horsesUser.length <= 0">
+                Este usuario no tiene caballos
+            </span>
+        </div>
+    </p-sidebar>
+
+    <p-button (click)="peticiones()">
+        Peticiones
+    </p-button>
+    <p-button (click)="reservas()">
+        Reservas
+    </p-button>
+<ng-container *ngIf="peticion">
+    <ng-container *ngFor="let peticion of this.suggestions" >
+    <p-fieldset legend="{{peticion.commentType}}- {{peticion.userName}}" class="containerPeticion">
+       
+            <p>Nombre: {{peticion.userName}}  --  Email: {{peticion.emailUser}}</p>
+            <p>Petición: {{peticion.peticion}}</p>
+    </p-fieldset>
+</ng-container>
+</ng-container>
+
+<ng-container *ngIf="reserva">
+
+
+<ng-container *ngFor="let reserv of this.reservasRs" >
+    <p-fieldset legend="{{reserv.excursionType}} -- {{reserv.reservationName}}" class="containerPeticion">
+       
+            <p>Nombre: {{reserv.reservationName}}  --  Email: {{reserv.emailAddress}}</p>
+            <p>Fecha: {{reserv.dateExcursion}} -- {{reserv.numPeople}} persona/s</p>
+    </p-fieldset>
+</ng-container>
+</ng-container>
+
+<p-toast></p-toast>
+    <p-confirmDialog #cd [style]="{width:'50vw'}">
+      <ng-template pTemplate="header">
+        <h3>¡Cuidado!</h3>
+      </ng-template>
+      <ng-template pTemplate="footer">
+        <button type="button" pButton icon="pi pi-times" label="No" (click)="cd.reject()"></button>
+        <button type="button" pButton icon="pi pi-check" label="Si" (click)="cd.accept()"></button>
+      </ng-template>
+    </p-confirmDialog>

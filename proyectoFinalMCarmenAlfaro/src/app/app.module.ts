@@ -27,6 +27,8 @@ import { FieldsetModule } from 'primeng/fieldset';
 import { SidebarModule } from 'primeng/sidebar';
 import { DropdownModule } from 'primeng/dropdown';
 import { CheckboxModule } from 'primeng/checkbox';
+import { PanelModule } from 'primeng/panel';
+
 
 
 
@@ -63,7 +65,8 @@ import { CheckboxModule } from 'primeng/checkbox';
     FieldsetModule,
     SidebarModule,
     DropdownModule,
-    CheckboxModule
+    CheckboxModule,
+    PanelModule
   
 
     

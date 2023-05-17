@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -28,4 +27,30 @@ export class GestionService {
   var url = `${this.baseUrl}/Payment`;
   return this.http.post<any>(url,body) ;
 }
+public deleteUser(id){
+var url = `${this.baseUrl}/User/${id}`;
+return this.http.delete<any>(url) ;
+}
+public readSuggestions(){
+  var url = `${this.baseUrl}/Suggestion`;
+    return this.http.get<any>(url) ;
+ }
+ public readReservas(){
+  var url = `${this.baseUrl}/ReservationExc`;
+    return this.http.get<any>(url) ;
+ }
+
+ public updateUser(user){
+  var url= this.baseUrl+`/User/${user.userId}`;
+  return this.http.put<boolean>(
+    url,user
+  )
+}
+
+public getHorsesByUserId(userId){
+  var url = `${this.baseUrl}/Horse/owner/${userId}`;
+    return this.http.get<any>(url) ;
+ }
+
+
 }
