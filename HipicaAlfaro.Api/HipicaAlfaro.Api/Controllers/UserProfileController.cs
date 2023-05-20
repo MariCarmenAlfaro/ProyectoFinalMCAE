@@ -46,27 +46,27 @@ namespace HipicaAlfaro.Api.Controllers
         [HttpPost]
         public IActionResult Create(UserProfile userProfile)
         {
-            var contra = userProfile.PsswdUser;
+            var contrasenya = userProfile.PsswdUser;
             SHA256 sha256 = SHA256.Create();
-            byte[] hash = sha256.ComputeHash(Encoding.UTF8.GetBytes(contra));
-            string hexHash = BitConverter.ToString(hash).Replace("-", "");
-            int result = 0;
+            byte[] hash = sha256.ComputeHash(Encoding.UTF8.GetBytes(contrasenya));
+            var hexHash = BitConverter.ToString(hash).Replace("-", "");
+            var insertedId = 0;
             using (var db = new MySqlConnection(_connection))
             {
                 var sql = @"INSERT INTO UserProfile (userName, userType, registrationDate, emailAddress, psswdUser)
-                             VALUES (@UserName, @UserType, @RegistrationDate, @EmailAddress, @PsswdUser);";
-
-                result = db.Execute(sql, new
+                             VALUES (@UserName, @UserType, @RegistrationDate, @EmailAddress, @PsswdUser);
+                                SELECT LAST_INSERT_ID();";
+                insertedId = db.Query<int>(sql, new
                 {
                     UserName = userProfile.UserName,
                     UserType = userProfile.UserType,
                     RegistrationDate = userProfile.RegistrationDate,
                     EmailAddress = userProfile.EmailAddress,
                     PsswdUser = hexHash
-                });
-
+                }).Single();  // Obtiene el ID insertado
             }
-            return Ok(result > 0);
+
+            return Ok(new { InsertedId = insertedId });
         }
 
         [HttpPut("{id}")]
@@ -145,7 +145,7 @@ namespace HipicaAlfaro.Api.Controllers
         }
 
 
-        [HttpGet("/userExtendedClasses/{id}")]
+        [HttpGet("userExtendedClasses/{id}")]
         public ActionResult<UserExtended> ReadByUserIdExtended(int id)
         {
             using (var conexion = new MySqlConnection(_connection))
@@ -160,7 +160,7 @@ namespace HipicaAlfaro.Api.Controllers
                 return resultado;
             }
         }
-        [HttpGet("/priceForServiceUser/{id}")]
+        [HttpGet("priceForServiceUser/{id}")]
         public ActionResult<PriceForService> ReadPriceForServiceByUserId(int id)
         {
             using (var conexion = new MySqlConnection(_connection))

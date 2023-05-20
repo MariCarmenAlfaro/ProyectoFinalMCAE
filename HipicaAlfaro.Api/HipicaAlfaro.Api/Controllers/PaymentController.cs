@@ -19,9 +19,21 @@ namespace HipicaAlfaro.Api.Controllers
             IEnumerable<Payment> list = null;
             using (var db = new MySqlConnection(_connection))
             {
-                var sql = "SELECT PayId, UserId, PayDate, PriceId, PayMethod FROM payments;";
-
+                var sql = "SELECT PayId, UserId, PayDate, PriceId, PayMethod, IsPaid FROM payments;";
+ 
                 list = db.Query<Payment>(sql);
+            }
+            return Ok(list);
+        }
+        [HttpGet("precioPagoUser")]
+        public IActionResult ReadAllWithUserAndPrice()
+        {
+            IEnumerable<PayPriceUser> list = null;
+            using (var db = new MySqlConnection(_connection))
+            {
+                var sql = "Select payId, payments.userId, payDate, payMethod, isPaid, prices.price, prices. typeService, userprofile.userName, userprofile.emailAddress from payments inner join prices on payments.priceId =  prices.priceId inner join userprofile on payments.userId= userprofile.userId;";
+
+                list = db.Query<PayPriceUser>(sql);
             }
             return Ok(list);
         }
@@ -32,7 +44,7 @@ namespace HipicaAlfaro.Api.Controllers
             Payment payment = null;
             using (var db = new MySqlConnection(_connection))
             {
-                var sql = "SELECT PayId, UserId, PayDate, PriceId, PayMethod FROM payments WHERE PayId = @PayId;";
+                var sql = "SELECT PayId, UserId, PayDate, PriceId, PayMethod, IsPaid FROM payments WHERE PayId = @PayId;";
                 payment = db.QueryFirstOrDefault<Payment>(sql, new { PayId = id });
             }
             if (payment == null)
@@ -48,7 +60,7 @@ namespace HipicaAlfaro.Api.Controllers
             int result = 0;
             using (var db = new MySqlConnection(_connection))
             {
-                var sql = "INSERT INTO payments (UserId, PayDate, PriceId, PayMethod) VALUES (@UserId, @PayDate, @PriceId, @PayMethod);";
+                var sql = "INSERT INTO payments (UserId, PayDate, PriceId, PayMethod, IsPaid) VALUES (@UserId, @PayDate, @PriceId, @PayMethod, @IsPaid);";
 
                 result = db.Execute(sql, payment);
             }
@@ -68,7 +80,7 @@ namespace HipicaAlfaro.Api.Controllers
 
             using (var db = new MySqlConnection(_connection))
             {
-                var sql = "UPDATE payments SET UserId = @UserId, PayDate = @PayDate, PriceId = @PriceId, PayMethod = @PayMethod WHERE PayId = @PayId;";
+                var sql = "UPDATE payments SET UserId = @UserId, PayDate = @PayDate, PriceId = @PriceId, PayMethod = @PayMethod, IsPaid = @IsPaid WHERE PayId = @PayId;";
                 var rowsUpdate = db.Execute(sql, payment);
                 return rowsUpdate > 0;
             }
