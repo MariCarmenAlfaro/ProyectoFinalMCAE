@@ -1,0 +1,36 @@
+<div class="contenedorReservas">
+<p-button (click)="peticiones()" class="botonReservas">
+    Peticiones
+</p-button>
+<p-button (click)="reservas()" class="botonReservas">
+    Reservas
+</p-button>
+<ng-container *ngIf="peticion">
+    <ng-container *ngFor="let peticion of this.suggestions">
+        <div class="reserva">
+        <div class="containerPeticion">
+            
+            <p-fieldset legend="{{peticion.commentType}}- {{peticion.userName}}">
+
+                <p>Nombre: {{peticion.userName}} -- Email: {{peticion.emailUser}}</p>
+                <p>Petición: {{peticion.peticion}}</p>
+            </p-fieldset>
+            </div>
+        </div>
+    </ng-container>
+</ng-container>
+
+<ng-container *ngIf="reserva">
+
+
+    <ng-container *ngFor="let reserv of this.reservasRs">
+        <div class="containerPeticion">
+            <p-fieldset legend="{{reserv.excursionType}} -- {{reserv.reservationName}}">
+
+                <p>Nombre: {{reserv.reservationName}} -- Email: {{reserv.emailAddress}}</p>
+                <p>Fecha: {{reserv.dateExcursion}} -- {{reserv.numPeople}} persona/s</p>
+            </p-fieldset>
+        </div>
+    </ng-container>
+</ng-container>
+</div>

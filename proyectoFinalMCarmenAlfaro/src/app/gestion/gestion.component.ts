@@ -31,10 +31,6 @@ export class GestionComponent implements OnInit {
   typeServices = [];
   currentUserId;
   currentUser;
-  suggestions:any;
-  peticion=false;
-  reserva=false;
-  reservasRs:any;
   showEditUser = false
   showInfoUserDiv = false
   horsesDisplay = false
@@ -63,15 +59,8 @@ export class GestionComponent implements OnInit {
 
   ngOnInit(): void {
     this.readAll();
-    this.readSuggestion()
-    this.readReserva()
   }
-peticiones(){
-  this.peticion=true;
-}
-reservas(){
-  this.reserva=true;
-}
+
   generatePassword() {
     const chars =
       'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -90,22 +79,7 @@ reservas(){
       this.users = rs;
     });
   }
-readSuggestion(){
-  this.gestionService.readSuggestions().subscribe(
-    rs=>{
-    this.suggestions= rs
-  console.log(rs)
-    }
-  )  
-}
-readReserva(){
-  this.gestionService.readReservas().subscribe(
-    rs=>{
-    this.reservasRs= rs
-  console.log(rs)
-    }
-  )
-}
+
 
   clear(table) {
     table.clear();
@@ -183,6 +157,10 @@ readReserva(){
     );
   }
 
+  addPayment(userId){
+    this.currentUserId = userId
+    this.createPaymentForm()
+  }
   createPaymentForm() {
     // obtener tipos de pago
     this.gestionService.getTypesServicesPrice().subscribe(
@@ -199,6 +177,7 @@ readReserva(){
               payMethod: new FormControl(''),
               isPaid: new FormControl(false),
             });
+            this.showDialog = true
             this.showCreateUser = false;
             this.showAddHorseToUser = false;
             this.showPaymentForm = true;
@@ -348,5 +327,9 @@ s
       this.correctUserCreated('Dueño')
      this.showDialog = true
     }
+  }
+
+  showClass(userId){
+    alert("VER CLASES")
   }
 }

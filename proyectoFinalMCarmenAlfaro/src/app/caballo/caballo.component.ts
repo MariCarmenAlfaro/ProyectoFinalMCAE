@@ -9,6 +9,7 @@ import {
 
 import { UserProfile } from '../entities/userProfile/userProfile.interface';
 import { FormControl, FormGroup } from '@angular/forms';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-caballo',
@@ -30,6 +31,7 @@ export class CaballoComponent implements OnInit {
   form: FormGroup;
   userTypeAdmin: boolean = false;
   userTypeOwner: boolean = false;
+  ownerName:any;
   foodHorseTypes = [
     { name: 'Hierba' },
     { name: 'Forraje' },
@@ -59,6 +61,22 @@ export class CaballoComponent implements OnInit {
         console.log(this.horses);
       });
   }
+
+
+
+
+
+  // readOwner(){
+
+  //     this.caballosService.getOwnerById(horse.ownerId).subscribe(
+  //       rs =>{
+  //         this.ownerName=rs
+  //       }
+  //     )
+      
+  //   });
+    
+  // }
   updateHorse() {
     if (this.createNewHorse) {
       this.form.controls.horseType.setValue('Clase');
@@ -148,18 +166,49 @@ export class CaballoComponent implements OnInit {
     console.log(this.form);
   }
 
+  // getAllHorses() {
+  //   this.caballosService.getAllHorses().subscribe(
+  //     (response) => {
+  //       this.horses = response;
+  //       console.log(response);
+  //     },
+  //     (error) => {
+  //       console.error(error);
+  //       //this.errorMessage=true;
+  //     }
+  //   );
+  // }
   getAllHorses() {
     this.caballosService.getAllHorses().subscribe(
       (response) => {
         this.horses = response;
         console.log(response);
-      },
-      (error) => {
-        console.error(error);
-        //this.errorMessage=true;
+  
+        const ownerRequests = [];
+  
+        for (let horse of this.horses) {
+          if (horse.ownerId) {
+            ownerRequests.push(this.caballosService.getOwnerById(horse.ownerId));
+          } else {
+            horse.ownerName = "Sin dueño";
+          }
+        }
+  
+        if (ownerRequests.length > 0) {
+          forkJoin(ownerRequests).subscribe((ownerResponses) => {
+            for (let i = 0; i < ownerResponses.length; i++) {
+              this.horses[i].ownerName = ownerResponses[i];
+            }
+  
+            console.log(this.horses);
+          });
+        } else {
+          console.log(this.horses);
+        }
       }
     );
   }
+
   selectHorse(horse) {
     this.currentHorse = horse;
     console.log(this.currentHorse);

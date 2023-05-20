@@ -1,0 +1,131 @@
+
+
+<ng-container *ngIf="this.nombresPagos.length > 0">
+    <div class="col-12">
+        <p-table
+    #dt1
+    [value]="nombresPagos"
+    dataKey="id"
+    [rows]="10"
+    [showCurrentPageReport]="true"
+    [rowsPerPageOptions]="[10, 25, 50]"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    [globalFilterFields]="['userId', 'payDate', 'priceId']"
+>
+    <ng-template pTemplate="caption">
+        <div class="flex">
+            <button pButton label="Clear" class="p-button-outlined" icon="pi pi-filter-slash" (click)="clear(dt1)"></button>
+           
+        </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+        <tr>
+            <th>
+                <div class="flex align-items-center">
+                    Usuario
+                    <p-columnFilter type="text" field="userId" display="menu"></p-columnFilter>
+                </div>
+            </th>
+            <th>
+                <div class="flex align-items-center">
+                    Fecha
+                    <p-columnFilter type="text" field="payDate" display="menu"></p-columnFilter>
+                </div>
+            </th>
+            <th>
+                <div class="flex align-items-center">
+                    Precio
+                    <p-columnFilter type="text" field="priceId" display="menu"></p-columnFilter>
+                </div>
+            </th>
+            <th>
+                <div class="flex align-items-center">
+                    Método
+                </div>
+            </th>
+            <th>
+                <div class="flex align-items-center">
+                    Pagado
+                </div>
+            </th>
+            <th>
+                <div class="flex align-items-center">
+                    Action
+                </div>
+            </th>
+     
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-pay>
+        <tr>
+            <td>
+                {{ pay.userName }}
+            </td>
+            <td>
+                <span class="ml-1 vertical-align-middle">{{ pay.payDate }}</span>
+            </td>
+            <td>
+                <span class="ml-1 vertical-align-middle">{{ pay.typeService }}</span>
+            </td>
+            <td>
+                <span class="ml-1 vertical-align-middle">{{ pay.payMethod }}</span>
+            </td>
+            <td>
+                <span class="ml-1 vertical-align-middle">{{ pay.isPaid }}</span>
+            </td>
+            
+            <td>
+                
+                <p-button label="Editar" (click)="createPaymentForm(pay)"></p-button>
+                   
+            </td>
+          
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+        <tr>
+            <td colspan="7">No hay pagos.</td>
+        </tr>
+    </ng-template>
+</p-table>
+    </div>
+</ng-container>
+<ng-container *ngIf="this.nombresPagos.length <= 0">
+    <div class="col-12">
+        <p>No hay pagos</p>
+    </div>
+</ng-container>
+
+
+
+<p-sidebar [(visible)]="showPaymentForm">
+    <div class="col-12">
+        <p>Editar pago</p>
+        <form class="row g-3 f  romReserva" [formGroup]="paymentForm">
+            <div class="modal-body">
+            <div class="form-floating mb-2">
+                <input type="date" class="form-control" placeholder="Fecha de pago" formControlName="payDate">
+                <label for="payDate">Fecha de pago</label>
+            </div>
+           
+            <div class="form-floating mb-2">
+                <p-dropdown formControlName="priceId" [options]="typeServices" optionLabel="typeService" optionValue="priceId" placeholder="Tipo servicio"></p-dropdown>
+            </div>
+            <div class="form-floating mb-2">
+                <p-dropdown formControlName="payMethod" [options]="payMethods" optionLabel="name" optionValue="name" placeholder="Metodo de pago"></p-dropdown>
+                
+            </div>
+            <div class="form-floating mb-2">
+                <p-checkbox formControlName="isPaid" value="Pagado" inputId="isPaid" [binary]="true"></p-checkbox>
+                <label for="isPaid">Pagado</label>
+            </div>
+            </div>
+    
+
+            <div class="modal-footer">
+            <button type="submit" class="btn btn-primary" (click)="savePayment()">Guardar</button>
+    
+            </div>
+        </form>
+    </div>
+</p-sidebar>

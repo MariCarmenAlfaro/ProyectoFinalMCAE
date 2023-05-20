@@ -28,6 +28,9 @@ import { SidebarModule } from 'primeng/sidebar';
 import { DropdownModule } from 'primeng/dropdown';
 import { CheckboxModule } from 'primeng/checkbox';
 import { PanelModule } from 'primeng/panel';
+import { PagosComponent } from './pagos/pagos.component';
+import { SugerenciasReservasComponent } from './sugerencias-reservas/sugerencias-reservas.component';
+import { PreciosComponent } from './precios/precios.component';
 
 
 
@@ -48,7 +51,10 @@ import { PanelModule } from 'primeng/panel';
     CaballoComponent,
     ClasesComponent,
     PrivadosComponent,
-    GestionComponent
+    GestionComponent,
+    PagosComponent,
+    SugerenciasReservasComponent,
+    PreciosComponent
   ],
   imports: [
     BrowserModule,

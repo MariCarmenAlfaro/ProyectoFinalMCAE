@@ -37,52 +37,33 @@
               <p>El precio mensual es de  €</p>
           </span>
           <table>
-            <tr>
-              <th><i class="bi bi-suit-heart-fill"></i></th>
-              <th>Lunes</th>
-              <th>Martes</th>
-              <th>Miércoles</th>
-              <th>Jueves</th>
-              <th>Viernes</th>
-              <th>Sábado</th>
-            </tr>
-            <tr>
-              <th>10h</th>
-              <td class="bajo">Bajo</td>
-              <td class="medio">Medio</td>
-              <td class="alto">Alto</td>
-              <td class="bajo">Bajo</td>
-              <td class="medio">Medio</td>
-              <td class="alto">Alto</td>
-            </tr>
-            <tr>
-              <th>12h</th>
-              <td class="alto">Alto</td>
-              <td class="bajo">Bajo</td>
-              <td class="medio">Medio</td>
-              <td class="alto">Alto</td>
-              <td class="bajo">Bajo</td>
-              <td class="bajo">Bajo</td>
-            </tr>
-            <tr>
-              <th>16h</th>
-              <td class="medio">Medio</td>
-              <td class="alto">Alto</td>
-              <td class="bajo">Bajo</td>
-              <td class="medio">Medio</td>
-              <td class="alto">Alto</td>
-    
-            </tr>
-            <tr>
-              <th>18h</th>
-              <td class="bajo">Bajo</td>
-              <td class="medio">Medio</td>
-              <td class="alto">Alto</td>
-              <td class="bajo">Bajo</td>
-              <td class="medio">Medio</td>
-       
-            </tr>
-          </table>
+            <thead>
+                <tr>
+                  <th><i class="bi bi-suit-heart-fill"></i></th>
+                    <th>Lunes</th>
+                    <th>Martes</th>
+                    <th>Miércoles</th>
+                    <th>Jueves</th>
+                    <th>Viernes</th>
+                    <th>Sábado</th>
+                </tr>
+            </thead>
+            <tbody>
+                <ng-container *ngFor="let clase of this.clases">
+                
+                    <tr>
+                        <td>{{ clase.classHour }}h</td>
+                        <td>{{ clase.lunes }}</td>
+                        <td>{{ clase.martes }}</td>
+                        <td>{{ clase.miercoles }}</td>
+                        <td>{{ clase.jueves }}</td>
+                        <td>{{ clase.viernes }}</td>
+                        <td>{{ clase.sabado }}</td>
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
+
         </div>
       </div>
     </div>

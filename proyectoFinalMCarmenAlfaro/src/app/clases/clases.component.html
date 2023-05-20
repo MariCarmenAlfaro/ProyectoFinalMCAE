@@ -1,1 +1,102 @@
-<p>clases works!</p>
+<div class="clas">
+    <p-table #dt1 [value]="clases" dataKey="id" [rows]="10" [showCurrentPageReport]="true"
+        [rowsPerPageOptions]="[10, 25, 50]" [globalFilterFields]="['classDay', 'classHour', 'classLevel']">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>
+                    <div class="flex align-items-center">
+                <th><i class="bi bi-suit-heart-fill"></i></th>
+</div>
+</th>
+<th>
+    <div class="flex align-items-center">
+        Lunes
+
+    </div>
+</th>
+<th>
+    <div class="flex align-items-center">
+        Martes
+
+
+    </div>
+</th>
+<th>
+    <div class="flex align-items-center">
+        Miércoles
+
+    </div>
+</th>
+<th>
+    <div class="flex align-items-center">
+        Jueves
+
+    </div>
+</th>
+<th>
+    <div class="flex align-items-center">
+        Viernes
+
+    </div>
+</th>
+<th>
+    <div class="flex align-items-center">
+        Sábado
+
+    </div>
+</th>
+
+</tr>
+</ng-template>
+
+<ng-template pTemplate="body" let-clases>
+    <tr>
+        <td>
+            {{ clases.classHour }}h
+        </td>
+       
+        <td *ngIf="clases.lunes !== null" class="clases">
+           <a  (click)="saberClaseLunes(clases.classHour)">  {{ clases.lunes }}</a>
+        </td>
+        <td *ngIf="clases.martes !== null" class="clases">
+            <a  (click)="saberClaseMartes(clases.classHour)"> {{ clases.martes }}</a>
+        </td>
+        <td *ngIf="clases.miercoles !== null" class="clases">
+            <a  (click)="saberClaseMiercoles(clases.classHour)">{{ clases.miercoles }}</a>
+
+        </td>
+        <td *ngIf="clases.jueves !== null" class="clases">
+            <a  (click)="saberClaseJueves(clases.classHour)">{{ clases.jueves }}</a>
+      
+        </td>
+        <td *ngIf="clases.viernes !== null" class="clases">
+            <a  (click)="saberClaseViernes(clases.classHour)">{{ clases.viernes }}</a>
+        
+        </td>
+        <td *ngIf="clases.sabado !== null" class="clases">
+            <a  (click)="saberClaseSabado(clases.classHour)">{{ clases.sabado }}</a>
+         </td>
+
+
+    </tr>
+</ng-template>
+<ng-template pTemplate="emptymessage">
+    <tr>
+        <td colspan="7">No customers found.</td>
+    </tr>
+</ng-template>
+</p-table>
+</div>
+
+<p-sidebar [(visible)]="showDialog">
+    <strong>Usuarios de la clase: </strong> <br>
+    <hr>
+    <ng-container *ngFor="let user of this.usuarios">
+        <p class="alumnos">
+            <i class="fa-regular fa-heart"></i> {{user.userName}}
+        </p>
+    </ng-container>
+    <ng-container *ngIf="this.noUsers">
+            <p class="alumnos">Oh vaya! Parece que aún no hay alumnos hoy...</p>
+    </ng-container>
+</p-sidebar>

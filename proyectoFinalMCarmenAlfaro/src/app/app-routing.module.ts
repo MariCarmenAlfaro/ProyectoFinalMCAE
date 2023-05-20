@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+
 import {ContactComponent} from "./contact/contact.component";
 import {MenuBarComponent} from "./menu-bar/menu-bar.component";
 import {QuienesSomosComponent} from "./quienes-somos/quienes-somos.component";
@@ -11,6 +11,10 @@ import { ClasesComponent } from './clases/clases.component';
 import { PrivadosComponent } from './privados/privados.component';
 import { GestionComponent } from './gestion/gestion.component';
 import { CaballoComponent } from './caballo/caballo.component';
+import { PagosComponent } from './pagos/pagos.component';
+import { RouterModule, Routes } from '@angular/router';
+import { SugerenciasReservasComponent } from './sugerencias-reservas/sugerencias-reservas.component';
+import { PreciosComponent } from './precios/precios.component';
 
 
 const routes: Routes = [
@@ -25,8 +29,11 @@ const routes: Routes = [
   { path: 'clases', component: ClasesComponent },
   { path: 'privados', component: PrivadosComponent }, 
    { path: 'gestion', component: GestionComponent },
-   { path: 'caballos', component: CaballoComponent }
-
+   { path: 'caballos', component: CaballoComponent },
+   { path: 'pagos', component: PagosComponent },
+   { path: 'precios', component: PreciosComponent },
+   { path: 'sugerencias-reservas', component: SugerenciasReservasComponent },
+   { path: 'clases', component: ClasesComponent },
 ];
 
 @NgModule({

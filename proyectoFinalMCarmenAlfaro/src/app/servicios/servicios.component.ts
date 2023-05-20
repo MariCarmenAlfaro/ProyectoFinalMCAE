@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ReservationExcService } from './servicios.service';
 import { ReservationExc } from '../entities/reservationExc.interface';
+import { ClasesService } from '../clases/clases.service';
 
 @Component({
   selector: 'app-servicios',
@@ -11,7 +12,7 @@ import { ReservationExc } from '../entities/reservationExc.interface';
 export class ServiciosComponent implements OnInit {
   respuestaOk: boolean;
   mnjConfirm:boolean=false;
-
+clases:any=[];
   excursionForm = new FormGroup({
     name: new FormControl('', Validators.required),
     email: new FormControl('', Validators.required),
@@ -19,11 +20,14 @@ export class ServiciosComponent implements OnInit {
     date: new FormControl('', Validators.required),
     type: new FormControl('', Validators.required),
   });
-  constructor(public reservationService: ReservationExcService) {}
+  constructor(public reservationService: ReservationExcService, public clasesService: ClasesService) {}
 
   ngOnInit(): void {
     
-   
+    this.clasesService.getAllClassesOrderBy().subscribe(rs=>{
+      this.clases=rs;
+      console.log(rs)
+    })
   }
 
   reservarExcursion() {

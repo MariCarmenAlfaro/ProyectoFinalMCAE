@@ -1,13 +1,15 @@
 <div class="caballo">
   <ng-container *ngIf="userTypeAdmin">
     <div class="col-12">
-      <div class="col-12 my-3"><p-button label="Añadir caballo" (click)="this.createForm(null)"></p-button></div>
+      <div class="col-12 my-3">
+        <p-button class="register" icon="pi pi-plus" (click)="this.createForm(null)"></p-button>
+      </div>
 
       <div class="col-12" *ngIf="this.horses.length <= 0">
         <p-progressSpinner aria-label="Loading"></p-progressSpinner>
       </div>
       <div class="col-12" *ngIf="this.horses.length > 0">
-        <p-table [value]="this.horses" [tableStyle]="{'min-width': '50rem'}">
+        <p-table [value]="this.horses" [tableStyle]="{'min-width': '40rem'}">
           <ng-template pTemplate="header" let-columns>
             <tr>
               <th>Nombre </th>
@@ -15,9 +17,9 @@
               <th>Alimentación</th>
               <th>Tipo</th>
               <th>Dueño</th>
-              <th>Camara</th>
-              <th>Observaciones</th>
-              <th>Fecha registro</th>
+              <!-- <th>Camara</th> -->
+              <!-- <th>Observaciones</th>
+              <th>Fecha registro</th> -->
               <th></th>
             </tr>
           </ng-template>
@@ -27,14 +29,38 @@
               <td>{{horse.barnNum}}</td>
               <td>{{horse.foodType}}</td>
               <td>{{horse.horseType}}</td>
-              <td>{{horse.ownerId}}</td>
-              <td>{{horse.cameraUrl}}</td>
+              <td>{{horse.ownerName.userName}}</td>
+              <!-- <td>{{horse.cameraUrl}}</td>
               <td>{{horse.observation}}</td>
-              <td>{{horse.registrationDate}}</td>
+              <td>{{horse.registrationDate}}</td> -->
               <td>
-                <p-button (click)="selectHorse(horse)" icon="pi pi-external-link" label="Editar"></p-button>
+       
+                <button
+                class="button-circle "
+                icon="pi pi-user"
+              
+                pButton
+                pTooltip="+ info"
+                tooltipPosition="top"
+              ></button>
 
-                <p-button (click)="deleteHorseDialog(horse.horseId)" label="Borrar"></p-button>
+              <button
+              class="button-circle "
+              icon="fa-regular fa-pen-to-square"
+              (click)="selectHorse(horse)"
+              pButton
+              pTooltip="Borrar"
+              tooltipPosition="top"
+            ></button>
+
+              <button
+              class="button-circle "
+              icon="pi pi-trash"
+              (click)="deleteHorseDialog(horse.horseId)"
+              pButton
+              pTooltip="Borrar"
+              tooltipPosition="top"
+            ></button>
               </td>
             </tr>
           </ng-template>
@@ -92,13 +118,12 @@
 
 
 
-
-
+           
 
             <div class="modal-footer">
-              <button type="submit" class="btn btn-primary " (click)="this.showDialog = false">Cerrar</button>
+              <!-- <p-button class="btn btn-primary " icon="pi pi-times" (click)="this.showDialog = false"></p-button> -->
 
-              <button type="submit" class="btn btn-primary guardarLogin" (click)="updateHorse()">Guardar</button>
+              <p-button type="submit" class="btn btn-primary guardarLogin" icon="pi pi-check" (click)="updateHorse()"></p-button>
 
             </div>
           </form>
