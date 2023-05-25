@@ -13,6 +13,13 @@ export class ServiciosComponent implements OnInit {
   respuestaOk: boolean;
   mnjConfirm:boolean=false;
 clases:any=[];
+precios
+priceExcPlaya
+priceExcMontana
+priceClase
+priceEstablo
+priceCumple
+
   excursionForm = new FormGroup({
     name: new FormControl('', Validators.required),
     email: new FormControl('', Validators.required),
@@ -28,6 +35,7 @@ clases:any=[];
       this.clases=rs;
       console.log(rs)
     })
+    this.readPrices()
   }
 
   reservarExcursion() {
@@ -54,8 +62,30 @@ clases:any=[];
   }
   readPrices() {
     this.reservationService.readPrices().subscribe((rs) => {
-      rs;
-      console.log(rs);
+      this.precios= rs;
+      console.log(this.precios);
+
+      this.precios.forEach(precio => {
+
+        switch (precio.typeService) {
+          case "Excursion Playa":
+            this.priceExcPlaya = precio.price;
+            break;
+          case "Excursion Montaña":
+            this.priceExcMontana = precio.price;
+            break;
+          case "Establo":
+            this.priceEstablo = precio.price;
+            break;
+          case "Clase":
+            this.priceClase = precio.price;
+            break;
+          case "fiesta":
+            this.priceCumple = precio.price;
+            break;
+        }
+      });
+      
     });
   }
 }

@@ -26,8 +26,10 @@ export class CaballoComponent implements OnInit {
   usuario: UserProfile;
   createNewHorse = false;
   showDialog = false;
+  showInfoDialog=false
   horses = [];
   currentHorse = null;
+  currentHorseInfo= null
   form: FormGroup;
   userTypeAdmin: boolean = false;
   userTypeOwner: boolean = false;
@@ -197,7 +199,7 @@ export class CaballoComponent implements OnInit {
         if (ownerRequests.length > 0) {
           forkJoin(ownerRequests).subscribe((ownerResponses) => {
             for (let i = 0; i < ownerResponses.length; i++) {
-              this.horses[i].ownerName = ownerResponses[i];
+              this.horses[i].ownerName = ownerResponses[i].userName;
             }
   
             console.log(this.horses);
@@ -214,7 +216,11 @@ export class CaballoComponent implements OnInit {
     console.log(this.currentHorse);
     this.createForm(horse);
   }
+  showInfoHorse(horse){
+    this.currentHorseInfo = horse;
+    this.showInfoDialog=true;
 
+  }
   deleteHorse(horseId) {
     this.caballosService.deleteHorse(horseId).subscribe(
       (response) => {
@@ -260,5 +266,8 @@ export class CaballoComponent implements OnInit {
         }
       },
     });
+  }
+  clear(table) {
+    table.clear();
   }
 }

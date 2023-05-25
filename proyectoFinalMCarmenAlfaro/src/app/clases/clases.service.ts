@@ -10,7 +10,7 @@ export class ClasesService {
   constructor(private http: HttpClient) { }
 
   public getAllClassesOrderBy(){
-    var url= this.baseUrl+`/orderBy`;
+    var url= this.baseUrl+`/Class/orderBy`;
     return this.http.get<any[]>(
       url
     )
@@ -19,6 +19,11 @@ export class ClasesService {
     var url = this.baseUrl + `/Class/userByClassId?classDay=${classDay}&classHour=${classHour}`;
     return this.http.get<any[]>(url);
   }
-  
+  public deleteClassUser(id){
+    var url= this.baseUrl+`/ClassUser/${id}`;
+    return this.http.delete<boolean>(
+      url
+    )
+  }
 
 }

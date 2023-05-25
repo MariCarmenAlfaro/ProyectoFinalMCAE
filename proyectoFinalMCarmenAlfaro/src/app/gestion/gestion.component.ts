@@ -7,6 +7,7 @@ import {
   MessageService,
   ConfirmEventType,
 } from 'primeng/api';
+import { PerfilService } from '../perfil/perfil.service';
 @Component({
   selector: 'app-gestion',
   templateUrl: './gestion.component.html',
@@ -34,7 +35,9 @@ export class GestionComponent implements OnInit {
   showEditUser = false
   showInfoUserDiv = false
   horsesDisplay = false
+  clasesDisplay = false
   horsesUser = []
+  currentUserClases
   
 
 
@@ -54,7 +57,8 @@ export class GestionComponent implements OnInit {
     public gestionService: GestionService,
     public caballosService: CaballosService,
     private confirmationService: ConfirmationService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    public perfilService: PerfilService
   ) {}
 
   ngOnInit(): void {
@@ -258,7 +262,7 @@ export class GestionComponent implements OnInit {
       },
     });
   }
-s
+
   showInfoUser(user){
     
     this.currentUser=user;
@@ -330,6 +334,17 @@ s
   }
 
   showClass(userId){
-    alert("VER CLASES")
+    
+    this.currentUserClases = null
+    this.perfilService
+      .getReadByIdExtendedAlumno(userId)
+      .subscribe((rs) => {
+        if(rs.classDay != null){
+          this.currentUserClases = rs;
+            console.log(this.currentUserClases)
+        }
+        this.clasesDisplay = true
+        
+      });
   }
 }

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { GestionService } from '../gestion/gestion.service';
 import { CaballosService } from '../caballo/caballos.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { SugerenciasService } from './sugerencias.service';
 
 @Component({
   selector: 'app-sugerencias-reservas',
@@ -19,7 +20,8 @@ export class SugerenciasReservasComponent {
     public gestionService: GestionService,
     public caballosService: CaballosService,
     private confirmationService: ConfirmationService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    public sugerenciasService: SugerenciasService
   ) {}
   ngOnInit(): void {
     this.readSuggestion()
@@ -49,6 +51,28 @@ export class SugerenciasReservasComponent {
     console.log(rs)
       }
     )
+  }
+// checked(){
+// this.suggestions={
+//   commentType= ,
+// userName ,
+// emailUser ,
+// peticion ,
+
+// checked =,
+// }
+
+//   this.sugerenciasService.updateSuggestion().subscribe(rs=>{
+//     rs
+//   })
+// }
+
+
+
+  deleteSuggestion(id){
+    this.sugerenciasService.deleteSuggestion(id).subscribe(rs=>{
+      rs
+    })
   }
 
 }

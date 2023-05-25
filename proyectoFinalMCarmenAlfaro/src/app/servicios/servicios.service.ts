@@ -23,7 +23,7 @@ export class ReservationExcService {
     return this.http.post<boolean>(url, reserv);
    }
 public readPrices(){
-  const url = `${this.baseUrl}/Prices`;
+  const url = `${this.baseUrl}/Price`;
   return this.http.get<any>(url);
 }
 }

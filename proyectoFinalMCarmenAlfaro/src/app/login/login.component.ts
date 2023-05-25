@@ -3,6 +3,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { UserProfile } from '../entities/userProfile/userProfile.interface';
 import { LoginService } from './login.service';
+import { Router } from '@angular/router';
 // import { DialogModule } from 'primeng/dialog';
 @Component({
   selector: 'app-login',
@@ -11,8 +12,6 @@ import { LoginService } from './login.service';
 })
 export class LoginComponent implements OnInit {
 
-
- 
   
 userProfiles: UserProfile;
 userId: number;
@@ -24,7 +23,8 @@ loginForm = new FormGroup({
 
   });
 
-  constructor(public loginService: LoginService) { }
+  constructor(public loginService: LoginService,
+    readonly ro: Router) { }
 
   ngOnInit(): void {
 
@@ -58,7 +58,8 @@ loginBack() {
       this.loginService.user = JSON.parse(window.localStorage.getItem("user"))
       
       this.loginService.showModal  = false;
-      
+
+      this.ro.navigateByUrl('/home')
     },  (error ) => {
       //console.error(error);  
       this.errorMessage=true;

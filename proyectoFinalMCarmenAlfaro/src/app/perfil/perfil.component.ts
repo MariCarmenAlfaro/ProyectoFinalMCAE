@@ -16,6 +16,7 @@ export class PerfilComponent implements OnInit {
   userType=false;
   formClass= false;
   formBarn = false;
+  btnSolicitud= false;
   usuario: UserProfile = JSON.parse(window.localStorage.getItem('user'));
   alumno = this.usuario.userType == 'Alumno';
   dueño = this.usuario.userType == 'Dueño';
@@ -41,8 +42,12 @@ export class PerfilComponent implements OnInit {
   readUserLocalStorage() {
     if (this.alumno) {
       this.readUserClass();
+      this.btnSolicitud=true;
       this.formClass = true;
+
+      
     } else if (this.dueño) {
+      this.btnSolicitud=true;
       this.userType = true;
       this.formBarn = true;
     } else if (this.admin) {

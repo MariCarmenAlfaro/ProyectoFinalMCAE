@@ -55,26 +55,26 @@
             {{ clases.classHour }}h
         </td>
        
-        <td *ngIf="clases.lunes !== null" class="clases">
-           <a  (click)="saberClaseLunes(clases.classHour)">  {{ clases.lunes }}</a>
+        <td  class="clases">
+           <span *ngIf="clases.lunes !== null" (click)="saberClaseLunes(clases.classHour)">  {{ clases.lunes }}</span>
         </td>
-        <td *ngIf="clases.martes !== null" class="clases">
-            <a  (click)="saberClaseMartes(clases.classHour)"> {{ clases.martes }}</a>
+        <td  class="clases">
+            <span *ngIf="clases.martes !== null" (click)="saberClaseMartes(clases.classHour)"> {{ clases.martes }}</span>
         </td>
-        <td *ngIf="clases.miercoles !== null" class="clases">
-            <a  (click)="saberClaseMiercoles(clases.classHour)">{{ clases.miercoles }}</a>
+        <td  class="clases">
+            <span *ngIf="clases.miercoles !== null" (click)="saberClaseMiercoles(clases.classHour)">{{ clases.miercoles }}</span>
 
         </td>
-        <td *ngIf="clases.jueves !== null" class="clases">
-            <a  (click)="saberClaseJueves(clases.classHour)">{{ clases.jueves }}</a>
+        <td  class="clases">
+            <span *ngIf="clases.jueves !== null" (click)="saberClaseJueves(clases.classHour)">{{ clases.jueves }}</span>
       
         </td>
-        <td *ngIf="clases.viernes !== null" class="clases">
-            <a  (click)="saberClaseViernes(clases.classHour)">{{ clases.viernes }}</a>
+        <td  class="clases">
+            <span *ngIf="clases.viernes !== null" (click)="saberClaseViernes(clases.classHour)">{{ clases.viernes }}</span>
         
         </td>
-        <td *ngIf="clases.sabado !== null" class="clases">
-            <a  (click)="saberClaseSabado(clases.classHour)">{{ clases.sabado }}</a>
+        <td class="clases">
+            <span *ngIf="clases.sabado !== null"  (click)="saberClaseSabado(clases.classHour)">{{ clases.sabado }}</span>
          </td>
 
 
@@ -94,9 +94,30 @@
     <ng-container *ngFor="let user of this.usuarios">
         <p class="alumnos">
             <i class="fa-regular fa-heart"></i> {{user.userName}}
+        
+        <button
+              class="button-circle "
+              icon="pi pi-trash"
+              (click)="deleteClassDialog(user.id)"
+              pButton
+              pTooltip="Borrar"
+              tooltipPosition="top"
+            ></button>
         </p>
+        
     </ng-container>
     <ng-container *ngIf="this.noUsers">
             <p class="alumnos">Oh vaya! Parece que aún no hay alumnos hoy...</p>
     </ng-container>
 </p-sidebar>
+
+<p-toast></p-toast>
+    <p-confirmDialog #cd [style]="{width:'50vw'}">
+      <ng-template pTemplate="header">
+        <h3>Eliminar usuario de clase</h3>
+      </ng-template>
+      <ng-template pTemplate="footer">
+        <button type="button" pButton icon="pi pi-times" label="No" (click)="cd.reject()"></button>
+        <button type="button" pButton icon="pi pi-check" label="Si" (click)="cd.accept()"></button>
+      </ng-template>
+    </p-confirmDialog>

@@ -17,52 +17,53 @@
           </div>
           <div class="clases">
             <div class="imagenClases">
-            <h4>¿De que trata?</h4>
-            <p> Ven a divertirte y aprender a nuestras clases de equitación. <br>
-           No solo aprenderas a no caerte del caballo, si no al completo cuidado de él.
-           Una correcta posicion y movimientos sobre el caballo, su alimentación, limpieza, anatomia,herramientas y su buen uso entre tantas cosas que aprenderás.</p>
-           </div>
-           <div class="imagenClases">
-            <img src="../../assets/imgs/trabajoherr.jpg" alt="" class="imagen" >
-           </div>
+              <h4>¿De que trata?</h4>
+              <p> Ven a divertirte y aprender a nuestras clases de equitación. <br>
+                No solo aprenderas a no caerte del caballo, si no al completo cuidado de él.
+                Una correcta posicion y movimientos sobre el caballo, su alimentación, limpieza, anatomia,herramientas y
+                su buen uso entre tantas cosas que aprenderás.</p>
+            </div>
+            <div class="imagenClases">
+              <img src="../../assets/imgs/trabajoherr.jpg" alt="" class="imagen">
+            </div>
           </div>
           <span>
             <h4>Horarios</h4>
             <p>Ofrecemos distintos horarios para una mjor adaptación. Cada clase tiene un nivel, para poder progresar de
               la manera más cómoda, dividiendolo en <br>
               -Bajo, para los más novatos. <br>
-              -Medio, para los queya saben cositas. <br> 
+              -Medio, para los queya saben cositas. <br>
               -Alto, para los que más estan aprendiendo.</p>
-              <!--  todo SACAR PRECIOS DE BASE DE DATOS -->
-              <p>El precio mensual es de  €</p>
+            <!--  todo SACAR PRECIOS DE BASE DE DATOS -->
+            <p>El precio mensual es de {{this.priceClase}}€</p>
           </span>
           <table>
             <thead>
-                <tr>
-                  <th><i class="bi bi-suit-heart-fill"></i></th>
-                    <th>Lunes</th>
-                    <th>Martes</th>
-                    <th>Miércoles</th>
-                    <th>Jueves</th>
-                    <th>Viernes</th>
-                    <th>Sábado</th>
-                </tr>
+              <tr>
+                <th><i class="bi bi-suit-heart-fill"></i></th>
+                <th>Lunes</th>
+                <th>Martes</th>
+                <th>Miércoles</th>
+                <th>Jueves</th>
+                <th>Viernes</th>
+                <th>Sábado</th>
+              </tr>
             </thead>
             <tbody>
-                <ng-container *ngFor="let clase of this.clases">
-                
-                    <tr>
-                        <td>{{ clase.classHour }}h</td>
-                        <td>{{ clase.lunes }}</td>
-                        <td>{{ clase.martes }}</td>
-                        <td>{{ clase.miercoles }}</td>
-                        <td>{{ clase.jueves }}</td>
-                        <td>{{ clase.viernes }}</td>
-                        <td>{{ clase.sabado }}</td>
-                    </tr>
-                </ng-container>
+              <ng-container *ngFor="let clase of this.clases">
+
+                <tr>
+                  <td>{{ clase.classHour }}h</td>
+                  <td>{{ clase.lunes }}</td>
+                  <td>{{ clase.martes }}</td>
+                  <td>{{ clase.miercoles }}</td>
+                  <td>{{ clase.jueves }}</td>
+                  <td>{{ clase.viernes }}</td>
+                  <td>{{ clase.sabado }}</td>
+                </tr>
+              </ng-container>
             </tbody>
-        </table>
+          </table>
 
         </div>
       </div>
@@ -83,25 +84,32 @@
           </div>
           <h4>Excursión por la playa</h4>
           <p>Tenemos el privilegio de poder cabalgar entre la arena blanca y fina de nuestra isla. <br>
-            El recorrido son 2 horas por la playa, con unos minutos de descanso y fotos antes de la vuelta. Se realizan los domingos a las 10h en temporada de inverno.</p>
-          <p>La ruta es por las playas de Santa Ponsa  <br>
-            Ubicacion del punto de encuentro <a href="https://www.google.com/maps/place/P%C3%A0rquing+Municipal+Santa+Pon%C3%A7a/@39.5191436,2.4817627,17.92z/data=!4m6!3m5!1s0x129789bf21e9e2fd:0xca7307f5aa8005cd!8m2!3d39.5181649!4d2.4824401!16s%2Fg%2F11c1r1g9gr?authuser=0" target="_blank" class="rrss">aquí</a>
-           
-          </p>
-          
-          <h4> Excursión por la montaña</h4>
-          <p>En Mallorca tenemos de todo, y como menospreciar los increibles paisajes desde las alturas. <br>
-            Nuestra excursion de montaña es de 3 horas, una pequeña merienda por medio y unas vistas aseguradas. Se realizan los sábados a las 17h durante la temporada de verano.
-          </p>
-          <p>La ruta se realiza por la montaña de Galatzó <br>
-            Ubicacion del punto de encuentro <a href="https://www.google.com/maps/place/Galatz%C3%B3/@39.606981,2.4706407,113m/data=!3m1!1e3!4m6!3m5!1s0x12978abd2c6829c3:0x7d121272d170bac!8m2!3d39.6070025!4d2.4704004!16s%2Fg%2F1232j8_t?authuser=0" target="_blank" class="rrss">aquí</a>
+            El recorrido son 2 horas por la playa, con unos minutos de descanso y fotos antes de la vuelta. Se realizan
+            los domingos a las 10h en temporada de inverno.</p>
+          <p>La ruta es por las playas de Santa Ponsa <br>
+            Ubicacion del punto de encuentro <a
+              href="https://www.google.com/maps/place/P%C3%A0rquing+Municipal+Santa+Pon%C3%A7a/@39.5191436,2.4817627,17.92z/data=!4m6!3m5!1s0x129789bf21e9e2fd:0xca7307f5aa8005cd!8m2!3d39.5181649!4d2.4824401!16s%2Fg%2F11c1r1g9gr?authuser=0"
+              target="_blank" class="rrss">aquí</a>
 
           </p>
-          <h3>El precio por excrusion es de : </h3>
+          <h5>El precio es de : {{this.priceExcPlaya}} € por persona</h5> <br>
+
+          <h4> Excursión por la montaña</h4>
+          <p>En Mallorca tenemos de todo, y como menospreciar los increibles paisajes desde las alturas. <br>
+            Nuestra excursion de montaña es de 3 horas, una pequeña merienda por medio y unas vistas aseguradas. Se
+            realizan los sábados a las 17h durante la temporada de verano.
+          </p>
+          <p>La ruta se realiza por la montaña de Galatzó <br>
+            Ubicacion del punto de encuentro <a
+              href="https://www.google.com/maps/place/Galatz%C3%B3/@39.606981,2.4706407,113m/data=!3m1!1e3!4m6!3m5!1s0x12978abd2c6829c3:0x7d121272d170bac!8m2!3d39.6070025!4d2.4704004!16s%2Fg%2F1232j8_t?authuser=0"
+              target="_blank" class="rrss">aquí</a>
+
+          </p>
+          <h5>El precio es de : {{this.priceExcMontana}}€ por persona</h5>
           <h5>Se recomienda traer calzado cómodo y pantalón largo.</h5>
           <hr>
           <!--Formulario para poder reservar-->
-          
+
           <h4>¡Haz tu petición de reserva desde aquí!</h4>
           <p>Puedes reservar una excursión con nosotros rellenando éste formulario. Recibirá de vuelta un correo de
             confirmación si todo es correcto.</p>
@@ -148,12 +156,12 @@
 
                 <div class="col-12 botonReserva">
                   <div *ngIf="!mnjConfirm">
-                  <button type="submit" class="btn btn-primary btnReservar"
-                    (click)="reservarExcursion()" >Reservar</button>
-                    </div>
-                    <div *ngIf="mnjConfirm">
+                    <button type="submit" class="btn btn-primary btnReservar"
+                      (click)="reservarExcursion()">Reservar</button>
+                  </div>
+                  <div *ngIf="mnjConfirm">
                     <button type="submit" disabled class="btn btn-primary btnReservar"
-                    (click)="reservarExcursion()" >Reserva solicitada</button>
+                      (click)="reservarExcursion()">Reserva solicitada</button>
                   </div>
                 </div>
               </form>
@@ -178,7 +186,14 @@
             <img src="../../assets/imgs/cuadras.png" class="card-img-top" alt="...">
 
           </div>
-          <p>Informacion de tipos cuadras</p>
+          <p>Si tienes un caballo y te precupa dónde dejarle... ¡Nuestro club tiene las mejores instalaciones de la
+            isla!</p>
+          <p>Nuestro personal se encarga de cada uno de los caballos hospedados aquí con todo el cariño del mundo</p>
+          <p>El servicio ofrece en el mismo precio, suminitro de agua y luz, alimentación, cuadras y paddocks amplios,
+            uso de toda la hípica y la mayor innovación entre todos los clubs... ¡Retrasmision de video vigilancia en
+            directo!</p>
+          <p>Podrás ver a tu peludito desde el sofa de casa</p>
+          <p>Su coste es de {{this.priceEstablo}}€ mensuales</p>
         </div>
       </div>
     </div>
@@ -196,7 +211,19 @@
             <img src="../../assets/imgs/niñosPony.jpg" class="card-img-top" alt="...">
             <img src="../../assets/imgs/muffinsCumple.jpg" class="card-img-top" alt="">
           </div>
-          Informacion como celebrar el cumpleaños.
+          <p>
+            ¿Te encantan los caballos como a nosotros? Te invitamos a que celebres tu cumpleaños acompañado de nuestros
+            bonitos animales</p>
+          <p>La fiesta incluye </p>
+          <p>-Paseo a caballo por el club durante 1 hora</p>
+          <p>-Deliciosa merienda a media fiesta</p>
+          <p>¡Todo el club a vuestra disposición!</p>
+          <p>Las celebraciones se realizan durante 5 horas los : </p>
+          <p>-Sábados por la tarde en temporada de invierno </p>
+          <p>-Domingos por la mañana en temporada de verano</p>
+
+
+          <p>Su coste es {{this.priceCumple}}€/por persona</p>
         </div>
       </div>
     </div>
@@ -214,7 +241,12 @@
             <img src="../../assets/imgs/navidad.jpg" class="card-img-top" alt="...">
 
           </div>
-          Informacion de nuestras celebraciones
+          <p>En Hípica Alfaro no nos dejamos nada por celebrar. </p>
+          <p>A lo largo del año se realizan pequeños y amistosos campeonatos de salto entre los alumnos con la excusa de
+            juntar la família que somos conllevando una temática</p>
+          <p>Guarda fecha para Navidad, Pascuas, Carnaval y Halloween, porque ya tienes planes con nosotros</p>
+          <p>Se organizan comidas, juegos, sorteos y mucho más</p>
+          <p>Es totalmente gratuito acudir, ¡¡con la condición de venir vestido a juego con la fiesta que toque!! </p>
         </div>
       </div>
     </div>

@@ -50,7 +50,7 @@
         </p-fieldset>
 
     </ng-container>
-    <p-button styleClass="p-button-outlined btnFormulario" (click)="mostrarFormulario()">Solicitud cambios</p-button>
+    <p-button styleClass="p-button-outlined btnFormulario" *ngIf="btnSolicitud" (click)="mostrarFormulario()">Solicitud cambios</p-button>
 
     <p-sidebar [(visible)]="showForm">
 

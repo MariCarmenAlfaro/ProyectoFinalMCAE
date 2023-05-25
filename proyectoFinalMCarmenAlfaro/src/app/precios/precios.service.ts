@@ -8,7 +8,6 @@ export class PreciosService {
   baseUrl: string = 'https://localhost:7089';
   constructor(private http: HttpClient) {}
 
-
   public getReadAllPrices() {
     var url = this.baseUrl + `/Price`;
     return this.http.get<any[]>(url);
@@ -21,5 +20,8 @@ export class PreciosService {
     var url = this.baseUrl + `/Price/${id}`;
     return this.http.delete<any>(url);
   }
-
+  public readServiceById(id) {
+    var url = this.baseUrl + `/Price/${id}`;
+    return this.http.get<any>(url);
+  }
 }

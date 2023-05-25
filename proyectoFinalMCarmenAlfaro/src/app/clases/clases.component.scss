@@ -1,14 +1,15 @@
 .alumnos{
 font-size: large;
 }
-.clases:hover{
-color: #ec489ad7;
- 
+.clases:hover {
+    color: #ec489ad7;
+ text-decoration: none;
     cursor: pointer;
 }
-a{
-    text-decoration: none;
-}
+// a {
+    
+//     color: red;
+// }
 .clas{
     width: 90%;
     margin: auto;

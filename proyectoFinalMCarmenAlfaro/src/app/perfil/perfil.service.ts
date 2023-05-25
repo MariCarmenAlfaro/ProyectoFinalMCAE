@@ -16,11 +16,11 @@ export class PerfilService {
   }
 
   public getReadByIdExtendedAlumno(id: number) {
-    var url = this.baseUrl + `/userExtendedClasses/${id}`;
+    var url = this.baseUrl + `/User/userExtendedClasses/${id}`;
     return this.http.get<any>(url);
   }
   public getReadMoneyMonthById(id: number) {
-    var url = this.baseUrl + `/priceForServiceUser/${id}`;
+    var url = this.baseUrl + `/User/priceForServiceUser/${id}`;
     return this.http.get<any>(url);
   }
   

@@ -342,6 +342,21 @@
         </div>
     </p-sidebar>
 
+    <p-sidebar [(visible)]="clasesDisplay">
+        <ng-container *ngIf="currentUserClases != null">
+            <div class="col-12">
+                <h1>Clase/s de: {{this.currentUserClases.userName}}</h1>
+                <p>Día : {{this.currentUserClases.classDay}} </p>
+                <p>Hora {{this.currentUserClases.classHour}} </p>
+                <p>Nivel: {{this.currentUserClases.classLevel}}</p>
+            </div>
+        </ng-container>
+        <ng-container *ngIf="currentUserClases === null">
+            <div class="col-12">
+                <h1>Usuario sin clases</h1>
+            </div>
+        </ng-container>
+    </p-sidebar>
  
 <p-toast></p-toast>
     <p-confirmDialog #cd [style]="{width:'50vw'}">
