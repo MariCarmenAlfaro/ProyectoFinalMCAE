@@ -89,7 +89,7 @@ namespace HipicaAlfaro.Api.Controllers
             
                 using (var db = new MySqlConnection(_connection))
             {
-                var sql = @"select classes.classId, userprofile.userName, userprofile.emailAddress from classes  inner join classUser on classes.classId = classUser.classId inner join userprofile on classUser.userId = userprofile.userId where classHour = @ClassHour and classDay = @ClassDay;
+                var sql = @"select classUser.id, classes.classId, userProfile.userId, userprofile.userName, userprofile.emailAddress from classes  inner join classUser on classes.classId = classUser.classId inner join userprofile on classUser.userId = userprofile.userId where classHour = @ClassHour and classDay = @ClassDay;
 ";
                 classesList = db.Query<UserExtended>(sql, new { ClassDay = classDay, ClassHour = classHour }).ToList();
             }

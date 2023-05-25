@@ -32,7 +32,7 @@ namespace HipicaAlfaro.Api.Controllers
             Suggestions classItem = null;
             using (var db = new MySqlConnection(_connection))
             {
-                var sql = "SELECT id, commentType, userName, emailUser, peticion FROM suggestions WHERE id = @Id;";
+                var sql = "SELECT id, commentType, userName, emailUser, peticion, checked FROM suggestions WHERE id = @Id;";
                 classItem = db.QueryFirstOrDefault<Suggestions>(sql, new { id });
             }
             if (classItem == null)
@@ -67,7 +67,7 @@ namespace HipicaAlfaro.Api.Controllers
 
             using (var db = new MySqlConnection(_connection))
             {
-                var sql = "UPDATE suggestins SET commentType = @CommentType, userName = @UserName, emailUser = @EmailUser, peticion=@Peticion WHERE id = @Id;";
+                var sql = "UPDATE suggestins SET commentType = @CommentType, userName = @UserName, emailUser = @EmailUser, peticion=@Peticion, checked= @Checked WHERE id = @Id;";
                 var rowsUpdate = db.Execute(sql, suggestions);
                 return rowsUpdate > 0;
             }

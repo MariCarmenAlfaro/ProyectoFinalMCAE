@@ -23,7 +23,7 @@ namespace HipicaAlfaro.Api.Controllers
             }
             return Ok(list);
         }
-
+         
         [HttpGet("{id}")]
         public IActionResult ReadById(int id)
         {

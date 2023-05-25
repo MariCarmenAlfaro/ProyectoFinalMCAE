@@ -31,7 +31,7 @@ namespace HipicaAlfaro.Api.Controllers
             ReservationExc reservation = null;
             using (var db = new MySqlConnection(_connection))
             {
-                var sql = "SELECT ReservationId, ReservationName, EmailAddress, NumPeople, DateExcursion, ExcursionType FROM reservationExc WHERE ReservationId = @ReservationId;";
+                var sql = "SELECT ReservationId, ReservationName, EmailAddress, NumPeople, DateExcursion, ExcursionType, Checked FROM reservationExc WHERE ReservationId = @ReservationId;";
                 reservation = db.QueryFirstOrDefault<ReservationExc>(sql, new { ReservationId = id });
             }
             if (reservation == null)
@@ -66,7 +66,7 @@ namespace HipicaAlfaro.Api.Controllers
 
             using (var db = new MySqlConnection(_connection))
             {
-                var sql = "UPDATE reservationExc SET ReservationName = @ReservationName, EmailAddress = @EmailAddress, NumPeople = @NumPeople, DateExcursion = @DateExcursion, ExcursionType = @ExcursionType WHERE ReservationId = @ReservationId;";
+                var sql = "UPDATE reservationExc SET ReservationName = @ReservationName, EmailAddress = @EmailAddress, NumPeople = @NumPeople, DateExcursion = @DateExcursion, ExcursionType = @ExcursionType, Checked=@Checked WHERE ReservationId = @ReservationId;";
                 var rowsUpdated = db.Execute(sql, reservation);
                 return Ok(rowsUpdated > 0);
             }

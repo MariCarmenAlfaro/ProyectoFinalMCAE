@@ -10,5 +10,6 @@ namespace HipicaAlfaro.Api.Models
         public int NumPeople { get; set; }
         public DateTime DateExcursion { get; set; }
         public string ExcursionType { get; set; }
+        public Boolean Checked { get; set; }
     }
 }

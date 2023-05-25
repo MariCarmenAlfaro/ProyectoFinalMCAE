@@ -8,5 +8,6 @@
         public string emailUser { get; set;}
         public string Peticion { get; set; }
         public string? ClubId { get; set; }
+        public Boolean Checked { get; set; }
     }
 }

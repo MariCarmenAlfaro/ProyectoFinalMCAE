@@ -16,7 +16,7 @@ namespace HipicaAlfaro.Api.Controllers
             IEnumerable<MenuBar> list = null;
             using (var db = new MySqlConnection(_connection))
             {
-                var sql = "select MenuId, MenuName, MenuDate, MenuPriceId from MenuBar;";
+                var sql = "select MenuId, MenuName, MenuDate, PriceId from MenuBar;";
 
                 list = db.Query<MenuBar>(sql);
             }
@@ -29,7 +29,7 @@ namespace HipicaAlfaro.Api.Controllers
             MenuBar menuBar = null;
             using (var db = new MySqlConnection(_connection))
             {
-                var sql = "SELECT MenuId, MenuName, MenuDate, MenuPriceId FROM MenuBar WHERE MenuId = @MenuId;";
+                var sql = "SELECT MenuId, MenuName, MenuDate, PriceId FROM MenuBar WHERE MenuId = @MenuId;";
                 menuBar = db.QueryFirstOrDefault<MenuBar>(sql, new { MenuId = id });
             }
             if (menuBar == null)
@@ -65,7 +65,7 @@ namespace HipicaAlfaro.Api.Controllers
 
             using (var db = new MySqlConnection(_connection))
             {
-                var sql = "UPDATE MenuBar SET MenuName = @MenuName, MenuDate = @MenuDate, MenuPriceId = @MenuPriceId WHERE MenuId = @MenuId;";
+                var sql = "UPDATE MenuBar SET MenuName = @MenuName, MenuDate = @MenuDate, PriceId = @PriceId WHERE MenuId = @MenuId;";
                 var rowsUpdate = db.Execute(sql, menuBar);
                 return rowsUpdate > 0;
             }
