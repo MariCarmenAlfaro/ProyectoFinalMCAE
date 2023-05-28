@@ -146,29 +146,26 @@ namespace HipicaAlfaro.Api.Controllers
 
 
         [HttpGet("userExtendedClasses/{id}")]
-        public ActionResult<UserExtended> ReadByUserIdExtended(int id)
+        public ActionResult<List<UserExtended>> ReadByUserIdExtended(int id)
         {
             using (var conexion = new MySqlConnection(_connection))
             {
+                var query = "SELECT userProfile.userId as UserId, userProfile.userName as UserName, userProfile.userType as UserType, userProfile.registrationDate as RegistrationDate, userProfile.emailAddress as EmailAddress, userProfile.psswdUser as PsswdUser, userProfile.clubId as ClubId, classUser.id as Id, classUser.userId as UserId, classUser.classId as ClassId, classUser.clubId as ClubId, classes.classId as ClassId, classes.classDay as ClassDay, classes.classHour as ClassHour, classes.classLevel as ClassLevel, classes.clubId as ClubId FROM userProfile LEFT JOIN classUser ON userProfile.userId = classUser.userId LEFT JOIN classes ON classUser.classId = classes.classId WHERE userProfile.userId = @id;";
 
-                var query = "SELECT userProfile.userId as UserId, userProfile.userName as UserName,userProfile.userType as UserType, userProfile.registrationDate as RegistrationDate, userProfile.emailAddress as EmailAddress, userProfile.psswdUser as PsswdUser, userProfile.clubId as ClubId, classUser.id as Id, classUser.userId as UserId,classUser.classId as ClassId, classUser.clubId as ClubId, classes.classId as ClassId, classes.classDay as ClassDay, classes.classHour as ClassHour , classes.classLevel as ClassLevel, classes.clubId as ClubId FROM userProfile LEFT JOIN classUser ON userProfile.userId = classUser.userId LEFT JOIN classes ON classUser.classId = classes.classId WHERE userProfile.userId =@id;";
+                var resultados = conexion.Query<UserExtended>(query, new { id }).ToList();
 
-                var resultado = conexion.QuerySingleOrDefault<UserExtended>(query, new { id });
-
-
-
-                return resultado;
+                return resultados;
             }
         }
         [HttpGet("priceForServiceUser/{id}")]
-        public ActionResult<PriceForService> ReadPriceForServiceByUserId(int id)
+        public ActionResult <List<PriceForService>> ReadPriceForServiceByUserId(int id)
         {
             using (var conexion = new MySqlConnection(_connection))
             {
 
                 var query = "select payDate, payMethod, typeService, price from  payments inner join prices on payments.priceId = prices.priceId where payments.userId=@id;";
 
-                var resultado = conexion.QuerySingleOrDefault<PriceForService>(query, new { id });
+                var resultado = conexion.Query<PriceForService>(query, new { id }).ToList();
 
 
 

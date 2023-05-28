@@ -18,7 +18,7 @@ namespace HipicaAlfaro.Api.Controllers
             IEnumerable<Suggestions> list = null;
             using (var db = new MySqlConnection(_connection))
             {
-                var sql = "SELECT id, commentType, userName, emailUser, peticion FROM suggestions;";
+                var sql = "SELECT id, commentType, userName, emailUser, peticion, checked FROM suggestions;";
 
                 list = db.Query<Suggestions>(sql);
             }
@@ -67,7 +67,7 @@ namespace HipicaAlfaro.Api.Controllers
 
             using (var db = new MySqlConnection(_connection))
             {
-                var sql = "UPDATE suggestins SET commentType = @CommentType, userName = @UserName, emailUser = @EmailUser, peticion=@Peticion, checked= @Checked WHERE id = @Id;";
+                var sql = "UPDATE suggestions SET commentType = @CommentType, userName = @UserName, emailUser = @EmailUser, peticion=@Peticion, checked= @Checked WHERE id = @Id;";
                 var rowsUpdate = db.Execute(sql, suggestions);
                 return rowsUpdate > 0;
             }

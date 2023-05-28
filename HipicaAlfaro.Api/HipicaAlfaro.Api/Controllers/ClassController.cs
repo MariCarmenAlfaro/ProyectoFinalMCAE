@@ -99,6 +99,23 @@ namespace HipicaAlfaro.Api.Controllers
             }
             return Ok(classesList);
         }
+        [HttpGet("filterByLevel")]
+        public IActionResult GetClassesByLevel(string classLevel)
+        {
+            List<Class> classesList = new List<Class>();
+
+            using (var db = new MySqlConnection(_connection))
+            {
+                var sql = @"SELECT classId, classDay, classHour, classLevel FROM classes where classLevel like @classLevel;;
+";
+                classesList = db.Query<Class>(sql, new { ClassLevel = classLevel }).ToList();
+            }
+            if (classesList.Count == 0)
+            {
+                return NotFound();
+            }
+            return Ok(classesList);
+        }
 
         [HttpPost]
         public IActionResult Create(Class classes)

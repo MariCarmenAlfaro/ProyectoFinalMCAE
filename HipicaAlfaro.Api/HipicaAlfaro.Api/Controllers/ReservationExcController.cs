@@ -19,7 +19,7 @@ namespace HipicaAlfaro.Api.Controllers
             IEnumerable<ReservationExc> list = null;
             using (var db = new MySqlConnection(_connection))
             {
-                var sql = "SELECT ReservationId, ReservationName, EmailAddress, NumPeople, DateExcursion, ExcursionType FROM reservationExc;";
+                var sql = "SELECT ReservationId, ReservationName, EmailAddress, NumPeople, DateExcursion, ExcursionType, checked FROM reservationExc;";
                 list = db.Query<ReservationExc>(sql);
             }
             return Ok(list);

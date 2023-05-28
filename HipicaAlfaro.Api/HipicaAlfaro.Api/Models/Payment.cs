@@ -10,8 +10,6 @@ namespace HipicaAlfaro.Api.Models
         public DateTime PayDate { get; set; }
         public int PriceId { get; set; }
         public string PayMethod { get; set; }
-        public bool IsPaid { get; set; }
-        //public UserProfile UserProfile { get; set; }
-        //public Prices Price { get; set; }
+     
     }
 }
