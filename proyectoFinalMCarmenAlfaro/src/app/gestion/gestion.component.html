@@ -175,8 +175,6 @@
     
 
             <div class="modal-footer">
-            <button type="submit" class="btn btn-primary " 
-            (click)="this.showDialogUser = false">Cancelar</button>
     
             <button type="submit" class="btn btn-primary guardarLogin" (click)="updateUser()">Guardar</button>
     
@@ -227,10 +225,10 @@
         </div>
     </ng-container>
 
-    <!-- CABALLO -->
+    <!-- añadir caballo  -->
     <ng-container *ngIf="showAddHorseToUser">
         <div class="col-12">
-            <p>Crear caballo privado</p>
+            <p>Nuevo caballo</p>
             <form class="row g-3 f  romReserva" [formGroup]="formHorseOwner">
                 <div class="modal-body">
                   <div class="form-floating mb-2">
@@ -239,11 +237,11 @@
                   </div>
                   <div class="form-floating mb-2">
                     <input type="text" class="form-control" placeholder="Barrera" formControlName="barnNum">
-                    <label for="barnNum">Barrera</label>
+                    <label for="barnNum">Cuadra</label>
                   </div>
                   <div class="form-floating mb-2">
                     <input type="text" class="form-control" placeholder="Camara" formControlName="cameraUrl">
-                    <label for="cameraUrl">Camara</label>
+                    <label for="cameraUrl">Link cámara</label>
                   </div>
                   <div class="form-floating mb-2">
                     <p-dropdown formControlName="foodType" [options]="foodHorseTypes" optionLabel="name" optionValue="name" placeholder="Comida"></p-dropdown>
@@ -307,10 +305,10 @@
             </form>
         </div>
     </ng-container>
-    <!-- <p *ngIf="messageCreation">USUARIO REGISTRADO</p>
-    <p *ngIf="!messageCreation">Oops, ha habido algun error en el registro.</p>     -->
+
     </p-sidebar>
 
+    <!-- ver caballos -->
     <p-sidebar [(visible)]="horsesDisplay">
         <div class="col-12">
             <button
@@ -322,7 +320,7 @@
                     tooltipPosition="top"
                   ></button>
             <ng-container *ngIf="horsesUser.length > 0">
-               <h1>Caballos</h1> 
+               <h1>Caballo/s</h1> 
                <div class="col-12 m-1" *ngFor="let horse of horsesUser">
                 <p-panel header="{{horse.horseName}} ({{horse.horseId}})">
                     <p>{{horse.foodType}}</p>
@@ -330,32 +328,68 @@
                 <p>{{horse.observation}}</p>
                 <p>{{horse.registrationDate}}</p>
                 </p-panel>
-               
-               
-              
-
+        
                </div>
             </ng-container>
             <span *ngIf="horsesUser.length <= 0">
-                Este usuario no tiene caballos
+                Caballos sin registrar
             </span>
         </div>
     </p-sidebar>
 
+    <!-- <p-sidebar [(visible)]="showDialogAddUser">
+        <div class="col-12 altoClases" >
+          
+            <p-dropdown [options]="levelUser" [(ngModel)]="selectedLevel" optionLabel="name" (onChange)="onChange($event)" placeholder="Seleciona el nivel"></p-dropdown>
+            <ng-container *ngIf="classesDayHour.length>0">
+    
+            <p-dropdown [options]="classesDayHour" [(ngModel)]="selectedClass" placeholder="Selecciona el día" (onChange)="onChange2($event)" optionLabel="classDay">
+                <ng-template let-option pTemplate="item">
+                  <span>{{ option.classDay }} - {{ option.classHour }}</span>
+                </ng-template>
+              </p-dropdown>
+                 </ng-container>
+                 <button
+                 class="button"
+                label="Guardar"
+                 (click)="insertUserToClass()"
+                 pButton
+                 pTooltip="Añadir usuario a clase"
+                 tooltipPosition="top"
+                 [disabled]="this.insertButtonDisabled"
+                 ></button>
+        </div>
+    </p-sidebar> -->
+
+
     <p-sidebar [(visible)]="clasesDisplay">
+        <button
+        class="button-circle "
+        icon="pi pi-user-plus"
+        routerLink="/clases"
+        pButton
+        pTooltip="Añadir usuario a clase"
+        tooltipPosition="top"
+        ></button>
         <ng-container *ngIf="currentUserClases != null">
             <div class="col-12">
-                <h1>Clase/s de: {{this.currentUserClases.userName}}</h1>
-                <p>Día : {{this.currentUserClases.classDay}} </p>
-                <p>Hora {{this.currentUserClases.classHour}} </p>
-                <p>Nivel: {{this.currentUserClases.classLevel}}</p>
+                <h1>Clase/s de:   </h1>
+                <ng-container *ngFor="let clases of currentUserClases">
+                <p-panel header="">
+                  <p>Día : {{clases.classDay}} </p>
+                <p>Hora {{clases.classHour}} </p>
+                <p>Nivel: {{clases.classLevel}}</p>
+                </p-panel>
+            </ng-container>
+
             </div>
         </ng-container>
         <ng-container *ngIf="currentUserClases === null">
             <div class="col-12">
-                <h1>Usuario sin clases</h1>
+                <h3>¡Todavía no tiene clases!</h3>
             </div>
         </ng-container>
+        
     </p-sidebar>
  
 <p-toast></p-toast>

@@ -8,6 +8,7 @@ import {
   ConfirmEventType,
 } from 'primeng/api';
 import { PerfilService } from '../perfil/perfil.service';
+import { ClasesService } from '../clases/clases.service';
 @Component({
   selector: 'app-gestion',
   templateUrl: './gestion.component.html',
@@ -37,8 +38,15 @@ export class GestionComponent implements OnInit {
   horsesDisplay = false
   clasesDisplay = false
   horsesUser = []
-  currentUserClases
-  
+  currentUserClases=[]
+  classesDayHour = [];
+  selectedUser = null;
+  selectedClass = null;
+  showDialogAddUser = false;
+  selectedLevel = null;
+  newClassUser: any;
+  insertButtonDisabled = false;
+  levelUser = [{ name: 'Bajo' }, { name: 'Medio' }, { name: 'Alto' }];
 
 
   userTypes = [{ name: 'Alumno' }, { name: 'Dueño' }, { name: 'Admin' }];
@@ -50,7 +58,7 @@ export class GestionComponent implements OnInit {
     { name: 'Paja' },
   ];
 
-  payMethods = [{ name: 'Efectivo' }, { name: 'Tarjeta' }];
+  payMethods = [ { name: 'Pendiente' },{ name: 'Efectivo' }, { name: 'Tarjeta' }];
   
 
   constructor(
@@ -58,7 +66,8 @@ export class GestionComponent implements OnInit {
     public caballosService: CaballosService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
-    public perfilService: PerfilService
+    public perfilService: PerfilService,
+    public clasesService: ClasesService,
   ) {}
 
   ngOnInit(): void {
@@ -109,41 +118,34 @@ export class GestionComponent implements OnInit {
     this.gestionService.postNewUser(this.form.value).subscribe((rs) => {
       this.newUserId = rs.insertedId;
       console.log(this.newUserId);
-      if (this.newUserId) {
-        this.currentUserId = this.newUserId;
-        this.correctUserCreated(typeUser);
-        // TODO mostrar un mensaje de estos popups diciendo que ha ido bien o mal
-        // this.messageCreation = true;
-      } else {
-        // this.messageCreation = false;
-      }
+
+    this.showDialog=false
+    if(rs){
+      this.showDialogUser = false
+      this.readAll();
+      this.messageService.add({
+        severity: 'info',
+        summary: 'Confirmed',
+        detail: 'Usuario actualizado correctamente',
+      });
+    } else {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Rejected',
+        detail: 'Error al intentar actualizar el usuario',
+      });
+    }
+     
     });
   }
 
-  correctUserCreated(typeUser) {
-    if (typeUser === 'Admin') {
+  correctUserCreated(typeUser, userId) {
+    if (typeUser != 'Admin') {
+     this.addPayment(userId)
     }
-    if (typeUser === 'Alumno') {
-      alert('Alumno');
-      // TODO añadir a clases y luego hacerle pagar
-    }
-    if (typeUser === 'Dueño') {
-      // añadir
-      this.showCreateUser = false;
-      this.showPaymentForm = false;
-      this.formHorseOwner = new FormGroup({
-        horseName: new FormControl(''),
-        barnNum: new FormControl(''),
-        foodType: new FormControl(''),
-        horseType: new FormControl('Privado'),
-        observation: new FormControl(''),
-        cameraUrl: new FormControl(''),
-        registrationDate: new FormControl(''),
-        ownerId: new FormControl(this.currentUserId),
-      });
-      this.showAddHorseToUser = true;
-    }
+    
   }
+
 
   savePrivateHorse() {
     console.log(this.formHorseOwner.value);
@@ -152,7 +154,7 @@ export class GestionComponent implements OnInit {
         if (rs) {
           console.log('Caballo guardado');
           //añadir pago
-          this.createPaymentForm();
+          this.addPayment(this.formHorseOwner.value.ownerId)
         }
       },
       (error) => {
@@ -197,6 +199,9 @@ export class GestionComponent implements OnInit {
   savePayment() {
     // guardar el pago
     console.log(this.paymentForm.value);
+    if(this.paymentForm.value.payMethod == ""){
+      this.paymentForm.value.payMethod = null
+    }
 
     this.gestionService.createNewPayment(this.paymentForm.value).subscribe(
       (rs) => {
@@ -264,12 +269,12 @@ export class GestionComponent implements OnInit {
   }
 
   showInfoUser(user){
-    
     this.currentUser=user;
+    this.showEditUser = false
     this.showInfoUserDiv = true;
     this.showDialogUser=true;
     console.log(this.currentUser)
-    
+   
   }
   mostrarEditarUsuario(user){
     this.showInfoUserDiv = false
@@ -309,6 +314,7 @@ export class GestionComponent implements OnInit {
     
   }
   showHorsesDisplay(userId){
+    
     this.currentUserId = userId
 
     // llamada para obtener los caballos del usuario
@@ -325,11 +331,28 @@ export class GestionComponent implements OnInit {
     })
   }
   addHorseByUser(){
+    
     if(this.currentUserId){
+      this.formHorseOwner = new FormGroup({
+        horseName: new FormControl(''),
+        barnNum: new FormControl(''),
+        foodType: new FormControl(''),
+        horseType: new FormControl('Privado'),
+        observation: new FormControl(''),
+        cameraUrl: new FormControl(''),
+        registrationDate: new FormControl(''),
+        ownerId: new FormControl(this.currentUserId),
+      });
+      this.showAddHorseToUser = true;
       // mostrar formulario de añadir caballo
-      this.horsesDisplay = false
-      this.correctUserCreated('Dueño')
+      
+      // this.correctUserCreated('Dueño', this.currentUserId)
      this.showDialog = true
+     this.showAddHorseToUser = true
+     this.showCreateUser = false
+     this.horsesDisplay = false
+     this.showPaymentForm = false
+     
     }
   }
 
@@ -339,12 +362,13 @@ export class GestionComponent implements OnInit {
     this.perfilService
       .getReadByIdExtendedAlumno(userId)
       .subscribe((rs) => {
-        if(rs.classDay != null){
+        // if(rs.classDay != null){
           this.currentUserClases = rs;
             console.log(this.currentUserClases)
         }
-        this.clasesDisplay = true
         
-      });
+      // }
+      ); this.clasesDisplay = true
+      
   }
 }

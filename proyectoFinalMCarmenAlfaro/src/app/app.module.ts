@@ -31,8 +31,8 @@ import { PanelModule } from 'primeng/panel';
 import { PagosComponent } from './pagos/pagos.component';
 import { SugerenciasReservasComponent } from './sugerencias-reservas/sugerencias-reservas.component';
 import { PreciosComponent } from './precios/precios.component';
-
-
+import { FormsModule } from '@angular/forms';
+import { TabViewModule } from 'primeng/tabview';
 
 
 
@@ -72,7 +72,9 @@ import { PreciosComponent } from './precios/precios.component';
     SidebarModule,
     DropdownModule,
     CheckboxModule,
-    PanelModule
+    PanelModule,
+    FormsModule,
+    TabViewModule
   
 
     

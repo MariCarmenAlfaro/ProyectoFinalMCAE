@@ -15,7 +15,7 @@ export class PagosComponent implements OnInit {
   showPaymentForm = false;
   paymentForm: FormGroup;
   nombresPagos=[];
-  payMethods = [{ name: 'Efectivo' }, { name: 'Tarjeta' }];
+  payMethods = [ { name: 'Pendiente' },{ name: 'Efectivo' }, { name: 'Tarjeta' }];
 
   constructor(
     public pagosService: PagosService,

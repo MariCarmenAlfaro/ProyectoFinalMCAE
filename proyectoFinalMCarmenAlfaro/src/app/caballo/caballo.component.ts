@@ -6,10 +6,10 @@ import {
   ConfirmEventType,
 } from 'primeng/api';
 
-
 import { UserProfile } from '../entities/userProfile/userProfile.interface';
 import { FormControl, FormGroup } from '@angular/forms';
-import { forkJoin } from 'rxjs';
+import { forkJoin, map } from 'rxjs';
+import { GestionService } from '../gestion/gestion.service';
 
 @Component({
   selector: 'app-caballo',
@@ -26,20 +26,21 @@ export class CaballoComponent implements OnInit {
   usuario: UserProfile;
   createNewHorse = false;
   showDialog = false;
-  showInfoDialog=false
+  showInfoDialog = false;
   horses = [];
   currentHorse = null;
-  currentHorseInfo= null
+  currentHorseInfo = null;
   form: FormGroup;
   userTypeAdmin: boolean = false;
   userTypeOwner: boolean = false;
-  ownerName:any;
+  ownerName: any;
+  duenyo;
   foodHorseTypes = [
     { name: 'Hierba' },
     { name: 'Forraje' },
     { name: 'Heno' },
-    { name: 'Paja' }
-  ]
+    { name: 'Paja' },
+  ];
 
   ngOnInit(): void {
     this.knowUserType();
@@ -64,10 +65,6 @@ export class CaballoComponent implements OnInit {
       });
   }
 
-
-
-
-
   // readOwner(){
 
   //     this.caballosService.getOwnerById(horse.ownerId).subscribe(
@@ -75,9 +72,9 @@ export class CaballoComponent implements OnInit {
   //         this.ownerName=rs
   //       }
   //     )
-      
+
   //   });
-    
+
   // }
   updateHorse() {
     if (this.createNewHorse) {
@@ -87,7 +84,7 @@ export class CaballoComponent implements OnInit {
           if (rs) {
             console.log('Ok');
             this.getAllHorses();
-            this.showDialog=false;
+            this.showDialog = false;
             this.messageService.add({
               severity: 'info',
               summary: 'Insercción correcta',
@@ -107,11 +104,11 @@ export class CaballoComponent implements OnInit {
         }
       );
     } else {
-      this.caballosService.updateHorse(this.form.value).subscribe(rs=>{
+      this.caballosService.updateHorse(this.form.value).subscribe((rs) => {
         if (rs) {
           console.log('Ok');
-        this.getAllHorses();
-          this.showDialog=false;
+          this.getAllHorses();
+          this.showDialog = false;
           this.messageService.add({
             severity: 'info',
             summary: 'Modifición correcta',
@@ -124,8 +121,7 @@ export class CaballoComponent implements OnInit {
             detail: 'Error al intentar modficar el caballo',
           });
         }
-      })
-
+      });
     }
 
     console.log(' caballo guardado ');
@@ -145,7 +141,7 @@ export class CaballoComponent implements OnInit {
         horseName: new FormControl(horse.horseName),
         horseType: new FormControl(horse.horseType),
         observation: new FormControl(horse.observation),
-        ownerId: new FormControl(horse.ownerId),
+        ownerId: new FormControl(null),
         registrationDate: new FormControl(horse.registrationDate),
       });
     } else {
@@ -168,45 +164,15 @@ export class CaballoComponent implements OnInit {
     console.log(this.form);
   }
 
-  // getAllHorses() {
-  //   this.caballosService.getAllHorses().subscribe(
-  //     (response) => {
-  //       this.horses = response;
-  //       console.log(response);
-  //     },
-  //     (error) => {
-  //       console.error(error);
-  //       //this.errorMessage=true;
-  //     }
-  //   );
-  // }
   getAllHorses() {
     this.caballosService.getAllHorses().subscribe(
       (response) => {
         this.horses = response;
         console.log(response);
-  
-        const ownerRequests = [];
-  
-        for (let horse of this.horses) {
-          if (horse.ownerId) {
-            ownerRequests.push(this.caballosService.getOwnerById(horse.ownerId));
-          } else {
-            horse.ownerName = "Sin dueño";
-          }
-        }
-  
-        if (ownerRequests.length > 0) {
-          forkJoin(ownerRequests).subscribe((ownerResponses) => {
-            for (let i = 0; i < ownerResponses.length; i++) {
-              this.horses[i].ownerName = ownerResponses[i].userName;
-            }
-  
-            console.log(this.horses);
-          });
-        } else {
-          console.log(this.horses);
-        }
+      },
+      (error) => {
+        console.error(error);
+        //this.errorMessage=true;
       }
     );
   }
@@ -216,11 +182,17 @@ export class CaballoComponent implements OnInit {
     console.log(this.currentHorse);
     this.createForm(horse);
   }
-  showInfoHorse(horse){
+  showInfoHorse(horse) {
     this.currentHorseInfo = horse;
-    this.showInfoDialog=true;
-
+    this.showInfoDialog = true;
+  if(horse.ownerId !=null){
+    this.caballosService.getOwnerById(horse.ownerId).subscribe((rs) => {
+      this.ownerName = rs;
+      console.log(this.ownerName)
+    });
+    }
   }
+
   deleteHorse(horseId) {
     this.caballosService.deleteHorse(horseId).subscribe(
       (response) => {
@@ -255,7 +227,6 @@ export class CaballoComponent implements OnInit {
       },
       reject: (type) => {
         switch (type) {
-        
           case ConfirmEventType.CANCEL:
             this.messageService.add({
               severity: 'warn',

@@ -15,8 +15,8 @@
       <ng-container *ngFor="let menu of menus">
         <div class="card" style="width: 18rem;">
           <div class="card-body">
-            <p class="card-title"> <i class="fa-regular fa-heart"></i> {{menu.menuDate}}</p>
-            <hr><button *ngIf="editMenuButton" type="submit" class="btn btn-primary guardarLogin" (click)="editMenu(menu)">Editar</button>
+            <p class="card-title"> <i class="fa-regular fa-heart"></i> {{menu.menuDate}} <button *ngIf="editMenuButton" type="submit" class="btn btn-primary guardarLogin" icon="pi pi-pencil" pButton (click)="editMenu(menu)"></button></p>
+            <hr>
             <div >{{ menu.menuName }}</div>
           </div>
         </div>

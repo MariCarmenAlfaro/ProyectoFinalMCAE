@@ -10,12 +10,22 @@ export class SugerenciasService {
    
    }
    public deleteSuggestion(id){
-    const url = `${this.baseUrl}/Suggestion${id}`;
+    const url = `${this.baseUrl}/Suggestion/${id}`;
     return this.http.delete<any>(url);
   }
 
-  public updateSuggestion(suggestion){
-    const url = `${this.baseUrl}/Suggestion`;
-    return this.http.delete<any>(url, suggestion);
+  public updateSuggestion(id, suggestion){
+    const url = `${this.baseUrl}/Suggestion?id=${id}`;
+    return this.http.put<any>(url, suggestion);
+  }
+
+  public deleteReserva(id){
+    const url = `${this.baseUrl}/ReservationExc/${id}`;
+    return this.http.delete<any>(url);
+  }
+
+  public updateReserva(id, reserva){
+    const url = `${this.baseUrl}/ReservationExc/${id}`;
+    return this.http.put<any>(url, reserva);
   }
 }
