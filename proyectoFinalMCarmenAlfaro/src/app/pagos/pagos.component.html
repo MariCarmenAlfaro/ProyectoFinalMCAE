@@ -44,11 +44,7 @@
                     Método
                 </div>
             </th>
-            <th>
-                <div class="flex align-items-center">
-                    Pagado
-                </div>
-            </th>
+          
             <th>
                 <div class="flex align-items-center">
                     Action
@@ -71,9 +67,7 @@
             <td>
                 <span class="ml-1 vertical-align-middle">{{ pay.payMethod }}</span>
             </td>
-            <td>
-                <span class="ml-1 vertical-align-middle">{{ pay.isPaid }}</span>
-            </td>
+            
             
             <td>
                 
@@ -116,10 +110,7 @@
                 <p-dropdown formControlName="payMethod" [options]="payMethods" optionLabel="name" optionValue="name" placeholder="Metodo de pago"></p-dropdown>
                 
             </div>
-            <div class="form-floating mb-2">
-                <p-checkbox formControlName="isPaid" value="Pagado" inputId="isPaid" [binary]="true"></p-checkbox>
-                <label for="isPaid">Pagado</label>
-            </div>
+            
             </div>
     
 

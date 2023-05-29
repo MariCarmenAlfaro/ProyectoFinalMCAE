@@ -180,8 +180,7 @@ export class GestionComponent implements OnInit {
               userId: new FormControl(this.currentUserId),
               payDate: new FormControl(''),
               priceId: new FormControl(''),
-              payMethod: new FormControl(''),
-              isPaid: new FormControl(false),
+              payMethod: new FormControl('')
             });
             this.showDialog = true
             this.showCreateUser = false;

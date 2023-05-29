@@ -33,7 +33,6 @@ export class PagosComponent implements OnInit {
       payDate: new FormControl(''),
       priceId: new FormControl(''),
       payMethod: new FormControl(''),
-      isPaid: new FormControl(false),
     });
   }
 
@@ -79,21 +78,19 @@ export class PagosComponent implements OnInit {
   }
   createPaymentForm(payment) {
     // obtener tipos de pago
-
+console.log(payment)
     if (this.typeServices.length > 0) {
       this.paymentForm = new FormGroup({
         payId: new FormControl(payment.payId),
         userId: new FormControl(payment.userId),
         payDate: new FormControl(payment.payDate),
         priceId: new FormControl(payment.priceId),
-        payMethod: new FormControl(payment.payMethod),
-        isPaid: new FormControl(payment.isPaid),
+        payMethod: new FormControl(payment.payMethod)
       });
+      console.log(this.paymentForm.value)
 
       this.showPaymentForm = true;
-    } else {
-      this.getTypesServicesPrice();
-    }
+    } 
   }
   getPricePayUser() {
     this.pagosService.getPricePayUser().subscribe((rs) => {
