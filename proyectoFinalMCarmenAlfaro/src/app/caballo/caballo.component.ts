@@ -49,52 +49,53 @@ export class CaballoComponent extends CommonComponent implements OnInit {
   }
   readHorseByOwnerId() {
     this.usuario = JSON.parse(window.localStorage.getItem('user'));
-    this.caballosService
-      .getHorseByOnwerId(this.usuario.userId)
-      .subscribe((rs) => {
-        this.horses = rs;
+    this.caballosService.getHorseByOnwerId(this.usuario.userId)
+    .toPromise()
+    .then((rs) => {
+      this.horses = rs;
         console.log(this.horses);
-      });
+    })
+    .catch(error => {
+      this.showMessage('error', error.error)
+    })
   }
 
  
   updateHorse() {
     if (this.createNewHorse) {
       this.form.controls.horseType.setValue('Clase');
+      
       this.caballosService.createHorse(this.form.value).subscribe(
         (rs) => {
           if (rs) {
             console.log('Ok');
             this.getAllHorses();
             this.showDialog = false;
-            
             this.showMessage('info', 'Caballo creado correctamente.')
           } else {
             this.showMessage('error', 'Error al intentar insertar el caballo')
           }
         },
         (error) => {
-          console.error(error);
+          this.showMessage('error', error.error)
         }
       );
     } else {
-      this.caballosService.updateHorse(this.form.value).subscribe((rs) => {
-        if (rs) {
-          console.log('Ok');
-          this.getAllHorses();
-          this.showDialog = false;
-          
-          this.showMessage('info', 'Caballo modificado correctamente.')
-        } else {
-          this.showMessage('error', 'Error al intentar modficar el caballo')
-        }
-      });
+    
+       this.caballosService.updateHorse(this.form.value).subscribe((rs) => {
+         if (rs) {
+           this.getAllHorses();
+           this.showDialog = false; 
+           this.showMessage('info', 'Caballo modificado correctamente.')
+         } else {
+           this.showMessage('error', 'Error al intentar modficar el caballo')
+         }
+       },
+       (error) => {
+        this.showMessage('error', error.error)
+       });
     }
 
-    console.log(' caballo guardado ');
-    console.log(this.form.value);
-    console.log(this.currentHorse);
-    //TODO llamada al back
   }
 
   createForm(horse) {
@@ -139,12 +140,16 @@ export class CaballoComponent extends CommonComponent implements OnInit {
   getAllHorses() {
     this.caballosService.getAllHorses().subscribe(
       (response) => {
-        this.horses = response;
-        console.log(response);
+        if(response){
+          this.horses = response;
+          console.log(response);
+        }else {
+          this.showMessage('error', 'Error al obtener todos los caballos')
+        }
       },
       (error) => {
-        console.error(error);
-      }
+        this.showMessage('error', error.error)
+       }
     );
   }
 
@@ -158,16 +163,24 @@ export class CaballoComponent extends CommonComponent implements OnInit {
     this.showInfoDialog = true;
   if(horse.ownerId !=null){
     this.caballosService.getOwnerById(horse.ownerId).subscribe((rs) => {
-      this.ownerName = rs;
+      if(rs){
+        this.ownerName = rs;
       console.log(this.ownerName)
-    });
+      }else {
+        this.showMessage('error', 'Error al obtener el caballo')
+      }
+      
+    },
+    (error) => {
+      this.showMessage('error', error.error)
+     });
     }
   }
 
   deleteHorse(horseId) {
     this.caballosService.deleteHorse(horseId).subscribe(
-      (response) => {
-        if (response === true) {
+      (rs) => {
+        if (rs === true) {
           this.getAllHorses();
           this.showMessage('info','Caballo eliminado correctamente')
         } else {
@@ -175,12 +188,11 @@ export class CaballoComponent extends CommonComponent implements OnInit {
         }
       },
       (error) => {
-        console.error(error);
+        this.showMessage('error',error.error)
       }
     );
   }
   deleteHorseDialog(horseId) {
-    //TODO meter un cargando
     this.confirmationService.confirm({
       message: '¿Estás seguro que quieres borrar este caballo?',
       icon: 'pi pi-exclamation-triangle',

@@ -47,8 +47,14 @@ export class ClasesComponent extends CommonComponent implements OnInit {
 
   getClasses() {
     this.clasesService.getAllClassesOrderBy().subscribe((rs) => {
-      this.clases = rs;
-
+      if(rs){
+        this.clases = rs;
+      } else {
+        this.showMessage('error','Error al obtener las clases')
+      }
+    },
+    (error) => {
+      this.showMessage('error',error.error)
     });
   }
 
@@ -58,15 +64,16 @@ export class ClasesComponent extends CommonComponent implements OnInit {
       .subscribe((rs) => {
         if (rs) {
           this.classesDayHour = rs;
+        }else {
+          this.showMessage('error','Error al obtener las clases')
         }
-
+      },
+      (error) => {
+        this.showMessage('error',error.error)
       });
   
   }
-  onChange2(event) {
-    
-
-  }
+  
   addUserToClass() {
     if (this.allUsers.length <= 0) {
       this.gestionService.readAllUser().subscribe((rs) => {
@@ -76,8 +83,13 @@ export class ClasesComponent extends CommonComponent implements OnInit {
               this.allUsers.push(user);
             }
           });
+        } else {
+          this.showMessage('error','Error al añadir usuario a la clase')
         }
         this.showDialogAddUser = true;
+      },
+      (error) => {
+        this.showMessage('error',error.error)
       });
     }
 
@@ -85,14 +97,22 @@ export class ClasesComponent extends CommonComponent implements OnInit {
   }
   getPrices(){
   this.preciosService.getReadAllPrices().subscribe(rs=>{
-    console.log(rs)
-    rs.forEach(clases => {
-      if(clases.typeService=="Clase"){
-      this.barnPrice.push(clases)
-      console.log(this.barnPrice)
-      console.log(this.barnPrice[0].priceId)
-      }
-     } )
+    if(rs){
+      console.log(rs)
+      rs.forEach(clases => {
+        if(clases.typeService=="Clase"){
+        this.barnPrice.push(clases)
+        console.log(this.barnPrice)
+        console.log(this.barnPrice[0].priceId)
+        }
+       } )
+    }else {
+      this.showMessage('error','Error al obtener los precios')
+    }
+   
+    },
+    (error) => {
+      this.showMessage('error',error.error)
     });
 
   }
@@ -107,12 +127,11 @@ export class ClasesComponent extends CommonComponent implements OnInit {
     this.getPrices()
     console.log(this.newClassUser)
     this.clasesService.insertUserToClass(this.newClassUser).subscribe(rs=>{
-      rs
-      console.log(rs)  
-      //TODO  poner toast
-        console.log("se ha creado la clase")
-      if(rs){
+      
      
+      if(rs){
+        console.log(rs)  
+        this.showMessage("info","se ha creado la clase correctamente" )
         this.insertButtonDisabled = false;
         this.showDialogAddUser = false;
         this.newPayment={
@@ -124,17 +143,26 @@ export class ClasesComponent extends CommonComponent implements OnInit {
     
         console.log(this.newPayment)
         this.pagosService.createNewPayment(this.newPayment).subscribe(rs=>{
-          rs
+          
           if(rs){
-             console.log("se ha creado el pago para este usuario")
+            this.showMessage("info","se ha creado el pago para este usuario" )   
+          }  else {
+            this.showMessage('error','Error al intentar borrar el caballo')
           }
-          //todo poner toast
-         
-        })
-        
+        }),
+        (error) => {
+          this.showMessage('error',error.error)
       }
-    
-    })
+      }  else {
+        this.showMessage('error','Error al intentar añadir el usuario a la clase')
+      }
+    },
+    (error) => {
+      this.showMessage('error',error.error)
+    }
+    )
+      
+  
   }
   deleteClass(classToDelete) {
     // TODO obtener el ID de userClass. el ID siempre devuelve 0 el back.
@@ -142,8 +170,14 @@ export class ClasesComponent extends CommonComponent implements OnInit {
       if (rs) {
         this.getClasses();
         this.showDialog = false;
+      }  else {
+        this.showMessage('error','Error al intentar borrar la clase')
       }
-    });
+    },
+    (error) => {
+      this.showMessage('error',error.error)
+    }
+    );
   }
 
   deleteClassDialog(classToDelete) {
@@ -168,12 +202,18 @@ export class ClasesComponent extends CommonComponent implements OnInit {
     this.usuarios = [];
     this.clasesService.getUsersByClassId('Lunes', classHour).subscribe(
       (rs) => {
-        this.usuarios = rs;
+        if(rs){
+          this.usuarios = rs;
         console.log(this.usuarios);
         this.noUsers = false;
+        }else {
+          this.noUsers = true;
+          this.showMessage('error', 'Error al intentar acceder a la clase')
+        }
       },
       (error) => {
         this.noUsers = true;
+        this.showMessage('error',error.error)
       }
     );
     this.showDialog = true;
@@ -182,26 +222,40 @@ export class ClasesComponent extends CommonComponent implements OnInit {
     this.usuarios = [];
     this.clasesService.getUsersByClassId('Miercoles', classHour).subscribe(
       (rs) => {
+        if(rs){
         this.usuarios = rs;
         console.log(this.usuarios);
         this.noUsers = false;
-      },
-      (error) => {
-        this.noUsers = true;
       }
+      else {
+        this.noUsers = true;
+        this.showMessage('error', 'Error al intentar acceder a la clase')
+      }
+    },
+    (error) => {
+      this.noUsers = true;
+      this.showMessage('error',error.error)
+    }
     );
     this.showDialog = true;
   }
   saberClaseJueves(classHour: string) {
     this.usuarios = [];
     this.clasesService.getUsersByClassId('Jueves', classHour).subscribe(
-      (rs) => {
+      (rs) => { 
+        if(rs){
         this.usuarios = rs;
         console.log(this.usuarios);
-        this.noUsers = false;
+        this.noUsers = false;}
+
+      else {
+          this.noUsers = true;
+          this.showMessage('error', 'Error al intentar acceder a la clase')
+        }
       },
       (error) => {
         this.noUsers = true;
+        this.showMessage('error',error.error)
       }
     );
     this.showDialog = true;
@@ -210,12 +264,19 @@ export class ClasesComponent extends CommonComponent implements OnInit {
     this.usuarios = [];
     this.clasesService.getUsersByClassId('Viernes', classHour).subscribe(
       (rs) => {
+        if(rs){
         this.usuarios = rs;
         console.log(this.usuarios);
         this.noUsers = false;
+        }
+        else {
+          this.noUsers = true;
+          this.showMessage('error', 'Error al intentar acceder a la clase')
+        }
       },
       (error) => {
         this.noUsers = true;
+        this.showMessage('error',error.error)
       }
     );
     this.showDialog = true;
@@ -224,12 +285,18 @@ export class ClasesComponent extends CommonComponent implements OnInit {
     this.usuarios = [];
     this.clasesService.getUsersByClassId('Sabado', classHour).subscribe(
       (rs) => {
-        this.usuarios = rs;
+        if(rs){
+           this.usuarios = rs;
         console.log(this.usuarios);
         this.noUsers = false;
+        } else {
+          this.noUsers = true;
+          this.showMessage('error', 'Error al intentar acceder a la clase')
+        }
       },
       (error) => {
         this.noUsers = true;
+        this.showMessage('error',error.error)
       }
     );
     this.showDialog = true;
@@ -238,12 +305,18 @@ export class ClasesComponent extends CommonComponent implements OnInit {
     this.usuarios = [];
     this.clasesService.getUsersByClassId('Martes', classHour).subscribe(
       (rs) => {
-        this.usuarios = rs;
+        if(rs){
+          this.usuarios = rs;
         console.log(this.usuarios);
         this.noUsers = false;
+        }else {
+          this.noUsers = true;
+          this.showMessage('error', 'Error al intentar acceder a la clase')
+        }
       },
       (error) => {
         this.noUsers = true;
+        this.showMessage('error',error.error)
       }
     );
     this.showDialog = true;

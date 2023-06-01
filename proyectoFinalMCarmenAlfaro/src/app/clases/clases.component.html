@@ -135,7 +135,7 @@
             <ng-container *ngIf="classesDayHour.length>0">
                 <label for="">Clases disponibles: </label> <br>
                 <p-dropdown [options]="classesDayHour" [(ngModel)]="selectedClass" placeholder="Selecciona el día"
-                    (onChange)="onChange2($event)" optionLabel="classDay">
+                     optionLabel="classDay">
                     <ng-template let-option pTemplate="item">
                         <span>{{ option.classDay }} - {{ option.classHour }}</span>
                     </ng-template>

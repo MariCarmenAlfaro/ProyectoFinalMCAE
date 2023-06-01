@@ -29,51 +29,38 @@ loginForm = new FormGroup({
     super(injector)
   }
 
-  ngOnInit(): void {
+
+
+  ngOnInit(): void {}
+
+  loginBack() {
+  
+    var emailAddress = this.loginForm.get('emailAddress').value;
+    var password = this.loginForm.get('psswdUser').value;
+    this.loginService.authenticateLogin(emailAddress, password).subscribe((response: UserProfile) => {
+         if (response) {
+          this.showLoading()
+          this.userProfiles = response;
+          window.localStorage.setItem("user", JSON.stringify(this.userProfiles));
+          this.loginService.user = JSON.parse(window.localStorage.getItem("user"))
+          this.loginService.showModal  = false;
+          setTimeout(()=> {
+            this.closeLoading();
+            this.ro.navigateByUrl('/home')
+            }, 3000);
+         } else {
+          this.closeLoading();
+          this.showMessage('error', 'Error al intentar iniciar sesión')
+         }
+       },
+       (error) => {
+        this.closeLoading();
+         this.showMessage('error', error.error)
+       });
+    
+    
 
   }
 
-login(){
-    // TODO obtener el objeto usuario del back.
-    let name = 'mari';
-    let role = 'admin'
-  let user= {name: name, role: role}
- 
-  //guardamos el usuario en local storage
-  window.localStorage.setItem("user", JSON.stringify(user));
-  console.log(JSON.parse(window.localStorage.getItem("user")));
-  // guardamos el usuario en el loginService para tener un acceso más rapido a el
-  this.loginService.user = JSON.parse(window.localStorage.getItem("user"))
-}
-
-loginBack() {
- 
-  var emailAddress = this.loginForm.get('emailAddress').value;
-  var password = this.loginForm.get('psswdUser').value;
-  
-  this.loginService.authenticateLogin(emailAddress, password)
-.toPromise()
-.then((response: UserProfile) => {
-  this.showLoading()
-  this.userProfiles = response;
-  window.localStorage.setItem("user", JSON.stringify(this.userProfiles));
-  this.loginService.user = JSON.parse(window.localStorage.getItem("user"))
-  this.loginService.showModal  = false;
-  setTimeout(()=> {
-    this.closeLoading();
-    this.ro.navigateByUrl('/home')
-    }, 3000);
-})
-.catch(error => {
-  this.closeLoading();
-  this.showMessage('error', error.error)
-})
-.finally(() => {
-})
 
 }
-
-
-}
-
-
