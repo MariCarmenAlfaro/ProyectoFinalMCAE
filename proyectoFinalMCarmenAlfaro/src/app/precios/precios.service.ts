@@ -24,4 +24,8 @@ export class PreciosService {
     var url = this.baseUrl + `/Price/${id}`;
     return this.http.get<any>(url);
   }
+  public updatePrice(price) {
+    var url = this.baseUrl + `/Price/${price.priceId}`;
+    return this.http.put<any>(url,price);
+  }
 }

@@ -45,7 +45,7 @@ export class PagosComponent implements OnInit {
         if (rs) {
           console.log('pago actualizado');
           console.log(rs);
-
+          this.getPricePayUser()
           this.getTypesServicesPrice();
 
           this.showPaymentForm = false;
@@ -57,18 +57,13 @@ export class PagosComponent implements OnInit {
     );
   }
 
-  // readAllPayments() {
-  //   this.pagosService.getAllPayments().subscribe((rs) => {
-  //     this.payments = rs;
-  //   });
- 
-  // }
-
   getTypesServicesPrice() {
     this.pagosService.getTypesServicesPrice().subscribe(
       (rs) => {
         if (rs) {
           this.typeServices = rs;
+          console.log("precios y nombres")
+          console.log(this.typeServices)
         }
       },
       (error) => {
@@ -77,8 +72,7 @@ export class PagosComponent implements OnInit {
     );
   }
   createPaymentForm(payment) {
-    // obtener tipos de pago
-console.log(payment)
+
     if (this.typeServices.length > 0) {
       this.paymentForm = new FormGroup({
         payId: new FormControl(payment.payId),
@@ -95,7 +89,7 @@ console.log(payment)
   getPricePayUser() {
     this.pagosService.getPricePayUser().subscribe((rs) => {
       this.nombresPagos=  rs
-   console.log(this.nombresPagos)
+      
     });
   }
   clear(table) {

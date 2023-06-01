@@ -5,12 +5,12 @@
 // botón circulo
 
 .p-button.button-circle {
-    
+    margin: 0.5%;
     background-color: #fad3e7;
     color: #ec4899;
     border-radius: 25%;
     border-color:#ec4899;
-    width: 2rem;
+    width: 2rem !important;
     height: 2rem;
     &:enabled:not(:focus):hover,
     &:focus {
@@ -25,7 +25,31 @@
 
     
   }
+.button-circleBlack {
 
+        background-color: #1e1e1e;
+        color: #fff;
+        border-radius: 20%;
+        border-color: #414141;
+        width: 3rem;
+        height: 3rem;
+    &:enabled:not(:focus):hover,
+    &:focus {
+        border-color:#939393;
+        background-color: #ffffff;
+        color:rgb(0, 0, 0)
+    }
+
+    span {
+      font-size: 1rem;
+    }
+
+    
+  }
+  p-progressSpinner{
+    width: 50%;
+    margin: auto;
+  }
 
 /* You can add global styles to this file, and also import other style files */
 *{ 
@@ -33,7 +57,9 @@
     padding: 0;
     font-family: 'Playfair Display', serif;
 }
-
+pre{
+    font-family: 'Playfair Display', serif; 
+}
 ÷//TODO borrar cuerpo no se usa
 .cuerpo{
     background-color: white;
@@ -109,3 +135,7 @@ a.nav-link,.navbar-brand{
    margin-right: 0;
 
 }
+
+// .p-sidebar-left.w-30rem {
+//     width: 30rem;
+// }

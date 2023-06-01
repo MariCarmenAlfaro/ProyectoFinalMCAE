@@ -10,45 +10,53 @@
     </div>
   </div>
   <div class="bar">
-    
- 
-      <ng-container *ngFor="let menu of menus">
-        <div class="card" style="width: 18rem;">
-          <div class="card-body">
-            <p class="card-title"> <i class="fa-regular fa-heart"></i> {{menu.menuDate}} <button *ngIf="editMenuButton" type="submit" class="btn btn-primary guardarLogin" icon="pi pi-pencil" pButton (click)="editMenu(menu)"></button></p>
-            <hr>
-            <div >{{ menu.menuName }}</div>
+
+
+    <ng-container *ngFor="let menu of menus">
+      <div class="card" style="width: 18rem;">
+        <div class="card-body">
+          <div class="tituloMenu">
+          <div class="card-title">
+            <i class="fa-regular fa-heart"></i> {{menu.menuDate}}
+
+            <button *ngIf="editMenuButton" type="submit" class="button-circle" pButton icon="pi pi-pencil"
+              (click)="editMenu(menu)"></button>
           </div>
+
         </div>
-      </ng-container>
-      
-  
-    
-    
-
-
+        <hr>
+        <div>Hoy toca... ¡{{ menu.menuName }}!</div>
+      </div>
   </div>
+  </ng-container>
+
+
+
+
+
+
+</div>
 
 
 </div>
 
 <p-sidebar [(visible)]="showEditMenu">
-<ng-container *ngIf="currentMenu">
-  <form [formGroup]="updateMenuForm">
-    
-      <div class="card" style="width: 18rem;">
-        <div class="card-body">
-          <p class="card-title"> <i class="fa-regular fa-heart"></i> {{currentMenu.menuDate}}</p>
-          <hr>
-          <div class="mb-2">
-            <input type="text"class="form-control" name="nameMenu" formControlName="nameMenu">
-          </div>
-          
-          <button  type="submit" class="btn btn-primary guardarLogin" (click)="updateMenu()">Guardar</button>
-        </div>
-      </div>
-    
-   
-  </form>
-</ng-container>  
+  <ng-container *ngIf="currentMenu">
+    <form [formGroup]="updateMenuForm">
+
+      <i class="fa-regular fa-heart"></i> {{currentMenu.menuDate}}
+      <hr>
+
+      <input type="text" class="form-control" name="nameMenu" formControlName="nameMenu">
+
+
+
+      <button type="submit" class="button-circle" pButton (click)="updateMenu()" icon="pi pi-check">
+
+      </button>
+
+
+
+    </form>
+  </ng-container>
 </p-sidebar>

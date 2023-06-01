@@ -10,3 +10,27 @@
 .altoClases{
     height: 80vh;
 }
+.usuarios{
+    width: 90%;
+    margin: auto;
+    padding: 1%;
+}
+.clasesUser{
+    padding: 1%;
+}
+.btnDerecha{
+    display: flex;
+    justify-content: flex-end;
+    padding: 1%;
+}
+.contrasenya{
+    display: flex;
+    align-items: center;
+}
+.text-primary .font-semibold .text-xl{
+color: rgb(255, 123, 184);
+}
+.text-primary {
+    --bs-text-opacity: 1;
+    color: rgb(255, 123, 184)!important;
+}

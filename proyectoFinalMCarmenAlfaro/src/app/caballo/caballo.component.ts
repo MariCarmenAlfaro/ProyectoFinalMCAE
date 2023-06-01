@@ -164,6 +164,11 @@ export class CaballoComponent implements OnInit {
     console.log(this.form);
   }
 
+  verCamara(){
+    window.open('https://www.skylinewebcams.com/es/webcam/espana/islas-baleares/mallorca/mallorca-alcudia.html', '_blank');
+  }
+  
+
   getAllHorses() {
     this.caballosService.getAllHorses().subscribe(
       (response) => {

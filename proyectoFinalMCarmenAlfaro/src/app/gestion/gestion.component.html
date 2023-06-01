@@ -1,183 +1,159 @@
+<div class="usuarios">
+    <div class="col-12 my-3">
+
+        <button class="button-circleBlack" pButton icon="pi pi-user-plus" (click)="this.showCreateForm()"></button>
+    </div>
+
+    <!-- tabla usuarios -->
+    <ng-container *ngIf="users">
+        <p-table #dt1 [value]="users" [paginator]="true" dataKey="id" [rows]="10"
+            [globalFilterFields]="['userName', 'emailAddress', 'userType']">
+            <ng-template pTemplate="caption">
+                <div class="flex btnDerecha">
+                    <button pButton class="button-circle" icon="pi pi-filter-slash" (click)="clear(dt1)"></button>
+
+                </div>
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>
+                        <div class="flex align-items-center">
+                            Nombre
+                            <p-columnFilter type="text" field="userName" display="menu"></p-columnFilter>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="flex align-items-center">
+                            Correo electronico
+                            <p-columnFilter type="text" field="emailAddress" display="menu"></p-columnFilter>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="flex align-items-center">
+                            Tipo
+                            <p-columnFilter type="text" field="userType" display="menu"></p-columnFilter>
+                        </div>
+                    </th>
+
+                    <th>
+                        <div class="flex align-items-center">
+                            Acciones
+                        </div>
+                    </th>
+
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-user>
+                <tr>
+                    <td>
+                        {{ user.userName }}
+                    </td>
+                    <td>
+                        <span class="ml-1 vertical-align-middle">{{ user.emailAddress }}</span>
+                    </td>
+                    <td>
+                        <span class="ml-1 vertical-align-middle">{{ user.userType }}</span>
+                    </td>
+
+                    <td>
+                        <div class="row">
+
+                            <button class="button-circle " icon="pi pi-user" (click)="showInfoUser(user)" pButton
+                                pTooltip="+ info" tooltipPosition="top"></button>
+                            <ng-container *ngIf="user.userType === 'Dueño'">
+                                <button class="button-circle " icon="fa-solid fa-horse-head"
+                                    (click)="showHorsesDisplay(user.userId)" pButton pTooltip="Ver caballos"
+                                    tooltipPosition="top"></button>
+                            </ng-container>
+                            <ng-container *ngIf="user.userType === 'Alumno'">
+                                <button class="button-circle " icon="fa-solid fa-graduation-cap"
+                                    (click)=showClass(user.userId) pButton pTooltip="Clases"
+                                    tooltipPosition="top"></button>
+                            </ng-container>
+
+                            <button class="button-circle " icon="pi pi-euro" (click)=addPayment(user.userId) pButton
+                                pTooltip="Añadir pago" tooltipPosition="top"></button>
+                            <button class="button-circle " icon="pi pi-trash" (click)=deleteUserDialog(user)
+                                pButton pTooltip="Borrar" tooltipPosition="top"></button>
 
 
-<div class="col-12 my-3">
-  
-    <p-button class="register" icon="fa-solid fa-user-plus" (click)="this.showCreateForm()"></p-button>
+                        </div>
+
+
+
+
+
+                    </td>
+
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="7">No customers found.</td>
+                </tr>
+            </ng-template>
+
+
+        </p-table>
+    </ng-container>
 </div>
-
-<!-- tabla usuarios -->
-<ng-container *ngIf="users">
-    <p-table
-    #dt1
-    [value]="users"
-    [paginator]="true"
-    dataKey="id"
-    [rows]="10"
-    [showCurrentPageReport]="true"
-    [rowsPerPageOptions]="[10, 25, 50]"
-    [globalFilterFields]="['userName', 'emailAddress', 'userType']"
-    [rowsPerPageOptions]="[10, 25, 50]"
->
-    <ng-template pTemplate="caption">
-        <div class="flex">
-            <button pButton class="p-button-outlined" icon="pi pi-filter-slash" (click)="clear(dt1)"></button>
-           
-        </div>
-    </ng-template>
-    <ng-template pTemplate="header">
-        <tr>
-            <th>
-                <div class="flex align-items-center">
-                    Nombre
-                    <p-columnFilter type="text" field="userName" display="menu"></p-columnFilter>
-                </div>
-            </th>
-            <th>
-                <div class="flex align-items-center">
-                    Correo electronico
-                    <p-columnFilter type="text" field="emailAddress" display="menu"></p-columnFilter>
-                </div>
-            </th>
-            <th>
-                <div class="flex align-items-center">
-                    Tipo
-                    <p-columnFilter type="text" field="userType" display="menu"></p-columnFilter>
-                </div>
-            </th>
-            
-            <th>
-                <div class="flex align-items-center">
-                     Acciones
-                </div>
-            </th>
-     
-        </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-user>
-        <tr>
-            <td>
-                {{ user.userName }}
-            </td>
-            <td>
-                <span class="ml-1 vertical-align-middle">{{ user.emailAddress }}</span>
-            </td>
-            <td>
-                <span class="ml-1 vertical-align-middle">{{ user.userType }}</span>
-            </td>
-           
-            <td>
-                <div class="row">
-                
-                  <ng-container *ngIf="user.userType === 'Dueño'">
-                    <button
-                    class="button-circle "
-                    icon="fa-solid fa-horse-head"
-                    (click)="showHorsesDisplay(user.userId)"
-                    pButton
-                    pTooltip="Ver caballos"
-                    tooltipPosition="top"
-                  ></button>
-                </ng-container>
-                <ng-container *ngIf="user.userType === 'Alumno'">
-                    <button
-                    class="button-circle "
-                    icon="fa-solid fa-graduation-cap"
-                    (click)=showClass(user.userId)
-                    pButton
-                    pTooltip="Clases"
-                    tooltipPosition="top"
-                  ></button>
-                </ng-container>
-                <button
-                    class="button-circle "
-                    icon="pi pi-user"
-                    (click)="showInfoUser(user)"
-                    pButton
-                    pTooltip="+ info"
-                    tooltipPosition="top"
-                  ></button>
-                  <button
-                    class="button-circle "
-                    icon="pi pi-euro"
-                    (click)=addPayment(user.userId)
-                    pButton
-                    pTooltip="Añadir pago"
-                    tooltipPosition="top"
-                  ></button>
-                    <button
-                    class="button-circle "
-                    icon="pi pi-trash"
-                    (click)=deleteUserDialog(user.userId)
-                    pButton
-                    pTooltip="Borrar"
-                    tooltipPosition="top"
-                  ></button>
-                  
-               
-                </div>
-                
-               
-            
-                
-                
-            </td>
-          
-        </tr>
-    </ng-template>
-    <ng-template pTemplate="emptymessage">
-        <tr>
-            <td colspan="7">No customers found.</td>
-        </tr>
-    </ng-template>
-
-    <ng-template pTemplate="paginatorright">
-        <p-button type="button" icon="pi pi-cloud" styleClass="p-button-text"></p-button>
-    </ng-template>
-</p-table>
-</ng-container>
-
 <p-sidebar [(visible)]="showDialogUser">
-    <div class="col-12" *ngIf="currentUser && showInfoUserDiv">
-        <p>{{currentUser.userId}}</p>
-        <p>{{currentUser.userName}}</p>
-        <p>{{currentUser.userType}}</p>
-        <p>{{currentUser.emailAddress}}</p>
-        <p>{{currentUser.registrationDate}}</p>
 
-        <p-button label="Editar" (click)="mostrarEditarUsuario(currentUser)"></p-button>
+    <div class="col-12" *ngIf="currentUser && showInfoUserDiv">
+
+        <p-panel header="" icon="pi pi-heart">
+            <ng-template pTemplate="header">
+                <span class="text-primary font-semibold text-xl"> <i class="fa-regular fa-heart"></i> {{ currentUser.userName }}<div class="btnDerecha">
+                 
+               </div> </span>
+               </ng-template>
+
+            <strong>Tipo usuario: </strong>
+            <pre>   {{currentUser.userType}}</pre>
+            <strong>Email: </strong>
+            <pre>   {{currentUser.emailAddress}}</pre>
+            <strong>Fecha de registro: </strong>
+            <pre>   {{currentUser.registrationDate | date:'dd - MM - yyyy'}}</pre>
+        </p-panel>
+        <div class="btnDerecha">
+            <button class="button-circle" icon="pi pi-pencil" pButton
+                (click)="mostrarEditarUsuario(currentUser)"></button>
+        </div>
     </div>
 
     <div class="col-12" *ngIf="showEditUser">
-        <p>Editar usuario</p>
+        <p> <i class="fa-regular fa-heart"></i>Edición</p>
         <form class="row g-3 f  romReserva" [formGroup]="updateUserForm">
             <div class="modal-body">
-            <div class="form-floating mb-2">
-                <input type="text" class="form-control" placeholder="Usuario" formControlName="userName">
-                <label for="userName">Nombre</label>
-            </div>
-           
-            <div class="form-floating mb-2">
-                <p-dropdown formControlName="userType" [options]="userTypes" optionLabel="name" placeholder="Tipo usuario"></p-dropdown>
-            </div>
-            <div class="form-floating mb-2">
-                
-                <input type="date" class="form-control" placeholder="Fecha registro" formControlName="registrationDate">
-                <label for="registrationDate">Fecha registro</label>
-            </div>
-            <div class="form-floating mb-2">
-                <input type="text" class="form-control" placeholder="Correo" formControlName="emailAddress">
-                <label for="emailAddress">Correo</label>
-            </div>
-    
-            
+                <div class="form-floating mb-2">
+                    <input type="text" class="form-control" placeholder="Usuario" formControlName="userName">
+                    <label for="userName">Nombre</label>
+                </div>
+
+                <div class="form-floating mb-2">
+                    <p-dropdown formControlName="userType" [options]="userTypes"
+                     optionLabel="name" optionValue="name"  placeholder="Tipo usuario"></p-dropdown>
+                </div>
+                <div class="form-floating mb-2">
+
+                    <input type="date" class="form-control" placeholder="Fecha registro"
+                        formControlName="registrationDate">
+                    <label for="registrationDate">Fecha registro</label>
+                </div>
+                <div class="form-floating mb-2">
+                    <input type="text" class="form-control" placeholder="Correo" formControlName="emailAddress">
+                    <label for="emailAddress">Correo</label>
+                </div>
+
+
 
             </div>
-    
+
 
             <div class="modal-footer">
-    
-            <button type="submit" class="btn btn-primary guardarLogin" (click)="updateUser()">Guardar</button>
-    
+
+                <button type="submit" class="btn btn-primary guardarLogin" (click)="updateUser()">Guardar</button>
+
             </div>
         </form>
     </div>
@@ -185,41 +161,48 @@
 </p-sidebar>
 <p-sidebar [(visible)]="showDialog">
     <ng-container *ngIf="showCreateUser">
-        <p-button  (click)="generatePassword()">Generar contraseña</p-button>
+      
         <div class="col-12">
             <form class="row g-3 f  romReserva" [formGroup]="form">
                 <div class="modal-body">
-                <div class="form-floating mb-2">
-                    <input type="text" class="form-control" placeholder="Usuario" formControlName="userName">
-                    <label for="userName">Nombre</label>
-                </div>
-               
-                <div class="form-floating mb-2">
-                    <p-dropdown formControlName="userType" [options]="userTypes" optionLabel="name" placeholder="Tipo usuario"></p-dropdown>
-                </div>
-                <div class="form-floating mb-2">
-                    
-                    <input type="date" class="form-control" placeholder="Fecha registro" formControlName="registrationDate">
-                    <label for="registrationDate">Fecha registro</label>
-                </div>
-                <div class="form-floating mb-2">
-                    <input type="text" class="form-control" placeholder="Correo" formControlName="emailAddress">
-                    <label for="emailAddress">Correo</label>
-                </div>
-        
-                <div class="form-floating mb-2">
-                    <input type="password" class="form-control" placeholder="Contraseña" formControlName="psswdUser">
-                    <label for="psswdUser">Contraseña</label>
-                </div>
+                    <div class="form-floating mb-2">
+                        <input type="text" class="form-control" placeholder="Usuario" formControlName="userName">
+                        <label for="userName">Nombre</label>
+                    </div>
+
+                    <div class="form-floating mb-2">
+                        <p-dropdown formControlName="userType" [options]="userTypes" optionLabel="name" optionValue="name" placeholder="Tipo usuario"></p-dropdown>
+                    </div>
+                    <div class="form-floating mb-2">
+
+                        <input type="date" class="form-control" placeholder="Fecha registro"
+                            formControlName="registrationDate">
+                        <label for="registrationDate">Fecha de registro</label>
+                    </div>
+                    <div class="form-floating mb-2">
+                        <input type="text" class="form-control" placeholder="Correo" formControlName="emailAddress">
+                        <label for="emailAddress">Email</label>
+                    </div>
+
+                    <div class="form-floating mb-2">
+                        <input type="password" class="form-control" placeholder="Contraseña"
+                            formControlName="psswdUser">
+                        <label for="psswdUser">Contraseña</label>
+                    </div>
 
                 </div>
-        
+                <div class="contrasenya">
+                    <button type="submit" class="button-circle" pButton icon="pi pi-heart
+                        " (click)="generatePassword()"></button> <label for=""> Generar contraseña</label>
+            </div>
 
                 <div class="modal-footer">
-                <button type="submit" class="btn btn-primary " (click)="this.showDialog = false">Cerrar</button>
-        
-                <button type="submit" class="btn btn-primary guardarLogin" (click)="postNewUser()">Guardar</button>
-        
+                   
+                    <div class="modal-footer btnDerecha">
+                        <button type="submit" class="button-circle" pButton icon="pi pi-check
+                    " (click)="postNewUser()"></button>
+
+                    </div>
                 </div>
             </form>
         </div>
@@ -228,174 +211,146 @@
     <!-- añadir caballo  -->
     <ng-container *ngIf="showAddHorseToUser">
         <div class="col-12">
-            <p>Nuevo caballo</p>
+            <p>Añadir caballo</p>
             <form class="row g-3 f  romReserva" [formGroup]="formHorseOwner">
                 <div class="modal-body">
-                  <div class="form-floating mb-2">
-                    <input type="text" class="form-control" placeholder="Nombre" formControlName="horseName">
-                    <label for="horseName">Nombre</label>
-                  </div>
-                  <div class="form-floating mb-2">
-                    <input type="text" class="form-control" placeholder="Barrera" formControlName="barnNum">
-                    <label for="barnNum">Cuadra</label>
-                  </div>
-                  <div class="form-floating mb-2">
-                    <input type="text" class="form-control" placeholder="Camara" formControlName="cameraUrl">
-                    <label for="cameraUrl">Link cámara</label>
-                  </div>
-                  <div class="form-floating mb-2">
-                    <p-dropdown formControlName="foodType" [options]="foodHorseTypes" optionLabel="name" optionValue="name" placeholder="Comida"></p-dropdown>
-                  </div>
-    
-                  <div class="form-floating mb-2">
-                    <input type="text" class="form-control" placeholder="Observaciones" formControlName="observation">
-                    <label for="observation">Observaciones</label>
-                  </div>
-                     <div class="form-floating mb-2">
-                        <input type="date" class="form-control"  placeholder="Fecha registro"
-                          formControlName="registrationDate" >
+                    <div class="form-floating mb-2">
+                        <input type="text" class="form-control" placeholder="Nombre" formControlName="horseName">
+                        <label for="horseName">Nombre</label>
+                    </div>
+                    <div class="form-floating mb-2">
+                        <input type="text" class="form-control" placeholder="Barrera" formControlName="barnNum">
+                        <label for="barnNum">Cuadra</label>
+                    </div>
+                    <div class="form-floating mb-2">
+                        <input type="text" class="form-control" placeholder="Camara" formControlName="cameraUrl">
+                        <label for="cameraUrl">Link cámara</label>
+                    </div>
+                    <div class="form-floating mb-2">
+                        <p-dropdown formControlName="foodType" [options]="foodHorseTypes" optionLabel="name"
+                            optionValue="name" placeholder="Comida"></p-dropdown>
+                    </div>
+
+                    <div class="form-floating mb-2">
+                        <input type="text" class="form-control" placeholder="Observaciones"
+                            formControlName="observation">
+                        <label for="observation">Observaciones</label>
+                    </div>
+                    <div class="form-floating mb-2">
+                        <input type="date" class="form-control" placeholder="Fecha registro"
+                            formControlName="registrationDate">
                         <label for="registrationDate">Fecha registro</label>
-                      </div>
+                    </div>
 
                 </div>
-    
-                <div class="modal-footer">
-                  <button type="submit" class="btn btn-primary guardarLogin" (click)="savePrivateHorse()">Guardar</button>
-    
-                </div>
-              </form>
-        </div>
-    </ng-container>
 
-    <!-- pago -->
-    <ng-container *ngIf="showPaymentForm">
-      
-        <div class="col-12">
-            <p>Nuevo pago</p>
-            <form class="row g-3 f  romReserva" [formGroup]="paymentForm">
-                <div class="modal-body">
-                <div class="form-floating mb-2">
-                    <input type="date" class="form-control" placeholder="Fecha de pago" formControlName="payDate">
-                    <label for="payDate">Fecha de pago</label>
-                </div>
-               
-                <div class="form-floating mb-2">
-                    <p-dropdown formControlName="priceId" [options]="typeServices" optionLabel="typeService" optionValue="priceId" placeholder="Tipo servicio"></p-dropdown>
-                </div>
-                <div class="form-floating mb-2">
-                    <p-dropdown formControlName="payMethod" [options]="payMethods" optionLabel="name" optionValue="name" placeholder="Metodo de pago"></p-dropdown>
-                    
-                </div>
-              
-        
-               
+                <div class="modal-footer btnDerecha">
+                    <button type="submit" class="button-circle" pButton icon="pi pi-ch
+                  " (click)="savePrivateHorse()"></button>
 
-                </div>
-        
-
-                <div class="modal-footer">
-               
-        
-                <button type="submit" class="btn btn-primary guardarLogin" (click)="savePayment()">Guardar</button>
-        
                 </div>
             </form>
         </div>
     </ng-container>
 
-    </p-sidebar>
+    <!-- pago -->
+    <ng-container *ngIf="showPaymentForm">
 
-    <!-- ver caballos -->
-    <p-sidebar [(visible)]="horsesDisplay">
         <div class="col-12">
-            <button
-                    class="button-circle "
-                    icon="pi pi-plus"
-                    (click)="addHorseByUser()"
-                    pButton
-                    pTooltip="Añadir caballo"
-                    tooltipPosition="top"
-                  ></button>
-            <ng-container *ngIf="horsesUser.length > 0">
-               <h1>Caballo/s</h1> 
-               <div class="col-12 m-1" *ngFor="let horse of horsesUser">
-                <p-panel header="{{horse.horseName}} ({{horse.horseId}})">
-                    <p>{{horse.foodType}}</p>
-                <p>{{horse.cameraUrl}}</p>
-                <p>{{horse.observation}}</p>
-                <p>{{horse.registrationDate}}</p>
-                </p-panel>
-        
-               </div>
-            </ng-container>
-            <span *ngIf="horsesUser.length <= 0">
-                Caballos sin registrar
-            </span>
+            <p><i class="fa-regular fa-heart"></i> Crear pago</p>
+            <form class="row g-3 f  romReserva" [formGroup]="paymentForm">
+                <div class="modal-body">
+                    <div class="form-floating mb-2">
+                        <input type="date" class="form-control" placeholder="Fecha de pago" formControlName="payDate">
+                        <label for="payDate">Fecha de pago</label>
+                    </div>
+
+                    <div class="form-floating mb-2">
+                        <p-dropdown formControlName="priceId" [options]="typeServices" optionLabel="typeService"
+                            optionValue="priceId" placeholder="Tipo servicio"></p-dropdown>
+                    </div>
+                    <div class="form-floating mb-2">
+                        <p-dropdown formControlName="payMethod" [options]="payMethods" optionLabel="name"
+                            optionValue="name" placeholder="Metodo de pago"></p-dropdown>
+
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+
+                    <button type="submit" class="button-circle" icon="pi pi-check" pButton
+                        (click)="savePayment()"></button>
+
+                </div>
+            </form>
         </div>
-    </p-sidebar>
+    </ng-container>
 
-    <!-- <p-sidebar [(visible)]="showDialogAddUser">
-        <div class="col-12 altoClases" >
-          
-            <p-dropdown [options]="levelUser" [(ngModel)]="selectedLevel" optionLabel="name" (onChange)="onChange($event)" placeholder="Seleciona el nivel"></p-dropdown>
-            <ng-container *ngIf="classesDayHour.length>0">
-    
-            <p-dropdown [options]="classesDayHour" [(ngModel)]="selectedClass" placeholder="Selecciona el día" (onChange)="onChange2($event)" optionLabel="classDay">
-                <ng-template let-option pTemplate="item">
-                  <span>{{ option.classDay }} - {{ option.classHour }}</span>
-                </ng-template>
-              </p-dropdown>
-                 </ng-container>
-                 <button
-                 class="button"
-                label="Guardar"
-                 (click)="insertUserToClass()"
-                 pButton
-                 pTooltip="Añadir usuario a clase"
-                 tooltipPosition="top"
-                 [disabled]="this.insertButtonDisabled"
-                 ></button>
+</p-sidebar>
+
+<!-- ver caballos -->
+<p-sidebar [(visible)]="horsesDisplay" styleClass="w-30rem">
+    <div class="col-12">
+        <h1>Caballo/s</h1>
+        <div class="btnDerecha">
+            <button class="button-circle " icon="pi pi-plus" (click)="addHorseByUser()" pButton
+                pTooltip="Añadir caballo" tooltipPosition="top"></button>
         </div>
-    </p-sidebar> -->
+        <ng-container *ngIf="horsesUser.length > 0">
 
+            <div class="col-12 m-1" *ngFor="let horse of horsesUser">
+                <p-panel header="{{horse.horseName}}">
+                    <strong>Alimentación:</strong>
+                    <pre>   {{horse.foodType}}</pre>
+                    <strong>Link cámara:</strong>
+                    <pre>   {{horse.cameraUrl}}</pre>
 
-    <p-sidebar [(visible)]="clasesDisplay">
-        <button
-        class="button-circle "
-        icon="pi pi-user-plus"
-        routerLink="/clases"
-        pButton
-        pTooltip="Añadir usuario a clase"
-        tooltipPosition="top"
-        ></button>
-        <ng-container *ngIf="currentUserClases != null">
-            <div class="col-12">
-                <h1>Clase/s de:   </h1>
-                <ng-container *ngFor="let clases of currentUserClases">
-                <p-panel header="">
-                  <p>Día : {{clases.classDay}} </p>
-                <p>Hora {{clases.classHour}} </p>
-                <p>Nivel: {{clases.classLevel}}</p>
+                    <strong>Observaciones: </strong>
+                    <pre>   {{horse.observation}}</pre>
+
+                    <strong>Fecha de registro: </strong>
+                    <pre>   {{horse.registrationDate | date:'dd - MM - yyyy'}}</pre>
                 </p-panel>
-            </ng-container>
 
             </div>
         </ng-container>
-        <ng-container *ngIf="currentUserClases === null">
-            <div class="col-12">
-                <h3>¡Todavía no tiene clases!</h3>
-            </div>
-        </ng-container>
-        
-    </p-sidebar>
- 
+        <span *ngIf="horsesUser.length <= 0">
+            <strong>¡Oh vaya! Parece que aún no tienes caballos</strong>
+        </span>
+    </div>
+</p-sidebar>
+
+<p-sidebar [(visible)]="clasesDisplay">
+    <button class="button-circle " icon="pi pi-plus" routerLink="/clases" pButton pTooltip="Añadir usuario a clase"
+        tooltipPosition="top"></button>&nbsp;<label>Añadir clase</label>
+    <ng-container *ngIf="currentUserClases != null">
+        <div class="col-12">
+
+            <ng-container *ngFor="let clases of currentUserClases">
+                <p-panel header="Horario" class="clasesUser">
+                    <p>Día : {{clases.classDay}} </p>
+                    <p>Hora {{clases.classHour}} </p>
+                    <p>Nivel: {{clases.classLevel}}</p>
+                </p-panel>
+            </ng-container>
+
+        </div>
+    </ng-container>
+    <ng-container *ngIf="currentUserClases === null">
+        <div class="col-12">
+            <h3>¡Todavía no tiene clases!</h3>
+        </div>
+    </ng-container>
+
+</p-sidebar>
+
 <p-toast></p-toast>
-    <p-confirmDialog #cd [style]="{width:'50vw'}">
-      <ng-template pTemplate="header">
+<p-confirmDialog #cd [style]="{width:'50vw'}">
+    <ng-template pTemplate="header">
         <h3>¡Cuidado!</h3>
-      </ng-template>
-      <ng-template pTemplate="footer">
-        <button type="button" pButton icon="pi pi-times" label="No" (click)="cd.reject()"></button>
-        <button type="button" pButton icon="pi pi-check" label="Si" (click)="cd.accept()"></button>
-      </ng-template>
-    </p-confirmDialog>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <button type="button" pButton icon="pi pi-times" class="button-circle" (click)="cd.reject()"></button>
+        <button type="button" pButton icon="pi pi-check" class="button-circle" (click)="cd.accept()"></button>
+    </ng-template>
+</p-confirmDialog>

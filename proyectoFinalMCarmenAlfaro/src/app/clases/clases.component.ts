@@ -7,6 +7,8 @@ import {
 import { ClasesService } from './clases.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import { GestionService } from '../gestion/gestion.service';
+import { PagosService } from '../pagos/pagos.service';
+import { PreciosService } from '../precios/precios.service';
 
 @Component({
   selector: 'app-clases',
@@ -29,12 +31,17 @@ export class ClasesComponent implements OnInit {
   selectedLevel = null;
   newClassUser: any;
   insertButtonDisabled = false;
+  newPayment
+  currentDate= new Date()
+  barnPrice=[]
   levelUser = [{ name: 'Bajo' }, { name: 'Medio' }, { name: 'Alto' }];
   constructor(
     public clasesService: ClasesService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
-    private gestionService: GestionService
+    private gestionService: GestionService,
+    public pagosService: PagosService,
+    private preciosService: PreciosService
   ) {}
   ngOnInit(): void {
     this.getClasses();
@@ -43,7 +50,7 @@ export class ClasesComponent implements OnInit {
   getClasses() {
     this.clasesService.getAllClassesOrderBy().subscribe((rs) => {
       this.clases = rs;
-      console.log(this.clases);
+
     });
   }
 
@@ -54,15 +61,13 @@ export class ClasesComponent implements OnInit {
         if (rs) {
           this.classesDayHour = rs;
         }
-        console.log(rs);
-        console.log(this.selectedUser);
+
       });
-    // TODO llamada para obtener las clases dependiendo del nivel
+  
   }
   onChange2(event) {
-    console.log(event.value);
+    
 
-    // TODO llamada para obtener las clases dependiendo del nivel
   }
   addUserToClass() {
     if (this.allUsers.length <= 0) {
@@ -78,9 +83,22 @@ export class ClasesComponent implements OnInit {
       });
     }
 
-    console.log(this.allUsers);
 
   }
+  getPrices(){
+  this.preciosService.getReadAllPrices().subscribe(rs=>{
+    console.log(rs)
+    rs.forEach(clases => {
+      if(clases.typeService=="Clase"){
+      this.barnPrice.push(clases)
+      console.log(this.barnPrice)
+      console.log(this.barnPrice[0].priceId)
+      }
+     } )
+    });
+
+  }
+
   insertUserToClass() {
     this.insertButtonDisabled = true;
     this.newClassUser = {
@@ -88,14 +106,36 @@ export class ClasesComponent implements OnInit {
       classId: this.selectedClass.classId
      
     };
+    this.getPrices()
     console.log(this.newClassUser)
     this.clasesService.insertUserToClass(this.newClassUser).subscribe(rs=>{
       rs
-      console.log(rs)
+      console.log(rs)  
+      //TODO  poner toast
+        console.log("se ha creado la clase")
       if(rs){
+     
         this.insertButtonDisabled = false;
+        this.showDialogAddUser = false;
+        this.newPayment={
+          userId:this.selectedUser.userId,
+          payMethod:'Pendiente',
+          payDate: this.currentDate,
+          priceId:this.barnPrice[0].priceId
+        }
+    
+        console.log(this.newPayment)
+        this.pagosService.createNewPayment(this.newPayment).subscribe(rs=>{
+          rs
+          if(rs){
+             console.log("se ha creado el pago para este usuario")
+          }
+          //todo poner toast
+         
+        })
+        
       }
-      //TODO poner toast
+    
     })
   }
   deleteClass(classToDelete) {
@@ -111,7 +151,7 @@ export class ClasesComponent implements OnInit {
   deleteClassDialog(classToDelete) {
     console.log(classToDelete);
     this.confirmationService.confirm({
-      message: 'Estás seguro que quieres borrar este usuario de la clase?',
+      message: '¿Estás seguro que quieres borrar éste usuario de la clase?',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.deleteClass(classToDelete);

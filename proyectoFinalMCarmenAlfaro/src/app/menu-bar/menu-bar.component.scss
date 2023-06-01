@@ -26,3 +26,27 @@
 .menu{
   font-weight: 600;
 }
+.p-button.button-circleMenu {
+    
+  background-color: #fad3e7;
+  color: #ec4899;
+  border-radius: 25%;
+  border-color:#ec4899;
+  width: 0.5rem;
+  height: 0.5rem;
+  &:enabled:not(:focus):hover,
+  &:focus {
+      border-color:#ec4899;
+      background-color: #ec4899;
+      color:white
+  }
+
+  span {
+    font-size: 1rem;
+  }
+
+  .tituloMenu{
+    display: flex;
+    justify-content: space-between;
+  }
+}

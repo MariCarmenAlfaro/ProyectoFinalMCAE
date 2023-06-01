@@ -4,6 +4,7 @@ import { ReservationExcService } from './servicios.service';
 import { ReservationExc } from '../entities/reservationExc.interface';
 import { ClasesService } from '../clases/clases.service';
 
+
 @Component({
   selector: 'app-servicios',
   templateUrl: './servicios.component.html',
@@ -20,6 +21,7 @@ priceClase
 priceEstablo
 priceCumple
 
+
   excursionForm = new FormGroup({
     name: new FormControl('', Validators.required),
     email: new FormControl('', Validators.required),
@@ -27,10 +29,13 @@ priceCumple
     date: new FormControl('', Validators.required),
     type: new FormControl('', Validators.required),
   });
-  constructor(public reservationService: ReservationExcService, public clasesService: ClasesService) {}
+  constructor(
+    public reservationService: ReservationExcService,
+     public clasesService: ClasesService) {}
 
   ngOnInit(): void {
-    
+  
+   
     this.clasesService.getAllClassesOrderBy().subscribe(rs=>{
       this.clases=rs;
       console.log(rs)
@@ -80,11 +85,13 @@ priceCumple
           case "Clase":
             this.priceClase = precio.price;
             break;
-          case "fiesta":
+          case "Fiesta Cumpleaños":
             this.priceCumple = precio.price;
             break;
         }
       });
+
+      
       
     });
   }

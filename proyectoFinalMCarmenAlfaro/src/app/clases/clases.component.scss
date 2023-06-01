@@ -6,10 +6,7 @@ font-size: large;
  text-decoration: none;
     cursor: pointer;
 }
-// a {
-    
-//     color: red;
-// }
+
 .clas{
     width: 90%;
     margin: auto;
@@ -17,4 +14,13 @@ font-size: large;
 }
 .altoClases{
     height: 80vh;
+    width: 100%;
+}
+.eliminarUser{
+    display: flex;
+    justify-content: flex-end;
+}
+.desplegables{
+    display: block;
+    padding: 1%;
 }

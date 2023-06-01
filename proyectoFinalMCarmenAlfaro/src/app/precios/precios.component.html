@@ -1,9 +1,10 @@
-<p-table [value]="totalPrice">
+<div class="preciosDiv">
+<p-table [value]="totalPrice" [paginator]="true" [rows]="10" [showCurrentPageReport]="true">
     <ng-template pTemplate="header">
         <tr>
             <th>Servicio</th>
             <th><i class="pi pi-euro"></i></th>
-            <th></th>
+            <th>Acciones</th>
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-totalPrice>
@@ -11,6 +12,14 @@
             <td>{{ totalPrice.typeService }}</td>
             <td>{{ totalPrice.price }}</td>
             <td>
+              <button
+              class="button-circle "
+              icon="pi pi-pencil"
+              (click)="editPrices(totalPrice)"
+              pButton
+              pTooltip="Borrar"
+              tooltipPosition="top"
+            ></button>
               <button
               class="button-circle "
               icon="pi pi-trash"
@@ -50,7 +59,17 @@
       </ng-template>
 </p-table>
 
-<p-toast></p-toast>
+<p-sidebar [(visible)]="editPrice">
+  <form [formGroup]="priceFormChange">
+  <input type="text" class="form-control"  formControlName="typeService">
+  <input type="number" class="form-control"  formControlName="price">
+  <button type="submit" pButton class="button-circle" (click)="savePrices()" icon="pi pi-check"></button>
+  </form>
+</p-sidebar>
+
+</div>
+
+
 <p-confirmDialog #cd [style]="{width:'50vw'}">
   <ng-template pTemplate="header">
     <h3>Eliminar precio</h3>

@@ -4,6 +4,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { UserProfile } from '../entities/userProfile/userProfile.interface';
 import { LoginService } from './login.service';
 import { Router } from '@angular/router';
+import { CommonService } from '../common.service';
 // import { DialogModule } from 'primeng/dialog';
 @Component({
   selector: 'app-login',
@@ -24,7 +25,8 @@ loginForm = new FormGroup({
   });
 
   constructor(public loginService: LoginService,
-    readonly ro: Router) { }
+    readonly ro: Router,
+    public commonService: CommonService) { }
 
   ngOnInit(): void {
 
@@ -35,7 +37,7 @@ login(){
     let name = 'mari';
     let role = 'admin'
   let user= {name: name, role: role}
-
+ 
   //guardamos el usuario en local storage
   window.localStorage.setItem("user", JSON.stringify(user));
   console.log(JSON.parse(window.localStorage.getItem("user")));
@@ -47,25 +49,29 @@ loginBack() {
  
   var emailAddress = this.loginForm.get('emailAddress').value;
   var password = this.loginForm.get('psswdUser').value;
-  //console.log(emailAddress)
-  this.loginService.authenticateLogin(emailAddress, password).subscribe(
-    (response: UserProfile) => {
-      this.userProfiles = response;
-      //console.log(this.userProfiles);
-      window.localStorage.setItem("user", JSON.stringify(this.userProfiles));
-     // console.log(JSON.parse(window.localStorage.getItem("user")));
-      
-      this.loginService.user = JSON.parse(window.localStorage.getItem("user"))
-      
-      this.loginService.showModal  = false;
+  
+  this.loginService.authenticateLogin(emailAddress, password)
+.toPromise()
+.then((response: UserProfile) => {
+  
+  this.commonService.showLoading();  
+  this.userProfiles = response;
+  window.localStorage.setItem("user", JSON.stringify(this.userProfiles));
+  this.loginService.user = JSON.parse(window.localStorage.getItem("user"))
+  this.loginService.showModal  = false;
+  setTimeout(()=> {
+    this.commonService.closeLoading();
+    this.ro.navigateByUrl('/home')
+    }, 3000);
+  
+})
+.catch(error => {
+  this.commonService.closeLoading();
+  this.commonService.showMessage('error', error.error)
+})
+.finally(() => {
+})
 
-      this.ro.navigateByUrl('/home')
-    },  (error ) => {
-      //console.error(error);  
-      this.errorMessage=true;
-    }
- 
-  );
  
 }
 

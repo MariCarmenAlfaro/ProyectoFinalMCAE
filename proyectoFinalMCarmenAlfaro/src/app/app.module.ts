@@ -16,7 +16,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { PerfilComponent } from './perfil/perfil.component';
 import { CaballoComponent } from './caballo/caballo.component';
 import { ClasesComponent } from './clases/clases.component';
-import { PrivadosComponent } from './privados/privados.component';
 import { GestionComponent } from './gestion/gestion.component';
 import { DialogModule } from 'primeng/dialog';
 import { TableModule } from 'primeng/table';
@@ -33,8 +32,12 @@ import { SugerenciasReservasComponent } from './sugerencias-reservas/sugerencias
 import { PreciosComponent } from './precios/precios.component';
 import { FormsModule } from '@angular/forms';
 import { TabViewModule } from 'primeng/tabview';
+import { LoadingHorseComponent } from './loading-horse/loading-horse.component';
+import { DialogService } from 'primeng/dynamicdialog';
+import { CommonService } from './common.service';
 
-
+import { AccordionModule } from 'primeng/accordion';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 
 @NgModule({
@@ -50,11 +53,11 @@ import { TabViewModule } from 'primeng/tabview';
     PerfilComponent,
     CaballoComponent,
     ClasesComponent,
-    PrivadosComponent,
     GestionComponent,
     PagosComponent,
     SugerenciasReservasComponent,
-    PreciosComponent
+    PreciosComponent,
+    LoadingHorseComponent
   ],
   imports: [
     BrowserModule,
@@ -74,13 +77,20 @@ import { TabViewModule } from 'primeng/tabview';
     CheckboxModule,
     PanelModule,
     FormsModule,
-    TabViewModule
+    TabViewModule,
+    AccordionModule 
   
 
     
   ],
 
-  providers: [],
+  providers: [
+    DialogService,
+  CommonService,
+  ConfirmationService,
+   MessageService
+],
+  
   bootstrap: [AppComponent]
 })
 export class AppModule { }

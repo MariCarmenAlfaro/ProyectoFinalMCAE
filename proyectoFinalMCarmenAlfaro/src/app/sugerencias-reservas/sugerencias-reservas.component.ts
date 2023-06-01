@@ -30,11 +30,12 @@ export class SugerenciasReservasComponent {
     public caballosService: CaballosService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
-    public sugerenciasService: SugerenciasService
+    public sugerenciasService: SugerenciasService,
   ) {}
   ngOnInit(): void {
     this.readSuggestion();
     this.readReserva();
+
   }
 
   readSuggestion() {

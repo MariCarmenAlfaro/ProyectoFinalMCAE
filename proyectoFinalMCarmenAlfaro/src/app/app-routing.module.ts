@@ -8,7 +8,6 @@ import {HomeComponent} from "./home/home.component";
 import {LoginComponent} from "./login/login.component";
 import { PerfilComponent } from './perfil/perfil.component';
 import { ClasesComponent } from './clases/clases.component';
-import { PrivadosComponent } from './privados/privados.component';
 import { GestionComponent } from './gestion/gestion.component';
 import { CaballoComponent } from './caballo/caballo.component';
 import { PagosComponent } from './pagos/pagos.component';
@@ -27,7 +26,6 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'perfil', component: PerfilComponent },
   { path: 'clases', component: ClasesComponent },
-  { path: 'privados', component: PrivadosComponent }, 
    { path: 'gestion', component: GestionComponent },
    { path: 'caballos', component: CaballoComponent },
    { path: 'pagos', component: PagosComponent },

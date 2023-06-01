@@ -67,9 +67,17 @@
           
               
               <td>
+                <button
+                class="button-circle "
+                icon="pi pi-eye"
+                (click)="verCamara()"
+                pButton
+                pTooltip="Ver directo"
+                tooltipPosition="top"
+              ></button>
                <button
                 class="button-circle "
-                icon="pi pi-user"
+                icon="pi pi-plus"
                 (click)="showInfoHorse(horse)"
                 pButton
                 pTooltip="+ info"
@@ -112,7 +120,7 @@
         <p> Dueño: {{ownerName.userName}}</p>
         </ng-container>
         <p>Alimentación: {{currentHorseInfo.foodType}}</p>
-        <p>Fecha registro: {{currentHorseInfo.registrationDate}}</p>
+        <p>Fecha registro: {{currentHorseInfo.registrationDate | date:'dd - mm - yyyy'}}</p>
         <p>Link a cámara: {{currentHorseInfo.cameraUrl}}</p>
         <p>Observaciones: {{currentHorseInfo.observation}}</p>
       </div>
@@ -212,16 +220,23 @@
       <p-fieldset class="containerCaballo" *ngFor="let horse of this.horses">
         <ng-template pTemplate="header">
           <div class="flex align-items-center text-primary">
-            <span class="pi pi-user mr-2"></span>
+           
             <span class="font-bold text-lg caballoDatos">{{this.horse.horseName}}</span>
           </div>
         </ng-template>
-        <p>Nombre:{{this.horse.horseName}} </p>
-        <p>Fecha registro:{{this.horse.registrationDate}} </p>
-        <p>Número de establo:{{this.horse.barnNum}} </p>
-        <p>Alimentación:{{this.horse.foodType}} </p>
-        <p>Observación:{{this.horse.observation}} </p>
-        <p>Link de cámara:{{this.horse.cameraUrl}} </p>
+        <p>Nombre: <strong>{{this.horse.horseName}}</strong>  </p>
+        <p>Fecha registro:<strong>{{this.horse.registrationDate | date:'dd - mm - yyyy'}}</strong>  </p>
+        <p>Número de establo:<strong>{{this.horse.barnNum}}</strong>  </p>
+        <p>Alimentación:<strong>{{this.horse.foodType}}</strong>  </p>
+        <p>Observación:<strong>{{this.horse.observation}}</strong>  </p>
+        <p>Link de cámara: <button
+          class="button-circle "
+          icon="pi pi-eye"
+          (click)="verCamara()"
+          pButton
+          pTooltip="Ver directo"
+          tooltipPosition="top"
+        ></button> </p>
       </p-fieldset>
     </ng-container>
   </ng-container>

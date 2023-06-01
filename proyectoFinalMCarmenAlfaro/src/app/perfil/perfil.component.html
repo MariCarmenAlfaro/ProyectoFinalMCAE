@@ -3,102 +3,176 @@
     <p-fieldset>
         <ng-template pTemplate="header">
             <div class="flex align-items-center text-primary">
-                <span class="pi pi-user mr-2"></span>
-                <span class="font-bold text-lg perfilDatos">¡Hola {{this.datosUser.userName}}!</span>
+                <span class="pi pi-heart-fill"></span>&nbsp;
+                <span class="font-bold text-lg perfilDatos">¡Hola {{this.datosUser?.userName}}!</span>
             </div>
         </ng-template>
 
-        <p>Nombre: {{this.datosUser.userName}}</p>
-        <p>Correo electronico: {{this.datosUser.emailAddress}}</p>
-        <p> Tipo de ususario: {{this.datosUser.userType}}</p>
-        <p> Fecha de registro: {{this.datosUser.registrationDate}}</p>
-
-
-
+        <p>Nombre: <strong>{{this.datosUser?.userName}}</strong> </p>
+        <p>Correo electronico: <strong>{{this.datosUser?.emailAddress}}</strong> </p>
+        <p> Tipo de ususario: <strong>{{this.datosUser?.userType}}</strong> </p>
+        <p> Fecha de registro: <strong>{{this.datosUser?.registrationDate | date:'dd - MM - yyyy'}}</strong> </p>
 
     </p-fieldset>
     <ng-container *ngIf="!this.userType">
         <p-fieldset class="containerPerfil">
             <ng-template pTemplate="header">
                 <div class="flex align-items-center text-primary">
-                    <span class="pi pi-user mr-2"></span>
+                    <span class="pi pi-heart-fill"></span>&nbsp;
                     <span class="font-bold text-lg perfilDatos">Clase</span>
                 </div>
             </ng-template>
+            <ng-container *ngIf="!this.datosClases">
+                <p>¡Oh vaya! Parece ser que aún no estás apuntado a ninguna clase</p>
+            </ng-container>
+            <ng-container *ngIf="this.datosClases">
+                <p> Día de clase:<strong>{{this.datosClases?.classDay}}</strong> a las
+                    <strong>{{this.datosClases?.classHour}}</strong> </p>
 
-            <p> Día de clase: {{this.datosUser.classDay}} a las {{this.datosUser.classHour}}</p>
-
-            <p>Tu nivel es: {{this.datosUser.classLevel}}</p>
-
+                <p>Tu nivel es: <strong>{{this.datosClases?.classLevel}}</strong> </p>
+            </ng-container>
         </p-fieldset>
     </ng-container>
 
 
-
+<br><br>
     <ng-container *ngIf="this.datosPagos">
-        <p-fieldset class="containerPerfil">
-            <ng-template pTemplate="header">
+        
+        <p-accordion>
+            <p-accordionTab>
+                <p-header>
                 <div class="flex align-items-center text-primary">
-                    <span class="pi pi-user mr-2"></span>
+                    <span class="pi pi-heart-fill"></span>&nbsp;
                     <span class="font-bold text-lg perfilDatos">Mensualidades</span>
                 </div>
-            </ng-template>
-            <p>Tu mensualidad es de: {{this.datosPagos.price}} euros </p>
-            <p>Por tu servicio con nosotros de: "{{this.datosPagos.typeService}}" </p>
-            <p>Lo pagaste: {{this.datosPagos.payDate}} </p>
-            <p>Fue abonado del método: {{this.datosPagos.payMethod}}</p>
-        </p-fieldset>
+                </p-header>
+                <ng-container *ngIf="!this.datosUser">
+                    <p>¡Oh vaya! Parece ser que aún no tienes ningún pago por realizar ni realizado</p>
+                </ng-container>
+                <ng-container *ngIf="this.datosPagos">
+                <p-table [value]="datosPagos" [paginator]="true" [rows]="5" [showCurrentPageReport]="true"
+                [tableStyle]="{ 'min-width': '40rem' }">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width:25%">Mensualidad</th>
+                        <th style="width:25%">Servicio</th>
+                        <th style="width:25%">Fecha
+                        <p-columnFilter type="date" field="name" display="menu"></p-columnFilter>
+                        </th>
+                        <th style="width:25%">Pagado</th>
+                        <th style="width:25%">Por pagar</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-pago>
+                    <tr>
+                        <td>{{ pago.price }}€</td>
+                        <td>{{ pago.typeService}}</td>
+                        <td>{{ pago.payDate | date:'dd - MM - yyyy' }}</td>
+                        <td>{{ pago.payMethod }}</td>
+                        <td>
+                            <ng-container *ngIf="pago.payMethod === 'Pendiente'">
+                                <button type="button" icon="pi pi-euro" pButton class="button-circle" (click)="pagarPago(pago)"></button>
+                              </ng-container>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </ng-container>
 
+            </p-accordionTab>
+       
+        </p-accordion>
+
+        
     </ng-container>
-    <p-button styleClass="p-button-outlined btnFormulario" *ngIf="btnSolicitud" (click)="mostrarFormulario()">Solicitud cambios</p-button>
-
+    <div class="btnDerecho">
+        <button class="button-circleBlackChanges" pButton *ngIf="btnSolicitud" (click)="mostrarFormulario()">Solicitud
+            cambios</button>
+    </div>
     <p-sidebar [(visible)]="showForm">
 
         <ng-template pTemplate="header">
-            <div class="flex align-items-center text-primary">
-                <span class="pi pi-user mr-2"></span>
-                <span class="font-bold text-lg perfilDatos">Solicitud de cambios</span>
-            </div>
+
         </ng-template>
         <ng-container *ngIf="this.formClass">
             <form [formGroup]="changeForm">
-                <p>Si desea cambiar su dia u hora de clase, ¡solicítelo desde aquí!</p>
-                <p>Por favor, intruduzca claramente el día de la semana o la hora a la que quiere cambiar</p>
-                <p>NO se aceptaran cambios sin dos días de antelación a la clase</p>
 
-                <div class="form-group">
-                    <label for="comment">Escriba quí el cambio: </label>
-                    <textarea class="form-control areaComent" rows="5" id="peticion" formControlName="peticion"
-                        name="text"
-                        placeholder="¡Hola! Me gustaría poder acudir a clase los viernes a las..."></textarea>
-                </div>
+                <p-panel header="Solicitud de cambios">
+                    <p>Si desea cambiar su dia u hora de clase ¡Solicítelo desde aquí!</p>
+                    <p>Por favor, intruduzca claramente el día de la semana o la hora a la que quiere cambiar</p>
+                    <p>NO se aceptaran cambios sin dos días de antelación a la clase</p>
+
+                    <div class="form-group">
+                        <label for="comment">Escriba aquí el cambio: </label>
+                        <textarea class="form-control areaComent" rows="5" id="peticion" formControlName="peticion"
+                            name="text"
+                            placeholder="¡Hola! Me gustaría poder acudir a clase los viernes a las..."></textarea>
+                    </div>
+                </p-panel>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary " (click)="this.showForm = false">Cerrar</button>
-          
-                    <button type="submit" class="btn btn-primary guardarLogin" (click)="insertComent()">Guardar</button>
-          
-                  </div>
+                    <br><br>
+                    <button class="button-circle" icon="pi pi-check" pButton
+                        (click)="insertComent()"></button>
+
+                </div>
             </form>
         </ng-container>
         <ng-container *ngIf="this.formBarn">
             <form [formGroup]="changeForm">
-                <p>Si desea cambiar la cuadra o alimentación de su caballo,¡ solicítelo desde aquí!</p>
-                <div class="form-group">
-                    <label for="comment">Escriba quí el cambio: </label>
-                    <textarea class="form-control areaComent" rows="5" id="peticion" formControlName="peticion"
-                        name="text"
-                        placeholder="¡Hola! Me gustaría que 'Pequitas' pudiera estar en el establo..."></textarea>
-                </div>
+                <p-panel header="Solicitud de cambios">
+                    <p>Si desea cambiar la cuadra o alimentación de su caballo ¡Solicítelo desde aquí!</p>
+                    <div class="form-group">
+                        <label for="comment">Escriba aquí el cambio: </label>
+                        <textarea class="form-control areaComent" rows="5" id="peticion" formControlName="peticion"
+                            name="text"
+                            placeholder="¡Hola! Me gustaría que 'Pequitas' pudiera estar en el establo..."></textarea>
+                    </div>
+                </p-panel>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary " (click)="this.showForm= false">Cerrar</button>
-          
-                    <button type="submit" class="btn btn-primary guardarLogin" (click)="insertComent()">Guardar</button>
-          
-                  </div>
+
+                    <br>
+                    <br>
+                    <button type="submit" class="button-circle" icon="pi pi-check" pButton
+                        (click)="insertComent()"></button>
+
+                </div>
             </form>
         </ng-container>
 
     </p-sidebar>
 
+    <p-sidebar [(visible)]="pagarPagos">
+        <p-panel header="Pagar">
+       
+        <form [formGroup]="paymentForm" (ngSubmit)="pagarDeuda()"  [class.invalid]="paymentForm.invalid" [class.valid]="paymentForm.valid">
+            <label for="cardNumber">*Número de tarjeta:</label>
+            <input type="text" id="cardNumber" formControlName="cardNumber" placeholder="2906201931012000" required>
+            <br>
+            <div *ngIf="paymentForm.get('cardNumber').invalid && (paymentForm.get('cardNumber').dirty || paymentForm.get('cardNumber').touched)">
+              <div *ngIf="paymentForm.get('cardNumber').errors.required">El número de tarjeta es obligatorio.</div>
+              <div *ngIf="paymentForm.get('cardNumber').errors.pattern">Sólo dieciseis dígitos.</div>
 
+            </div>
+          <br>
+            <label for="cardExpiry">*Fecha de expiración:</label>
+            <input type="text" id="cardExpiry" formControlName="cardExpiry" placeholder="01/31" required>
+            <div *ngIf="paymentForm.get('cardExpiry').invalid && (paymentForm.get('cardExpiry').dirty || paymentForm.get('cardExpiry').touched)">
+              <div *ngIf="paymentForm.get('cardExpiry').errors.required">La fecha de expiración es obligatoria.</div>
+              <div *ngIf="paymentForm.get('cardExpiry').errors.pattern">La fecha de expiración debe tener el formato MM/AA.</div>
+            </div>
+          <br><br>
+            <label for="cardCvv">*CVV:</label><br>
+            <input type="text" id="cardCvv" formControlName="cardCvv" placeholder="123" required><br>
+            <div *ngIf="paymentForm.get('cardCvv').invalid && (paymentForm.get('cardCvv').dirty || paymentForm.get('cardCvv').touched)">
+              <div *ngIf="paymentForm.get('cardCvv').errors.required">El CVV es obligatorio.</div>
+              <div *ngIf="paymentForm.get('cardCvv').errors.pattern">El CVV debe contener solo dígitos.</div>
+            </div>
+       
+          <br><br>
+          <div class="btnDerecha">
+            <button type="submit" class="button-circle" pButton [disabled]="paymentForm.invalid" icon="pi pi-check"></button>
+            </div>
+          </form>
+           </p-panel>
+    </p-sidebar>
 </div>

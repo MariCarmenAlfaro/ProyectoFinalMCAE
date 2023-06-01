@@ -1,12 +1,6 @@
 <div class="clas">
-     <button
-    class="button-circle "
-    icon="pi pi-user-plus"
-    (click)="addUserToClass()"
-    pButton
-    pTooltip="Añadir usuario a clase"
-    tooltipPosition="top"
-    ></button>
+    <button class="button-circleBlack" icon="pi pi-user-plus" (click)="addUserToClass()" pButton
+        pTooltip="Añadir usuario a clase" tooltipPosition="top"></button>
     <p-table #dt1 [value]="clases" dataKey="id" [rows]="10" [showCurrentPageReport]="true"
         [rowsPerPageOptions]="[10, 25, 50]" [globalFilterFields]="['classDay', 'classHour', 'classLevel']">
         <ng-template pTemplate="header">
@@ -62,39 +56,42 @@
         <td>
             {{ clases.classHour }}h
         </td>
-       
-        <td  class="clases">
-           <span *ngIf="clases.lunes !== null" (click)="saberClaseLunes(clases.classHour)">  {{ clases.lunes }}</span>
-        </td>
-        <td  class="clases">
-            <span *ngIf="clases.martes !== null" (click)="saberClaseMartes(clases.classHour)"> {{ clases.martes }}</span>
-        </td>
-        <td  class="clases">
-            <span *ngIf="clases.miercoles !== null" (click)="saberClaseMiercoles(clases.classHour)">{{ clases.miercoles }}</span>
 
-        </td>
-        <td  class="clases">
-            <span *ngIf="clases.jueves !== null" (click)="saberClaseJueves(clases.classHour)">{{ clases.jueves }}</span>
-      
-        </td>
-        <td  class="clases">
-            <span *ngIf="clases.viernes !== null" (click)="saberClaseViernes(clases.classHour)">{{ clases.viernes }}</span>
-        
+        <td class="clases">
+            <span *ngIf="clases.lunes !== null" (click)="saberClaseLunes(clases.classHour)"> {{ clases.lunes }}</span>
         </td>
         <td class="clases">
-            <span *ngIf="clases.sabado !== null"  (click)="saberClaseSabado(clases.classHour)">{{ clases.sabado }}</span>
-         </td>
+            <span *ngIf="clases.martes !== null" (click)="saberClaseMartes(clases.classHour)"> {{ clases.martes
+                }}</span>
+        </td>
+        <td class="clases">
+            <span *ngIf="clases.miercoles !== null" (click)="saberClaseMiercoles(clases.classHour)">{{ clases.miercoles
+                }}</span>
+
+        </td>
+        <td class="clases">
+            <span *ngIf="clases.jueves !== null" (click)="saberClaseJueves(clases.classHour)">{{ clases.jueves }}</span>
+
+        </td>
+        <td class="clases">
+            <span *ngIf="clases.viernes !== null" (click)="saberClaseViernes(clases.classHour)">{{ clases.viernes
+                }}</span>
+
+        </td>
+        <td class="clases">
+            <span *ngIf="clases.sabado !== null" (click)="saberClaseSabado(clases.classHour)">{{ clases.sabado }}</span>
+        </td>
 
 
     </tr>
 </ng-template>
 <ng-template pTemplate="emptymessage">
     <tr>
-        <td colspan="7">No customers found.</td>
+        <td colspan="7">Oh! Parece que habido un error.</td>
     </tr>
 </ng-template>
 </p-table>
-   
+
 
 </div>
 
@@ -102,57 +99,63 @@
     <strong>Usuarios de la clase: </strong> <br>
     <hr>
     <ng-container *ngFor="let user of this.usuarios">
+        <div>
         <p class="alumnos">
             <i class="fa-regular fa-heart"></i> {{user.userName}}
-        
-        <button
-              class="button-circle "
-              icon="pi pi-trash"
-              (click)="deleteClassDialog(user.id)"
-              pButton
-              pTooltip="Borrar"
-              tooltipPosition="top"
-            ></button>
-        </p>
-        
+        <div class="eliminarUser">
+            <button class="button-circle " icon="pi pi-trash" (click)="deleteClassDialog(user.id)" pButton
+                pTooltip="Borrar" tooltipPosition="top"></button>
+        </div>
+        </div>
+
     </ng-container>
     <ng-container *ngIf="this.noUsers">
-            <p class="alumnos">Oh vaya! Parece que aún no hay alumnos hoy...</p>
+        <p-progressSpinner aria-label="Loading"></p-progressSpinner>
+        <p class="alumnos">Oh vaya! Parece que aún no hay alumnos hoy...</p>
     </ng-container>
-    
+
 </p-sidebar>
 
 <p-sidebar [(visible)]="showDialogAddUser">
     <div class="col-12 altoClases">
-         <p-dropdown [options]="allUsers" [(ngModel)]="selectedUser" optionLabel="userName" placeholder="Seleciona un alumno"></p-dropdown>
-        <p-dropdown [options]="levelUser" [(ngModel)]="selectedLevel" optionLabel="name" (onChange)="onChange($event)" placeholder="Seleciona el nivel"></p-dropdown>
-        <ng-container *ngIf="classesDayHour.length>0">
+        <div class="desplegables">
+            <label for="">Alumno:</label><br>
+            <p-dropdown [options]="allUsers" [(ngModel)]="selectedUser" optionLabel="userName"
+                placeholder="Seleciona un alumno"></p-dropdown>
+        </div>
 
-        <p-dropdown [options]="classesDayHour" [(ngModel)]="selectedClass" placeholder="Selecciona el día" (onChange)="onChange2($event)" optionLabel="classDay">
-            <ng-template let-option pTemplate="item">
-              <span>{{ option.classDay }} - {{ option.classHour }}</span>
-            </ng-template>
-          </p-dropdown>
-             </ng-container>
-             <button
-             class="button"
-            label="Guardar"
-             (click)="insertUserToClass()"
-             pButton
-             pTooltip="Añadir usuario a clase"
-             tooltipPosition="top"
-             [disabled]="this.insertButtonDisabled"
-             ></button>
+        <div class="desplegables">
+            <label for="">Nivel:</label><br>
+            <p-dropdown [options]="levelUser" [(ngModel)]="selectedLevel" optionLabel="name"
+                (onChange)="onChange($event)" placeholder="Seleciona el nivel"></p-dropdown>
+
+        </div>
+
+        <div class="desplegables">
+            <ng-container *ngIf="classesDayHour.length>0">
+                <label for="">Clases disponibles: </label> <br>
+                <p-dropdown [options]="classesDayHour" [(ngModel)]="selectedClass" placeholder="Selecciona el día"
+                    (onChange)="onChange2($event)" optionLabel="classDay">
+                    <ng-template let-option pTemplate="item">
+                        <span>{{ option.classDay }} - {{ option.classHour }}</span>
+                    </ng-template>
+                </p-dropdown>
+            </ng-container>
+        </div>
+
+
+        <button class="button-circle" icon="pi pi-check" (click)="insertUserToClass()" pButton
+            pTooltip="Añadir usuario a clase" tooltipPosition="top" [disabled]="this.insertButtonDisabled"></button>
     </div>
 </p-sidebar>
 
 <p-toast></p-toast>
-    <p-confirmDialog #cd [style]="{width:'50vw'}">
-      <ng-template pTemplate="header">
+<p-confirmDialog #cd [style]="{width:'50vw'}">
+    <ng-template pTemplate="header">
         <h3>Eliminar usuario de clase</h3>
-      </ng-template>
-      <ng-template pTemplate="footer">
+    </ng-template>
+    <ng-template pTemplate="footer">
         <button type="button" pButton icon="pi pi-times" label="No" (click)="cd.reject()"></button>
         <button type="button" pButton icon="pi pi-check" label="Si" (click)="cd.accept()"></button>
-      </ng-template>
-    </p-confirmDialog>
+    </ng-template>
+</p-confirmDialog>

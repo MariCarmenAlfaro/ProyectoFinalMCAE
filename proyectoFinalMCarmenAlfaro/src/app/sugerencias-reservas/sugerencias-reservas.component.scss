@@ -6,8 +6,22 @@
 .button-circle{
     margin: 1%;
 }
+
 .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
     background: #ffffff;
     border-color: #ec4899;
     color: #ec4899;
+}
+.p-tabview .p-tabview-nav li .p-tabview-nav-link {
+    border: solid #e6dee2;
+    border-width: 0 0 2px 0;
+    border-color: transparent transparent #dee2e6 transparent;
+    background: #ffffff;
+    color: #6c757d;
+    padding: 1.25rem;
+    font-weight: 700;
+    border-top-right-radius: 6px;
+    border-top-left-radius: 6px;
+    transition: box-shadow .2s;
+    margin: 0 0 -2px;
 }

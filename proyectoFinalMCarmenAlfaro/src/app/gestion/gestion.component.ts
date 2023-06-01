@@ -49,7 +49,7 @@ export class GestionComponent implements OnInit {
   levelUser = [{ name: 'Bajo' }, { name: 'Medio' }, { name: 'Alto' }];
 
 
-  userTypes = [{ name: 'Alumno' }, { name: 'Dueño' }, { name: 'Admin' }];
+  userTypes = [{ name: 'Alumno' }, { name: 'Dueño' }, { name: 'Admin' }, { name: 'Invitado' }, { name: 'Inactivo' }];
 
   foodHorseTypes = [
     { name: 'Hierba' },
@@ -112,8 +112,7 @@ export class GestionComponent implements OnInit {
   }
 
   postNewUser() {
-    let typeUser = this.form.controls.userType.value.name;
-    this.form.controls.userType.setValue(typeUser);
+
 
     this.gestionService.postNewUser(this.form.value).subscribe((rs) => {
       this.newUserId = rs.insertedId;
@@ -221,8 +220,49 @@ export class GestionComponent implements OnInit {
       }
     );
   }
-  deleteUser(userId) {
-    this.gestionService.deleteUser(userId).subscribe(
+  deleteUser(user) {
+   
+
+//delete horses
+this.gestionService.getHorsesByUserId(user.userId).subscribe((rs)=>{
+  if(rs){
+    let horses = rs
+    console.log("caballos a eliminar")
+    console.log(horses)
+
+    horses.forEach(horse => {
+      this.caballosService.deleteHorse(horse.horseId).subscribe((rs)=>{
+        if(rs){
+          console.log("caballo " + horse.horseId + " eliminado")
+        }
+      })
+    });
+
+  }
+})
+//delete clases
+this.perfilService
+      .getReadByIdExtendedAlumno(user.userId)
+      .subscribe((rs) => {
+       if(rs){
+        let clases = rs
+        console.log("clases a borrar")
+        console.log(clases)
+        clases.forEach((clase)=> {
+          this.clasesService.deleteClassUser(clase.id).subscribe((rs)=> {
+            if(rs){
+              console.log("Clase " + clase.id + " borrada.")
+            }
+          })
+        })
+       }
+        }
+      );
+//
+
+//invalid user
+    user.userType = 'Inactivo'
+    this.gestionService.updateUser(user).subscribe(
       (response) => {
         if (response === true) {
           this.readAll();
@@ -245,13 +285,13 @@ export class GestionComponent implements OnInit {
       }
     );
   }
-  deleteUserDialog(userId) {
+  deleteUserDialog(user) {
     //TODO meter un cargando
     this.confirmationService.confirm({
       message: 'Vas a borrar un usuario, ¿estas seguro?',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.deleteUser(userId);
+        this.deleteUser(user);
       },
       reject: (type) => {
         switch (type) {
