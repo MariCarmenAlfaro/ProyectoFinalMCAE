@@ -63,7 +63,6 @@ loginBack() {
     this.commonService.closeLoading();
     this.ro.navigateByUrl('/home')
     }, 3000);
-  
 })
 .catch(error => {
   this.commonService.closeLoading();
@@ -72,7 +71,6 @@ loginBack() {
 .finally(() => {
 })
 
- 
 }
 
 

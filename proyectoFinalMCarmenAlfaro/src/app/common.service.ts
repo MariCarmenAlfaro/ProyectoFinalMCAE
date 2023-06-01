@@ -43,10 +43,11 @@ export class CommonService {
 
   showMessage(severity, detail){
     let summary;
-    if(severity === "Error"){
+    console.log(severity)
+    if(severity === "error"){
       summary = '¡Ups! Algo no ha ido bien'
     }
-    if(severity === "Succes"){
+    if(severity === "info"){
       summary = '¡Genial!'
     }
       this.messageService.add({
