@@ -163,7 +163,7 @@ namespace HipicaAlfaro.Api.Controllers
             using (var conexion = new MySqlConnection(_connection))
             {
 
-                var query = "select payDate, payMethod, typeService, price from  payments inner join prices on payments.priceId = prices.priceId where payments.userId=@id;";
+                var query = "select payId, payDate, payMethod, typeService, price, prices.priceId from  payments inner join prices on payments.priceId = prices.priceId where payments.userId=@id;";
 
                 var resultado = conexion.Query<PriceForService>(query, new { id }).ToList();
 

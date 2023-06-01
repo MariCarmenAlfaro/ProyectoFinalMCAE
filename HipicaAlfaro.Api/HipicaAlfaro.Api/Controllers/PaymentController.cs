@@ -31,7 +31,7 @@ namespace HipicaAlfaro.Api.Controllers
             IEnumerable<PayPriceUser> list = null;
             using (var db = new MySqlConnection(_connection))
             {
-                var sql = "Select payId, payments.userId, payDate, payMethod,  prices.price, prices.typeService, userprofile.userName, userprofile.emailAddress from payments inner join prices on payments.priceId =  prices.priceId inner join userprofile on payments.userId= userprofile.userId order by payDate desc;";
+                var sql = "Select payId, payments.userId, payDate, payMethod, prices.priceId, prices.price, prices.typeService, userprofile.userName, userprofile.emailAddress from payments inner join prices on payments.priceId =  prices.priceId inner join userprofile on payments.userId= userprofile.userId order by payDate desc;";
 
                 list = db.Query<PayPriceUser>(sql);
             }
