@@ -1,28 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Injector, OnInit } from '@angular/core';
 import { CaballosService } from './caballos.service';
 import {
-  ConfirmationService,
-  MessageService,
   ConfirmEventType,
 } from 'primeng/api';
 
 import { UserProfile } from '../entities/userProfile/userProfile.interface';
 import { FormControl, FormGroup } from '@angular/forms';
-import { forkJoin, map } from 'rxjs';
-import { GestionService } from '../gestion/gestion.service';
+import { CommonComponent } from '../common/common.component';
+
 
 @Component({
   selector: 'app-caballo',
   templateUrl: './caballo.component.html',
   styleUrls: ['./caballo.component.scss'],
-  providers: [ConfirmationService, MessageService],
 })
-export class CaballoComponent implements OnInit {
+export class CaballoComponent extends CommonComponent implements OnInit {
   constructor(
     public caballosService: CaballosService,
-    private confirmationService: ConfirmationService,
-    private messageService: MessageService
-  ) {}
+    readonly injector: Injector) {
+      super(injector)
+    }
   usuario: UserProfile;
   createNewHorse = false;
   showDialog = false;
@@ -35,12 +32,7 @@ export class CaballoComponent implements OnInit {
   userTypeOwner: boolean = false;
   ownerName: any;
   duenyo;
-  foodHorseTypes = [
-    { name: 'Hierba' },
-    { name: 'Forraje' },
-    { name: 'Heno' },
-    { name: 'Paja' },
-  ];
+ 
 
   ngOnInit(): void {
     this.knowUserType();
@@ -65,17 +57,7 @@ export class CaballoComponent implements OnInit {
       });
   }
 
-  // readOwner(){
-
-  //     this.caballosService.getOwnerById(horse.ownerId).subscribe(
-  //       rs =>{
-  //         this.ownerName=rs
-  //       }
-  //     )
-
-  //   });
-
-  // }
+ 
   updateHorse() {
     if (this.createNewHorse) {
       this.form.controls.horseType.setValue('Clase');
@@ -85,22 +67,14 @@ export class CaballoComponent implements OnInit {
             console.log('Ok');
             this.getAllHorses();
             this.showDialog = false;
-            this.messageService.add({
-              severity: 'info',
-              summary: 'Insercción correcta',
-              detail: 'Caballo creado correctamente.',
-            });
+            
+            this.showMessage('info', 'Caballo creado correctamente.')
           } else {
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Rejected',
-              detail: 'Error al intentar insertar el caballo',
-            });
+            this.showMessage('error', 'Error al intentar insertar el caballo')
           }
         },
         (error) => {
           console.error(error);
-          //this.errorMessage=true;
         }
       );
     } else {
@@ -109,17 +83,10 @@ export class CaballoComponent implements OnInit {
           console.log('Ok');
           this.getAllHorses();
           this.showDialog = false;
-          this.messageService.add({
-            severity: 'info',
-            summary: 'Modifición correcta',
-            detail: 'Caballo modificado correctamente.',
-          });
+          
+          this.showMessage('info', 'Caballo modificado correctamente.')
         } else {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Rejected',
-            detail: 'Error al intentar modficar el caballo',
-          });
+          this.showMessage('error', 'Error al intentar modficar el caballo')
         }
       });
     }
@@ -177,7 +144,6 @@ export class CaballoComponent implements OnInit {
       },
       (error) => {
         console.error(error);
-        //this.errorMessage=true;
       }
     );
   }
@@ -203,44 +169,25 @@ export class CaballoComponent implements OnInit {
       (response) => {
         if (response === true) {
           this.getAllHorses();
-          this.messageService.add({
-            severity: 'info',
-            summary: 'Confirmed',
-            detail: 'Caballo eliminado correctamente',
-          });
+          this.showMessage('info','Caballo eliminado correctamente')
         } else {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Rejected',
-            detail: 'Error al intentar borrar el caballo',
-          });
+          this.showMessage('error','Error al intentar borrar el caballo')
         }
       },
       (error) => {
         console.error(error);
-        //this.errorMessage=true;
       }
     );
   }
   deleteHorseDialog(horseId) {
     //TODO meter un cargando
     this.confirmationService.confirm({
-      message: 'Are you sure that you want to proceed?',
+      message: '¿Estás seguro que quieres borrar este caballo?',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.deleteHorse(horseId);
-      },
-      reject: (type) => {
-        switch (type) {
-          case ConfirmEventType.CANCEL:
-            this.messageService.add({
-              severity: 'warn',
-              summary: 'Cancelado',
-              detail: 'You have cancelled',
-            });
-            break;
-        }
-      },
+      }
+    
     });
   }
   clear(table) {

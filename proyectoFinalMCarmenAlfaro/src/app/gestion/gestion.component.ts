@@ -1,21 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Injectable, Injector, OnInit } from '@angular/core';
 import { GestionService } from './gestion.service';
 import { CaballosService } from '../caballo/caballos.service';
 import { FormControl, FormGroup } from '@angular/forms';
-import {
-  ConfirmationService,
-  MessageService,
-  ConfirmEventType,
-} from 'primeng/api';
+
 import { PerfilService } from '../perfil/perfil.service';
 import { ClasesService } from '../clases/clases.service';
+import { CommonComponent } from '../common/common.component';
 @Component({
   selector: 'app-gestion',
   templateUrl: './gestion.component.html',
   styleUrls: ['./gestion.component.scss'],
-  providers: [ConfirmationService, MessageService],
 })
-export class GestionComponent implements OnInit {
+export class GestionComponent extends CommonComponent implements OnInit {
   psswdUser: string = '';
   newUser: any;
   users: any[];
@@ -46,29 +42,19 @@ export class GestionComponent implements OnInit {
   selectedLevel = null;
   newClassUser: any;
   insertButtonDisabled = false;
-  levelUser = [{ name: 'Bajo' }, { name: 'Medio' }, { name: 'Alto' }];
 
 
-  userTypes = [{ name: 'Alumno' }, { name: 'Dueño' }, { name: 'Admin' }, { name: 'Invitado' }, { name: 'Inactivo' }];
-
-  foodHorseTypes = [
-    { name: 'Hierba' },
-    { name: 'Forraje' },
-    { name: 'Heno' },
-    { name: 'Paja' },
-  ];
-
-  payMethods = [ { name: 'Pendiente' },{ name: 'Efectivo' }, { name: 'Tarjeta' }];
   
 
   constructor(
     public gestionService: GestionService,
     public caballosService: CaballosService,
-    private confirmationService: ConfirmationService,
-    private messageService: MessageService,
     public perfilService: PerfilService,
     public clasesService: ClasesService,
-  ) {}
+    protected injector: Injector
+  ) {
+    super(injector)
+  }
 
   ngOnInit(): void {
     this.readAll();
@@ -122,17 +108,10 @@ export class GestionComponent implements OnInit {
     if(rs){
       this.showDialogUser = false
       this.readAll();
-      this.messageService.add({
-        severity: 'info',
-        summary: 'Confirmed',
-        detail: 'Usuario actualizado correctamente',
-      });
+      this.showMessage('info','Usuario creado correctamente')
+      
     } else {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Rejected',
-        detail: 'Error al intentar actualizar el usuario',
-      });
+      this.showMessage('error','Error al intentar crear el usuario')
     }
      
     });
@@ -266,22 +245,14 @@ this.perfilService
       (response) => {
         if (response === true) {
           this.readAll();
-          this.messageService.add({
-            severity: 'info',
-            summary: 'Confirmed',
-            detail: 'Usuario eliminado correctamente',
-          });
+          this.showMessage('info','Usuario eliminado correctamente')
         } else {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Rejected',
-            detail: 'Error al intentar borrar el usuario',
-          });
+          this.showMessage('error','Error al intentar borrar el usuario')
         }
       },
       (error) => {
         console.error(error);
-        //this.errorMessage=true;
+        
       }
     );
   }
@@ -292,18 +263,7 @@ this.perfilService
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.deleteUser(user);
-      },
-      reject: (type) => {
-        switch (type) {
-          case ConfirmEventType.CANCEL:
-            this.messageService.add({
-              severity: 'warn',
-              summary: 'Cancelado',
-              detail: 'You have cancelled',
-            });
-            break;
-        }
-      },
+      }
     });
   }
 
@@ -336,17 +296,9 @@ this.perfilService
     if(rs){
       this.showDialogUser = false
       this.readAll();
-      this.messageService.add({
-        severity: 'info',
-        summary: 'Confirmed',
-        detail: 'Usuario actualizado correctamente',
-      });
+      this.showMessage('info','Usuario actualizado correctamente')
     } else {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Rejected',
-        detail: 'Error al intentar actualizar el usuario',
-      });
+      this.showMessage('error','Error al intentar actualizar el usuario')
     }
     })
 

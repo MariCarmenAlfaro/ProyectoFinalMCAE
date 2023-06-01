@@ -1,19 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, Injector } from '@angular/core';
 import { PreciosService } from './precios.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import {
-  ConfirmationService,
-  MessageService,
   ConfirmEventType,
 } from 'primeng/api';
+import { CommonComponent } from '../common/common.component';
 
 @Component({
   selector: 'app-precios',
   templateUrl: './precios.component.html',
   styleUrls: ['./precios.component.scss'],
-  providers: [ConfirmationService, MessageService],
 })
-export class PreciosComponent {
+export class PreciosComponent extends CommonComponent {
   totalPrice = [];
   addPriceButtonDisabled = false;
   editPrice = false;
@@ -26,9 +24,11 @@ export class PreciosComponent {
 
   constructor(
     public priceService: PreciosService,
-    private confirmationService: ConfirmationService,
-    private messageService: MessageService
-  ) {}
+    protected injector: Injector
+    ) {
+      super(injector)
+    }
+
   ngOnInit(): void {
     this.readAll();
     this.priceFormChange = new FormGroup({
@@ -89,19 +89,7 @@ this.editPrice = true;
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.deletePrice(priceId);
-      },
-      reject: (type) => {
-        switch (type) {
-          // TODO decidir si mensaje al darle al esc o  al darle a cerrar?
-          case ConfirmEventType.CANCEL:
-            this.messageService.add({
-              severity: 'warn',
-              summary: 'Cancelado',
-              detail: 'You have cancelled',
-            });
-            break;
-        }
-      },
+      }
     });
   }
   deletePrice(priceId) {

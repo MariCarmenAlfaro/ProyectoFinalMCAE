@@ -1,20 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, Injector } from '@angular/core';
 import { GestionService } from '../gestion/gestion.service';
 import { CaballosService } from '../caballo/caballos.service';
 import {
-  ConfirmEventType,
-  ConfirmationService,
-  MessageService,
+  ConfirmEventType
 } from 'primeng/api';
 import { SugerenciasService } from './sugerencias.service';
+import { CommonComponent } from '../common/common.component';
 
 @Component({
   selector: 'app-sugerencias-reservas',
   templateUrl: './sugerencias-reservas.component.html',
   styleUrls: ['./sugerencias-reservas.component.scss'],
-  providers: [ConfirmationService, MessageService],
 })
-export class SugerenciasReservasComponent {
+export class SugerenciasReservasComponent extends CommonComponent {
   suggestions = [];
   suggestionArchived = [];
   suggestion;
@@ -28,10 +26,11 @@ export class SugerenciasReservasComponent {
   constructor(
     public gestionService: GestionService,
     public caballosService: CaballosService,
-    private confirmationService: ConfirmationService,
-    private messageService: MessageService,
     public sugerenciasService: SugerenciasService,
-  ) {}
+    protected injector: Injector
+    ) {
+      super(injector)
+    }
   ngOnInit(): void {
     this.readSuggestion();
     this.readReserva();
@@ -122,18 +121,8 @@ export class SugerenciasReservasComponent {
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.deleteReserva(this.currentReserva.reservationId);
-      },
-      reject: (type) => {
-        switch (type) {
-          case ConfirmEventType.CANCEL:
-            this.messageService.add({
-              severity: 'warn',
-              summary: 'Cancelado',
-              detail: 'Has cancelado la acción',
-            });
-            break;
-        }
-      },
+      }
+      
     });
   }
   deleteSuggestion(id) {
@@ -151,18 +140,7 @@ export class SugerenciasReservasComponent {
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.deleteSuggestion(this.currentSuggestion.id);
-      },
-      reject: (type) => {
-        switch (type) {
-          case ConfirmEventType.CANCEL:
-            this.messageService.add({
-              severity: 'warn',
-              summary: 'Cancelado',
-              detail: 'Has cancelado la acción',
-            });
-            break;
-        }
-      },
+      }
     });
   }
 }

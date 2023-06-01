@@ -38,6 +38,7 @@ import { CommonService } from './common.service';
 
 import { AccordionModule } from 'primeng/accordion';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { CommonComponent } from './common/common.component';
 
 
 @NgModule({
@@ -57,7 +58,8 @@ import { ConfirmationService, MessageService } from 'primeng/api';
     PagosComponent,
     SugerenciasReservasComponent,
     PreciosComponent,
-    LoadingHorseComponent
+    LoadingHorseComponent,
+    CommonComponent
   ],
   imports: [
     BrowserModule,
@@ -91,6 +93,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
    MessageService
 ],
   
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  exports: [CommonComponent]
 })
 export class AppModule { }

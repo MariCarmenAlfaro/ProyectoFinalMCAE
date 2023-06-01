@@ -1,30 +1,30 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Injector, OnInit } from '@angular/core';
 import { PagosService } from './pagos.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { FormControl, FormGroup } from '@angular/forms';
+import { CommonComponent } from '../common/common.component';
 
 @Component({
   selector: 'app-pagos',
   templateUrl: './pagos.component.html',
   styleUrls: ['./pagos.component.scss'],
-  providers: [ConfirmationService, MessageService],
 })
-export class PagosComponent implements OnInit {
-  //payments = [];
+export class PagosComponent extends CommonComponent implements OnInit {
+
   typeServices = [];
   showPaymentForm = false;
   paymentForm: FormGroup;
   nombresPagos=[];
-  payMethods = [ { name: 'Pendiente' },{ name: 'Efectivo' }, { name: 'Tarjeta' }];
 
   constructor(
     public pagosService: PagosService,
-    private confirmationService: ConfirmationService,
-    private messageService: MessageService
-  ) {}
+    protected injector: Injector
+    ) {
+      super(injector)
+    }
 
   ngOnInit(): void {
-    //this.readAllPayments();
+
     this.getTypesServicesPrice();
     this.getPricePayUser();
     this.paymentForm = new FormGroup({

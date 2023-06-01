@@ -1,22 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Injector, OnInit } from '@angular/core';
 import {
   ConfirmEventType,
-  ConfirmationService,
-  MessageService,
 } from 'primeng/api';
 import { ClasesService } from './clases.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import { GestionService } from '../gestion/gestion.service';
 import { PagosService } from '../pagos/pagos.service';
 import { PreciosService } from '../precios/precios.service';
+import { CommonComponent } from '../common/common.component';
 
 @Component({
   selector: 'app-clases',
   templateUrl: './clases.component.html',
   styleUrls: ['./clases.component.scss'],
-  providers: [ConfirmationService, MessageService],
 })
-export class ClasesComponent implements OnInit {
+export class ClasesComponent extends CommonComponent implements OnInit {
   clases: any = [];
   userClassForm: FormGroup;
   showDialog = false;
@@ -34,15 +32,15 @@ export class ClasesComponent implements OnInit {
   newPayment
   currentDate= new Date()
   barnPrice=[]
-  levelUser = [{ name: 'Bajo' }, { name: 'Medio' }, { name: 'Alto' }];
   constructor(
     public clasesService: ClasesService,
-    private confirmationService: ConfirmationService,
-    private messageService: MessageService,
     private gestionService: GestionService,
     public pagosService: PagosService,
-    private preciosService: PreciosService
-  ) {}
+    private preciosService: PreciosService,
+    protected injector: Injector
+    ) {
+      super(injector)
+    }
   ngOnInit(): void {
     this.getClasses();
   }
@@ -155,18 +153,7 @@ export class ClasesComponent implements OnInit {
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.deleteClass(classToDelete);
-      },
-      reject: (type) => {
-        switch (type) {
-          case ConfirmEventType.CANCEL:
-            this.messageService.add({
-              severity: 'warn',
-              summary: 'Cancelado',
-              detail: 'Has cancelado la acción',
-            });
-            break;
-        }
-      },
+      }
     });
   }
 

@@ -1,32 +1,33 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
 
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { UserProfile } from '../entities/userProfile/userProfile.interface';
 import { LoginService } from './login.service';
 import { Router } from '@angular/router';
-import { CommonService } from '../common.service';
-// import { DialogModule } from 'primeng/dialog';
+import { CommonComponent } from '../common/common.component';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent extends CommonComponent implements OnInit {
 
   
 userProfiles: UserProfile;
 userId: number;
 closeModal= true;
-errorMessage: boolean=false;
 loginForm = new FormGroup({
   emailAddress: new FormControl('', Validators.required),
     psswdUser: new FormControl('', Validators.required),
 
   });
 
-  constructor(public loginService: LoginService,
+  constructor(
+    public loginService: LoginService,
     readonly ro: Router,
-    public commonService: CommonService) { }
+    readonly injector: Injector) {
+    super(injector)
+  }
 
   ngOnInit(): void {
 
@@ -53,20 +54,19 @@ loginBack() {
   this.loginService.authenticateLogin(emailAddress, password)
 .toPromise()
 .then((response: UserProfile) => {
-  
-  this.commonService.showLoading();  
+  this.showLoading()
   this.userProfiles = response;
   window.localStorage.setItem("user", JSON.stringify(this.userProfiles));
   this.loginService.user = JSON.parse(window.localStorage.getItem("user"))
   this.loginService.showModal  = false;
   setTimeout(()=> {
-    this.commonService.closeLoading();
+    this.closeLoading();
     this.ro.navigateByUrl('/home')
     }, 3000);
 })
 .catch(error => {
-  this.commonService.closeLoading();
-  this.commonService.showMessage('error', error.error)
+  this.closeLoading();
+  this.showMessage('error', error.error)
 })
 .finally(() => {
 })
