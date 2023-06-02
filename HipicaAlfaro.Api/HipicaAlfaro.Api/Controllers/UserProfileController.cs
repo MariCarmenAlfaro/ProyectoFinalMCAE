@@ -17,161 +17,241 @@ namespace HipicaAlfaro.Api.Controllers
         [HttpGet]
         public IActionResult ReadAll()
         {
-            IEnumerable<UserProfile> list = null;
-            using (var db = new MySqlConnection(_connection))
+            try
             {
-                var sql = "select userId, userName, userType, registrationDate, emailAddress,psswdUser from UserProfile;";
+                IEnumerable<UserProfile> list = null;
+                using (var db = new MySqlConnection(_connection))
+                {
+                    var sql = "select userId, userName, userType, registrationDate, emailAddress,psswdUser from UserProfile;";
 
-                list = db.Query<UserProfile>(sql);
+                    list = db.Query<UserProfile>(sql);
+                }
+                return Ok(list);
             }
-            return Ok(list);
+            catch (Exception ex)
+            {
+                return BadRequest("Error al obtener el perfil");
+            }
 
         }
         [HttpGet("{id}")]
         public IActionResult ReadById(int id)
         {
-            UserProfile userProfile = null;
-            using (var db = new MySqlConnection(_connection))
+            try
             {
-                var sql = "SELECT userId, userName, userType, registrationDate, emailAddress, psswdUser FROM UserProfile WHERE userId = @UserId;";
-                userProfile = db.QueryFirstOrDefault<UserProfile>(sql, new { UserId = id });
+
+                UserProfile userProfile = null;
+                using (var db = new MySqlConnection(_connection))
+                {
+                    var sql = "SELECT userId, userName, userType, registrationDate, emailAddress, psswdUser FROM UserProfile WHERE userId = @UserId;";
+                    userProfile = db.QueryFirstOrDefault<UserProfile>(sql, new { UserId = id });
+                }
+                if (userProfile == null)
+                {
+                    return NotFound();
+                }
+                return Ok(userProfile);
             }
-            if (userProfile == null)
+            catch (Exception ex)
             {
-                return NotFound();
+                return BadRequest("Error al obtener el perfil de usuario por ID.");
             }
-            return Ok(userProfile);
         }
 
         [HttpPost]
         public IActionResult Create(UserProfile userProfile)
         {
-            var contrasenya = userProfile.PsswdUser;
-            SHA256 sha256 = SHA256.Create();
-            byte[] hash = sha256.ComputeHash(Encoding.UTF8.GetBytes(contrasenya));
-            var hexHash = BitConverter.ToString(hash).Replace("-", "");
-            var insertedId = 0;
-            using (var db = new MySqlConnection(_connection))
+            try
             {
-                var sql = @"INSERT INTO UserProfile (userName, userType, registrationDate, emailAddress, psswdUser)
-                             VALUES (@UserName, @UserType, @RegistrationDate, @EmailAddress, @PsswdUser);
-                                SELECT LAST_INSERT_ID();";
-                insertedId = db.Query<int>(sql, new
+                var contrasenya = userProfile.PsswdUser;
+                SHA256 sha256 = SHA256.Create();
+                byte[] hash = sha256.ComputeHash(Encoding.UTF8.GetBytes(contrasenya));
+                var hexHash = BitConverter.ToString(hash).Replace("-", "");
+                var insertedId = 0;
+                using (var db = new MySqlConnection(_connection))
                 {
-                    UserName = userProfile.UserName,
-                    UserType = userProfile.UserType,
-                    RegistrationDate = userProfile.RegistrationDate,
-                    EmailAddress = userProfile.EmailAddress,
-                    PsswdUser = hexHash
-                }).Single();  // Obtiene el ID insertado
-            }
+                    var sql = @"INSERT INTO UserProfile (userName, userType, registrationDate, emailAddress, psswdUser)
+                        VALUES (@UserName, @UserType, @RegistrationDate, @EmailAddress, @PsswdUser);
+                        SELECT LAST_INSERT_ID();";
+                    insertedId = db.Query<int>(sql, new
+                    {
+                        UserName = userProfile.UserName,
+                        UserType = userProfile.UserType,
+                        RegistrationDate = userProfile.RegistrationDate,
+                        EmailAddress = userProfile.EmailAddress,
+                        PsswdUser = hexHash
+                    }).SingleOrDefault();
+                }
 
-            return Ok(new { InsertedId = insertedId });
+                if (insertedId == 0)
+                {
+                    return BadRequest("No se pudo crear el perfil de usuario.");
+                }
+
+                return Ok(new { InsertedId = insertedId });
+            }
+            //catch (MySqlException ex)
+            //{
+            //    return BadRequest("Error de MySQL al crear el perfil de usuario.");
+            //}
+            catch (Exception ex)
+            {
+                return BadRequest("Ocurrió un error al crear el perfil de usuario.");
+            }
         }
 
+
         [HttpPut("{id}")]
-        public bool Update(int id, UserProfile userProfile)
+        public IActionResult Update(int id, UserProfile userProfile)
         {
-            var userProfileToUpdate = ReadById(id);
-            if (userProfileToUpdate == null)
+            try
             {
-                return false;
+                var userProfileToUpdate = ReadById(id);
+                if (userProfileToUpdate == null)
+                {
+                    return NotFound(); ;
+                }
+
+                userProfile.UserId = id;
+
+                using (var db = new MySqlConnection(_connection))
+                {
+                    var sql = "UPDATE UserProfile SET userName = @UserName, userType = @UserType, registrationDate = @RegistrationDate, emailAddress = @EmailAddress, psswdUser = @PsswdUser WHERE userId = @UserId;";
+                    var rowsUpdated = db.Execute(sql, userProfile);
+                    if (rowsUpdated > 0)
+                    {
+                        return Ok(true);
+                    }
+                    else
+                    {
+                        return Ok(false);
+                    }
+                }
             }
-
-            userProfile.UserId = id;
-
-            using (var db = new MySqlConnection(_connection))
+            catch (Exception ex)
             {
-                var sql = "UPDATE UserProfile SET userName = @UserName, userType = @UserType, registrationDate = @RegistrationDate, emailAddress = @EmailAddress, psswdUser = @PsswdUser WHERE userId = @UserId;";
-                var rowsUpdate = db.Execute(sql, userProfile);
-                return rowsUpdate > 0;
+                return BadRequest("Error al obtener el perfil de usuario por ID.");
             }
 
         }
 
         [HttpDelete("{id}")]
-        public ActionResult<bool> Delete(int id)
+        public IActionResult Delete(int id)
         {
-            var userProfileToDelete = ReadById(id);
-            if (userProfileToDelete == null)
+            try
             {
-                return NotFound();
+                var userProfileToDelete = ReadById(id);
+                if (userProfileToDelete == null)
+                {
+                    return NotFound();
+                }
+
+                using (var db = new MySqlConnection(_connection))
+                {
+                    var sql = "DELETE FROM UserProfile WHERE userId = @UserId;";
+                    int rowsDeleted = db.Execute(sql, new { UserId = id });
+                    if (rowsDeleted == 1)
+                    {
+                        return Ok(true);
+                    }
+                    else
+                    {
+                        return Ok(false);
+                    }
+                }
             }
-            using (var db = new MySqlConnection(_connection))
+            catch (Exception ex)
             {
-                var sql = "DELETE FROM UserProfile WHERE userId = @UserId;";
-                int rowsDelete = db.Execute(sql, new { UserId = id });
-                if (rowsDelete == 1)
-                {
-                    return Ok(true);
-                }
-                else
-                {
-                    return Ok(false);
-                }
+                return BadRequest("Error al eliminar el perfil de usuario.");
             }
         }
+
         [HttpPost("/login")]
         public ActionResult<UserProfile> AuthenticateLogin(string emailAddress, string password)
         {
-            using (var db = new MySqlConnection(_connection))
+            try
             {
-                var sql = "SELECT * FROM userProfile WHERE emailAddress = @EmailAddress";
-                var userProfile = db.QuerySingleOrDefault<UserProfile>(sql, new { EmailAddress = emailAddress });
-
-                if (userProfile == null)
+                using (var db = new MySqlConnection(_connection))
                 {
-                    return BadRequest("Correo electrónico o contraseña incorrectos");
-                }
+                    var sql = "SELECT * FROM userProfile WHERE emailAddress = @EmailAddress";
+                    var userProfile = db.QuerySingleOrDefault<UserProfile>(sql, new { EmailAddress = emailAddress });
 
-                string hexHash = userProfile.PsswdUser;
+                    if (userProfile == null)
+                    {
+                        return BadRequest("Correo electrónico o contraseña incorrectos");
+                    }
 
-                // Comparar la versión hash de la contraseña proporcionada por el usuario con la versión hash almacenada en la base de datos
-                SHA256 sha256 = SHA256.Create();
-                byte[] hash = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
-                string hexInputHash = BitConverter.ToString(hash).Replace("-", "");
+                    string hexHash = userProfile.PsswdUser;
 
-                if (hexInputHash != hexHash)
-                {
-                    // La contraseña es incorrecta
-                    return BadRequest("Correo electrónico o contraseña incorrectos");
+                    // Comparar la versión hash de la contraseña proporcionada por el usuario con la versión hash almacenada en la base de datos
+                    SHA256 sha256 = SHA256.Create();
+                    byte[] hash = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+                    string hexInputHash = BitConverter.ToString(hash).Replace("-", "");
+
+                    if (hexInputHash != hexHash)
+                    {
+                        // La contraseña es incorrecta
+                        return BadRequest("Correo electrónico o contraseña incorrectos");
+                    }
+                    else
+                    {
+                        // La contraseña es correcta
+                        return Ok(userProfile);
+                    }
                 }
-                else
-                {
-                    // La contraseña es correcta
-                    return Ok(userProfile);
-                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error al obtener los precios de servicio del usuario.");
             }
         }
 
-
-        [HttpGet("userExtendedClasses/{id}")]
-        public ActionResult<List<UserExtended>> ReadByUserIdExtended(int id)
+            [HttpGet("userExtendedClasses/{id}")]
+        public IActionResult ReadByUserIdExtended(int id)
         {
-            using (var conexion = new MySqlConnection(_connection))
+            try
             {
-                var query = "SELECT userProfile.userId as UserId, userProfile.userName as UserName, userProfile.userType as UserType, userProfile.registrationDate as RegistrationDate, userProfile.emailAddress as EmailAddress, userProfile.psswdUser as PsswdUser, userProfile.clubId as ClubId, classUser.id as Id, classUser.userId as UserId, classUser.classId as ClassId, classUser.clubId as ClubId, classes.classId as ClassId, classes.classDay as ClassDay, classes.classHour as ClassHour, classes.classLevel as ClassLevel, classes.clubId as ClubId FROM userProfile LEFT JOIN classUser ON userProfile.userId = classUser.userId LEFT JOIN classes ON classUser.classId = classes.classId WHERE userProfile.userId = @id;";
+                using (var conexion = new MySqlConnection(_connection))
+                {
+                    var query = "SELECT userProfile.userId as UserId, userProfile.userName as UserName, userProfile.userType as UserType, userProfile.registrationDate as RegistrationDate, userProfile.emailAddress as EmailAddress, userProfile.psswdUser as PsswdUser, userProfile.clubId as ClubId, classUser.id as Id, classUser.userId as UserId, classUser.classId as ClassId, classUser.clubId as ClubId, classes.classId as ClassId, classes.classDay as ClassDay, classes.classHour as ClassHour, classes.classLevel as ClassLevel, classes.clubId as ClubId FROM userProfile LEFT JOIN classUser ON userProfile.userId = classUser.userId LEFT JOIN classes ON classUser.classId = classes.classId WHERE userProfile.userId = @id;";
 
-                var resultados = conexion.Query<UserExtended>(query, new { id }).ToList();
+                    var resultados = conexion.Query<UserExtended>(query, new { id }).ToList();
 
-                return resultados;
+                    if (resultados.Count == 0)
+                    {
+                        return Ok(new List<UserExtended>());
+                    }
+
+                    return Ok(resultados);
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error al obtener los datos extendidos del usuario.");
             }
         }
+
+
         [HttpGet("priceForServiceUser/{id}")]
-        public ActionResult <List<PriceForService>> ReadPriceForServiceByUserId(int id)
+        public IActionResult ReadPriceForServiceByUserId(int id)
         {
-            using (var conexion = new MySqlConnection(_connection))
+            try
             {
+                using (var conexion = new MySqlConnection(_connection))
+                {
+                    var query = "SELECT payId, payDate, payMethod, typeService, price, prices.priceId FROM payments INNER JOIN prices ON payments.priceId = prices.priceId WHERE payments.userId = @id;";
 
-                var query = "select payId, payDate, payMethod, typeService, price, prices.priceId from  payments inner join prices on payments.priceId = prices.priceId where payments.userId=@id;";
+                    var resultado = conexion.Query<PriceForService>(query, new { id }).ToList();
 
-                var resultado = conexion.Query<PriceForService>(query, new { id }).ToList();
-
-
-
-                return resultado;
+                    return Ok(resultado);
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error al obtener los precios de servicio del usuario.");
             }
         }
+
     }
 
 }

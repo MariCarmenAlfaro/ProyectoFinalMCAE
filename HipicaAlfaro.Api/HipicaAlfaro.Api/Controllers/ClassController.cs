@@ -95,7 +95,7 @@ namespace HipicaAlfaro.Api.Controllers
             }
             if (classesList.Count == 0)
             {
-                return NotFound();
+                classesList = new List<UserExtended>();    
             }
             return Ok(classesList);
         }
