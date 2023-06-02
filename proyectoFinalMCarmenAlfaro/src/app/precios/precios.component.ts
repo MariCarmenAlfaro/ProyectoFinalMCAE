@@ -1,9 +1,7 @@
 import { Component, Injector } from '@angular/core';
 import { PreciosService } from './precios.service';
 import { FormControl, FormGroup } from '@angular/forms';
-import {
-  ConfirmEventType,
-} from 'primeng/api';
+import { ConfirmEventType } from 'primeng/api';
 import { CommonComponent } from '../common/common.component';
 
 @Component({
@@ -16,7 +14,7 @@ export class PreciosComponent extends CommonComponent {
   addPriceButtonDisabled = false;
   editPrice = false;
   currentPrice;
-  priceFormChange: FormGroup
+  priceFormChange: FormGroup;
   newServiceForm = new FormGroup({
     typeService: new FormControl(''),
     price: new FormControl(''),
@@ -25,22 +23,31 @@ export class PreciosComponent extends CommonComponent {
   constructor(
     public priceService: PreciosService,
     protected injector: Injector
-    ) {
-      super(injector)
-    }
+  ) {
+    super(injector);
+  }
 
   ngOnInit(): void {
     this.readAll();
     this.priceFormChange = new FormGroup({
       priceId: new FormControl(''),
       typeService: new FormControl(''),
-      price: new FormControl('')
+      price: new FormControl(''),
     });
   }
   readAll() {
-    this.priceService.getReadAllPrices().subscribe((rs) => {
-      this.totalPrice = rs;
-    });
+    this.priceService.getReadAllPrices().subscribe(
+      (rs) => {
+        if (rs) {
+          this.totalPrice = rs;
+        } else {
+          this.showMessage('error', 'Error al obtener los precios');
+        }
+      },
+      (error) => {
+        this.showMessage('error', error.error);
+      }
+    );
   }
   insertNewService() {
     this.addPriceButtonDisabled = true;
@@ -48,56 +55,71 @@ export class PreciosComponent extends CommonComponent {
       typeService: this.newServiceForm.value.typeService,
       price: this.newServiceForm.value.price,
     };
-    console.log(service);
-    this.priceService.postInsertNewService(service).subscribe((rs) => {
-      rs;
-      if (rs) {
-        this.readAll();
-        this.newServiceForm.controls.price.setValue('');
-        this.newServiceForm.controls.typeService.setValue('');
-        this.addPriceButtonDisabled = false;
+    this.priceService.postInsertNewService(service).subscribe(
+      (rs) => {
+        if (rs) {
+          this.readAll();
+          this.newServiceForm.controls.price.setValue('');
+          this.newServiceForm.controls.typeService.setValue('');
+          this.addPriceButtonDisabled = false;
+          this.showMessage('info','Servicio agregado correctamente')
+        } else {
+          this.showMessage('error', 'Error al insertar el nuevo servicio');
+        }
+      },
+      (error) => {
+        this.showMessage('error', error.error);
       }
-      console.log(rs);
-    });
+    );
   }
   editPrices(price) {
     this.currentPrice = price;
-    
- 
+
     this.priceFormChange = new FormGroup({
       priceId: new FormControl(this.currentPrice.priceId),
       typeService: new FormControl(this.currentPrice.typeService),
-      price: new FormControl(this.currentPrice.price)
+      price: new FormControl(this.currentPrice.price),
     });
-   
-this.editPrice = true;
+    this.editPrice = true;
+  }
 
-  }
-  savePrices() {
-    
-    this.priceService.updatePrice(this.priceFormChange.value).subscribe((rs) => {
-      if(rs){
-        this.readAll()
-        this.editPrice = false;
+  updatePrices() {
+    this.priceService.updatePrice(this.priceFormChange.value).subscribe(
+      (rs) => {
+        if (rs) {
+          this.readAll();
+          this.editPrice = false;
+          this.showMessage('info','Servicio modificado correctamente')
+        } else {
+          this.showMessage('error', 'Error al modificar el servicio');
+        }
+      },
+      (error) => {
+        this.showMessage('error', error.error);
       }
-    });
+    );
   }
+
   deletePriceDialog(priceId) {
-    //TODO meter un cargando
     this.confirmationService.confirm({
-      message: 'Vas a eliminar un precio. ¿Estás seguro?',
+      message: 'Vas a eliminar un precio. ¿Estás seguro/a?',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.deletePrice(priceId);
-      }
+      },
     });
   }
   deletePrice(priceId) {
-    //TODO spinner cargando
     this.priceService.deleteService(priceId).subscribe((rs) => {
       if (rs) {
         this.readAll();
+        this.showMessage('info','Servicio eliminado correctamente')
+      }else{
+        this.showMessage('error','Error al eliminar el servicio')
       }
+    },
+    (error) => {
+      this.showMessage('error',error.error)
     });
   }
 }

@@ -1,12 +1,8 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import { CaballosService } from './caballos.service';
-import {
-  ConfirmEventType,
-} from 'primeng/api';
-
-import { UserProfile } from '../entities/userProfile/userProfile.interface';
 import { FormControl, FormGroup } from '@angular/forms';
 import { CommonComponent } from '../common/common.component';
+import { GestionService } from '../gestion/gestion.service';
 
 
 @Component({
@@ -17,10 +13,11 @@ import { CommonComponent } from '../common/common.component';
 export class CaballoComponent extends CommonComponent implements OnInit {
   constructor(
     public caballosService: CaballosService,
+    public gestionService: GestionService,
     readonly injector: Injector) {
       super(injector)
     }
-  usuario: UserProfile;
+  usuario;
   createNewHorse = false;
   showDialog = false;
   showInfoDialog = false;
@@ -28,11 +25,12 @@ export class CaballoComponent extends CommonComponent implements OnInit {
   currentHorse = null;
   currentHorseInfo = null;
   form: FormGroup;
-  userTypeAdmin: boolean = false;
-  userTypeOwner: boolean = false;
-  ownerName: any;
+  userTypeAdmin = false;
+  userTypeOwner = false;
+  ownerName;
   duenyo;
- 
+  userLists=[]
+
 
   ngOnInit(): void {
     this.knowUserType();
@@ -47,17 +45,38 @@ export class CaballoComponent extends CommonComponent implements OnInit {
       this.readHorseByOwnerId();
     }
   }
+  readAllUsers(){
+    this.gestionService.readAllUser().subscribe((rs)=>{
+       if(rs){
+          rs.forEach(users => {
+            if(users.userType=="Dueño"){
+                this.userLists.push(users)
+            }
+          
+          });
+      }else{
+        this.showMessage('error', 'Error al intentar obtener los usuarios dueños')
+      }
+      
+    }, (error) => {
+      this.showMessage('error', error.error)
+    })
+  }
   readHorseByOwnerId() {
     this.usuario = JSON.parse(window.localStorage.getItem('user'));
     this.caballosService.getHorseByOnwerId(this.usuario.userId)
-    .toPromise()
-    .then((rs) => {
-      this.horses = rs;
+    .subscribe((rs) => {
+      if(rs){
+        this.horses = rs;
         console.log(this.horses);
-    })
-    .catch(error => {
+      } else {
+        this.showMessage('error', 'Error al intentar obtener el caballo')
+      }
+      
+    }, (error) => {
       this.showMessage('error', error.error)
     })
+    
   }
 
  
@@ -86,6 +105,7 @@ export class CaballoComponent extends CommonComponent implements OnInit {
          if (rs) {
            this.getAllHorses();
            this.showDialog = false; 
+           this.showInfoDialog= false;
            this.showMessage('info', 'Caballo modificado correctamente.')
          } else {
            this.showMessage('error', 'Error al intentar modficar el caballo')
@@ -99,6 +119,7 @@ export class CaballoComponent extends CommonComponent implements OnInit {
   }
 
   createForm(horse) {
+      this.readAllUsers()
     if (horse) {
       this.createNewHorse = false;
       this.form = new FormGroup({
@@ -109,9 +130,10 @@ export class CaballoComponent extends CommonComponent implements OnInit {
         horseName: new FormControl(horse.horseName),
         horseType: new FormControl(horse.horseType),
         observation: new FormControl(horse.observation),
-        ownerId: new FormControl(null),
-        registrationDate: new FormControl(horse.registrationDate),
+        ownerId: new FormControl(horse.ownerId),
+        registrationDate: new FormControl(new Date(horse.registrationDate)),
       });
+      console.log(this.form.value)
     } else {
       this.createNewHorse = true;
       this.form = new FormGroup({
@@ -132,7 +154,7 @@ export class CaballoComponent extends CommonComponent implements OnInit {
     console.log(this.form);
   }
 
-  verCamara(){
+  showCamara(){
     window.open('https://www.skylinewebcams.com/es/webcam/espana/islas-baleares/mallorca/mallorca-alcudia.html', '_blank');
   }
   
@@ -194,7 +216,7 @@ export class CaballoComponent extends CommonComponent implements OnInit {
   }
   deleteHorseDialog(horseId) {
     this.confirmationService.confirm({
-      message: '¿Estás seguro que quieres borrar este caballo?',
+      message: '¿Estás seguro/a que quieres borrar este caballo?',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.deleteHorse(horseId);

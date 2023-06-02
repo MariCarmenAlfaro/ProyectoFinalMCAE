@@ -44,11 +44,7 @@ span {
 span.pi.pi-heart-fill{
     color:rgb(0, 0, 0)
 }
-.btnDerecha{
-    display: flex !important;
-    justify-content: flex-end;
-    padding: 1%;
-}
+
 .invalid input {
     border: 2px solid red;
   }
@@ -56,4 +52,11 @@ span.pi.pi-heart-fill{
 .valid input {
     border: 2px solid green;
 }
-  
+
+.text-primary .font-semibold .text-xl{
+    color: rgb(255, 123, 184);
+    }
+    .text-primary {
+        --bs-text-opacity: 1;
+        color: rgb(255, 123, 184)!important;
+    }

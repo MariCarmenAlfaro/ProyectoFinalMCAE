@@ -10,7 +10,7 @@ import { LoadingHorseComponent } from '../loading-horse/loading-horse.component'
 })
 export class CommonComponent {
   loadingModal
-
+  horseType=[{name:'Privado'}, {name:'Clase'}]
   payMethods = [ { name: 'Pendiente' },{ name: 'Efectivo' }, { name: 'Tarjeta' }];
   foodHorseTypes = [{ name: 'Hierba' },{ name: 'Forraje' },{ name: 'Heno' },{ name: 'Paja' },];
   levelUser = [{ name: 'Bajo' }, { name: 'Medio' }, { name: 'Alto' }];

@@ -12,13 +12,10 @@ font-size: large;
     margin: auto;
     padding: 2%;
 }
-.altoClases{
-    height: 80vh;
-    width: 100%;
-}
+
 .eliminarUser{
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
 }
 .desplegables{
     display: block;

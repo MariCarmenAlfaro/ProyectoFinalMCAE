@@ -9,12 +9,19 @@
 .preciosBar{
   text-align: right;
 }
-.card{
-  display: inline;
-  float: left;
-  margin: 2%;
+.container-cards {
+display: flex;
+flex-wrap: wrap;
+justify-content: space-around;
 }
-.centro{
+.card{
+  width: 30%;
+ 
+  // display: inline;
+  // float: left;
+ 
+}
+.centroMenu{
   width: 100%;
   margin: 0;
 }
@@ -26,27 +33,14 @@
 .menu{
   font-weight: 600;
 }
-.p-button.button-circleMenu {
-    
-  background-color: #fad3e7;
-  color: #ec4899;
-  border-radius: 25%;
-  border-color:#ec4899;
-  width: 0.5rem;
-  height: 0.5rem;
-  &:enabled:not(:focus):hover,
-  &:focus {
-      border-color:#ec4899;
-      background-color: #ec4899;
-      color:white
-  }
 
-  span {
-    font-size: 1rem;
-  }
-
-  .tituloMenu{
+.btnEdit {
     display: flex;
     justify-content: space-between;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid grey;
+    div {
+      display: flex;
+      align-items: center;
+    }
   }
-}

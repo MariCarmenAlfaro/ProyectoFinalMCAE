@@ -136,6 +136,20 @@ a.nav-link,.navbar-brand{
 
 }
 
-// .p-sidebar-left.w-30rem {
-//     width: 30rem;
-// }
+
+
+.p-sidebar .p-sidebar-content {
+    min-height: 90vh !important;
+}
+.btnDerecha{
+    display: flex;
+    justify-content: flex-end;
+    padding: 1%;
+}
+.flex {
+    display: flex;
+}
+
+.navbar {
+    font-size: 1.25rem;
+}

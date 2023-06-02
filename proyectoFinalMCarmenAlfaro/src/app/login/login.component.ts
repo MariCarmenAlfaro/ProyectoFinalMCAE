@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
 
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { UserProfile } from '../entities/userProfile/userProfile.interface';
+
 import { LoginService } from './login.service';
 import { Router } from '@angular/router';
 import { CommonComponent } from '../common/common.component';
@@ -11,9 +11,8 @@ import { CommonComponent } from '../common/common.component';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent extends CommonComponent implements OnInit {
-
-  
-userProfiles: UserProfile;
+ 
+userProfiles: any;
 userId: number;
 closeModal= true;
 loginForm = new FormGroup({
@@ -37,7 +36,7 @@ loginForm = new FormGroup({
   
     var emailAddress = this.loginForm.get('emailAddress').value;
     var password = this.loginForm.get('psswdUser').value;
-    this.loginService.authenticateLogin(emailAddress, password).subscribe((response: UserProfile) => {
+    this.loginService.authenticateLogin(emailAddress, password).subscribe((response: any) => {
          if (response) {
           this.showLoading()
           this.userProfiles = response;

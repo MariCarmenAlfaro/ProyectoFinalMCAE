@@ -20,7 +20,7 @@ export class GestionComponent extends CommonComponent implements OnInit {
   showDialog = false;
   showDialogUser = false;
   form: FormGroup;
-  updateUserForm: FormGroup
+  updateUserForm: FormGroup;
   showAddHorseToUser = false;
   showCreateUser = false;
   showPaymentForm = false;
@@ -29,12 +29,12 @@ export class GestionComponent extends CommonComponent implements OnInit {
   typeServices = [];
   currentUserId;
   currentUser;
-  showEditUser = false
-  showInfoUserDiv = false
-  horsesDisplay = false
-  clasesDisplay = false
-  horsesUser = []
-  currentUserClases=[]
+  showEditUser = false;
+  showInfoUserDiv = false;
+  horsesDisplay = false;
+  clasesDisplay = false;
+  horsesUser = [];
+  currentUserClases = [];
   classesDayHour = [];
   selectedUser = null;
   selectedClass = null;
@@ -43,9 +43,6 @@ export class GestionComponent extends CommonComponent implements OnInit {
   newClassUser: any;
   insertButtonDisabled = false;
 
-
-  
-
   constructor(
     public gestionService: GestionService,
     public caballosService: CaballosService,
@@ -53,7 +50,7 @@ export class GestionComponent extends CommonComponent implements OnInit {
     public clasesService: ClasesService,
     protected injector: Injector
   ) {
-    super(injector)
+    super(injector);
   }
 
   ngOnInit(): void {
@@ -74,11 +71,20 @@ export class GestionComponent extends CommonComponent implements OnInit {
   }
 
   readAll() {
-    this.gestionService.readAllUser().subscribe((rs) => {
-      this.users = rs;
-    });
+    this.gestionService.readAllUser().subscribe(
+      (rs) => {
+        if (rs) {
+          this.users = rs;
+        } else {
+          this.showMessage('error', 'Error al intentar leer los usuarios');
+        }
+      },
+      (error) => {
+        this.closeLoading();
+        this.showMessage('error', error.error);
+      }
+    );
   }
-
 
   clear(table) {
     table.clear();
@@ -98,232 +104,229 @@ export class GestionComponent extends CommonComponent implements OnInit {
   }
 
   postNewUser() {
+    this.gestionService.postNewUser(this.form.value).subscribe(
+      (rs) => {
+        this.newUserId = rs.insertedId;
+        console.log(this.newUserId);
 
-
-    this.gestionService.postNewUser(this.form.value).subscribe((rs) => {
-      this.newUserId = rs.insertedId;
-      console.log(this.newUserId);
-
-    this.showDialog=false
-    if(rs){
-      this.showDialogUser = false
-      this.readAll();
-      this.showMessage('info','Usuario creado correctamente')
-      
-    } else {
-      this.showMessage('error','Error al intentar crear el usuario')
-    }
-     
-    });
+        this.showDialog = false;
+        if (rs) {
+          this.showDialogUser = false;
+          this.readAll();
+          this.showMessage('info', 'Usuario creado correctamente');
+        } else {
+          this.showMessage('error', 'Error al intentar crear el usuario');
+        }
+      },
+      (error) => {
+        this.showMessage('error', error.error);
+      }
+    );
   }
 
   correctUserCreated(typeUser, userId) {
     if (typeUser != 'Admin') {
-     this.addPayment(userId)
+      this.addPayment(userId);
     }
-    
   }
-
-
+  addPayment(userId) {
+    this.currentUserId = userId;
+    this.createPaymentForm();
+  }
   savePrivateHorse() {
     console.log(this.formHorseOwner.value);
     this.caballosService.createHorse(this.formHorseOwner.value).subscribe(
       (rs) => {
         if (rs) {
-          console.log('Caballo guardado');
-          //añadir pago
-          this.addPayment(this.formHorseOwner.value.ownerId)
+          this.addPayment(this.formHorseOwner.value.ownerId);
+        } else {
+          this.showMessage('error', 'Error al crear el caballo');
         }
       },
       (error) => {
-        console.error(error);
+        this.showMessage('error', error.error);
       }
     );
   }
 
-  addPayment(userId){
-    this.currentUserId = userId
-    this.createPaymentForm()
-  }
   createPaymentForm() {
-    // obtener tipos de pago
     this.gestionService.getTypesServicesPrice().subscribe(
       (rs) => {
         if (rs) {
           this.typeServices = rs;
-          console.log(this.typeServices);
-
           if (this.currentUserId) {
             this.paymentForm = new FormGroup({
               userId: new FormControl(this.currentUserId),
               payDate: new FormControl(''),
               priceId: new FormControl(''),
-              payMethod: new FormControl('')
+              payMethod: new FormControl(''),
             });
-            this.showDialog = true
+            this.showDialog = true;
             this.showCreateUser = false;
             this.showAddHorseToUser = false;
             this.showPaymentForm = true;
           }
+        } else {
+          this.showMessage('error', 'Error al crear formulario de pagos');
         }
       },
       (error) => {
-        console.error(error);
+        this.showMessage('error', error.error);
       }
     );
   }
 
   savePayment() {
-    // guardar el pago
     console.log(this.paymentForm.value);
-    if(this.paymentForm.value.payMethod == ""){
-      this.paymentForm.value.payMethod = null
+    if (this.paymentForm.value.payMethod == '') {
+      this.paymentForm.value.payMethod = null;
     }
 
     this.gestionService.createNewPayment(this.paymentForm.value).subscribe(
       (rs) => {
         if (rs) {
-          console.log('pago realizado');
-          console.log(rs);
-          //volvemos a hacer la llamada de usuarios para ver el nuevo usuario
-          //cerramos los modals/dialogs/forms
           this.readAll();
           this.showCreateUser = false;
           this.showAddHorseToUser = false;
           this.showPaymentForm = false;
           this.showDialog = false;
+        } else {
+          this.showMessage('error', 'Error al intentar crear el pago');
         }
       },
       (error) => {
-        console.error(error);
+        this.showMessage('error', error.error);
       }
     );
   }
   deleteUser(user) {
-   
+    this.gestionService.getHorsesByUserId(user.userId).subscribe(
+      (rs) => {
+        if (rs) {
+          let horses = rs;
+          console.log('caballos a eliminar');
+          console.log(horses);
 
-//delete horses
-this.gestionService.getHorsesByUserId(user.userId).subscribe((rs)=>{
-  if(rs){
-    let horses = rs
-    console.log("caballos a eliminar")
-    console.log(horses)
-
-    horses.forEach(horse => {
-      this.caballosService.deleteHorse(horse.horseId).subscribe((rs)=>{
-        if(rs){
-          console.log("caballo " + horse.horseId + " eliminado")
+          horses.forEach((horse) => {
+            this.caballosService.deleteHorse(horse.horseId).subscribe((rs) => {
+              if (rs) {
+                console.log('caballo ' + horse.horseId + ' eliminado');
+              }
+            });
+          });
+        } else {
+          this.showMessage('error', 'Error al intentar eliminar el usuario');
         }
-      })
-    });
-
-  }
-})
-//delete clases
-this.perfilService
-      .getReadByIdExtendedAlumno(user.userId)
-      .subscribe((rs) => {
-       if(rs){
-        let clases = rs
-        console.log("clases a borrar")
-        console.log(clases)
-        clases.forEach((clase)=> {
-          this.clasesService.deleteClassUser(clase.id).subscribe((rs)=> {
-            if(rs){
-              console.log("Clase " + clase.id + " borrada.")
-            }
-          })
-        })
-       }
+      },
+      (error) => {
+        this.showMessage('error', error.error);
+      }
+    );
+    this.perfilService.getReadByIdExtendedAlumno(user.userId).subscribe(
+      (rs) => {
+        if (rs) {
+          let clases = rs;
+          clases.forEach((clase) => {
+            this.clasesService.deleteClassUser(clase.id).subscribe((rs) => {
+              if (rs) {
+                this.showMessage('info', 'Clase eliminada con éxito');
+              }
+            });
+          });
+        } else {
+          this.showMessage('error', 'Error al intentar crear el usuario');
         }
-      );
-//
+      },
+      (error) => {
+        this.closeLoading();
+        this.showMessage('error', error.error);
+      }
+    );
 
-//invalid user
-    user.userType = 'Inactivo'
+    user.userType = 'Inactivo';
     this.gestionService.updateUser(user).subscribe(
       (response) => {
         if (response === true) {
           this.readAll();
-          this.showMessage('info','Usuario eliminado correctamente')
+          this.showMessage('info', 'Usuario eliminado correctamente');
         } else {
-          this.showMessage('error','Error al intentar borrar el usuario')
+          this.showMessage('error', 'Error al intentar borrar el usuario');
         }
       },
       (error) => {
-        console.error(error);
-        
+        this.showMessage('error', error.error);
       }
     );
   }
   deleteUserDialog(user) {
-    //TODO meter un cargando
     this.confirmationService.confirm({
-      message: 'Vas a borrar un usuario, ¿estas seguro?',
+      message: 'Vas a borrar un usuario, ¿estas seguro/a?',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.deleteUser(user);
-      }
+      },
     });
   }
 
-  showInfoUser(user){
-    this.currentUser=user;
-    this.showEditUser = false
+  showInfoUser(user) {
+    this.currentUser = user;
+    this.showEditUser = false;
     this.showInfoUserDiv = true;
-    this.showDialogUser=true;
-    console.log(this.currentUser)
-   
+    this.showDialogUser = true;
+    console.log(this.currentUser);
   }
-  mostrarEditarUsuario(user){
-    this.showInfoUserDiv = false
+  mostrarEditarUsuario(user) {
+    this.showInfoUserDiv = false;
     this.updateUserForm = new FormGroup({
       userName: new FormControl(user.userName),
       userType: new FormControl(user.userType),
       registrationDate: new FormControl(user.registrationDate),
       emailAddress: new FormControl(user.emailAddress),
       psswdUser: new FormControl(user.psswdUser),
-      userId:new FormControl(user.userId),
+      userId: new FormControl(user.userId),
     });
-    this.showEditUser = true
-  
+    this.showEditUser = true;
   }
-  updateUser(){
-    console.log(this.updateUserForm.value)
-    // llamada al back para actualizar el usuario
-
-    this.gestionService.updateUser(this.updateUserForm.value).subscribe((rs)=> {
-    if(rs){
-      this.showDialogUser = false
-      this.readAll();
-      this.showMessage('info','Usuario actualizado correctamente')
-    } else {
-      this.showMessage('error','Error al intentar actualizar el usuario')
-    }
-    })
-
-    
-  }
-  showHorsesDisplay(userId){
-    
-    this.currentUserId = userId
-
-    // llamada para obtener los caballos del usuario
-    
-    this.horsesUser = []
-
-    this.gestionService.getHorsesByUserId(userId).subscribe((rs)=>{
-      if(rs){
-        this.horsesUser= rs;
-        console.log(this.horsesUser)
-        this.horsesDisplay = true
-
+  updateUser() {
+    this.gestionService.updateUser(this.updateUserForm.value).subscribe(
+      (rs) => {
+        if (rs) {
+          this.showDialogUser = false;
+          this.readAll();
+          this.showMessage('info', 'Usuario actualizado correctamente');
+        } else {
+          this.showMessage('error', 'Error al intentar actualizar el usuario');
+        }
+      },
+      (error) => {
+        this.closeLoading();
+        this.showMessage('error', error.error);
       }
-    })
+    );
   }
-  addHorseByUser(){
-    
-    if(this.currentUserId){
+  showHorsesDisplay(userId) {
+    this.currentUserId = userId;
+
+    this.horsesUser = [];
+
+    this.gestionService.getHorsesByUserId(userId).subscribe(
+      (rs) => {
+        if (rs) {
+          this.horsesUser = rs;
+
+          this.horsesDisplay = true;
+        } else {
+          this.showMessage('error', 'Error al encontrar tu caballo');
+        }
+      },
+      (error) => {
+        this.closeLoading();
+        this.showMessage('error', error.error);
+      }
+    );
+  }
+  addHorseByUser() {
+    if (this.currentUserId) {
       this.formHorseOwner = new FormGroup({
         horseName: new FormControl(''),
         barnNum: new FormControl(''),
@@ -335,31 +338,37 @@ this.perfilService
         ownerId: new FormControl(this.currentUserId),
       });
       this.showAddHorseToUser = true;
-      // mostrar formulario de añadir caballo
-      
-      // this.correctUserCreated('Dueño', this.currentUserId)
-     this.showDialog = true
-     this.showAddHorseToUser = true
-     this.showCreateUser = false
-     this.horsesDisplay = false
-     this.showPaymentForm = false
-     
+
+      this.showDialog = true;
+      this.showAddHorseToUser = true;
+      this.showCreateUser = false;
+      this.horsesDisplay = false;
+      this.showPaymentForm = false;
     }
   }
 
-  showClass(userId){
-    
-    this.currentUserClases = null
-    this.perfilService
-      .getReadByIdExtendedAlumno(userId)
-      .subscribe((rs) => {
-        // if(rs.classDay != null){
-          this.currentUserClases = rs;
-            console.log(this.currentUserClases)
-        }
+  showClass(userId) {
+    this.currentUserClases = [];
+    this.perfilService.getReadByIdExtendedAlumno(userId).subscribe(
+      (rs) => {
+        if (rs) 
+        {
+          rs.forEach(clase => {
+            if(clase.classDay!=null){
+              this.currentUserClases.push(clase)
+            }
+          });
+         
         
-      // }
-      ); this.clasesDisplay = true
-      
+        }else{
+          this.showMessage('error', 'Error al intentar ver tus clases');
+        }
+      },
+      (error) => {
+       this.closeLoading();
+        this.showMessage('error', error.error)
+      });
+
+    this.clasesDisplay = true;
   }
 }

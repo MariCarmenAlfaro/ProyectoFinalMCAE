@@ -30,6 +30,7 @@ export class ClasesComponent extends CommonComponent implements OnInit {
   newClassUser: any;
   insertButtonDisabled = false;
   newPayment
+  loading: boolean;
   currentDate= new Date()
   barnPrice=[]
   constructor(
@@ -42,13 +43,16 @@ export class ClasesComponent extends CommonComponent implements OnInit {
       super(injector)
     }
   ngOnInit(): void {
+     this.loading = true;
     this.getClasses();
+   
   }
 
   getClasses() {
     this.clasesService.getAllClassesOrderBy().subscribe((rs) => {
       if(rs){
         this.clases = rs;
+        this.loading = false;
       } else {
         this.showMessage('error','Error al obtener las clases')
       }
@@ -109,7 +113,6 @@ export class ClasesComponent extends CommonComponent implements OnInit {
     }else {
       this.showMessage('error','Error al obtener los precios')
     }
-   
     },
     (error) => {
       this.showMessage('error',error.error)
@@ -131,7 +134,7 @@ export class ClasesComponent extends CommonComponent implements OnInit {
      
       if(rs){
         console.log(rs)  
-        this.showMessage("info","se ha creado la clase correctamente" )
+        this.showMessage("info","Se ha creado la clase correctamente" )
         this.insertButtonDisabled = false;
         this.showDialogAddUser = false;
         this.newPayment={
@@ -165,7 +168,6 @@ export class ClasesComponent extends CommonComponent implements OnInit {
   
   }
   deleteClass(classToDelete) {
-    // TODO obtener el ID de userClass. el ID siempre devuelve 0 el back.
     this.clasesService.deleteClassUser(classToDelete).subscribe((rs) => {
       if (rs) {
         this.getClasses();
@@ -183,7 +185,7 @@ export class ClasesComponent extends CommonComponent implements OnInit {
   deleteClassDialog(classToDelete) {
     console.log(classToDelete);
     this.confirmationService.confirm({
-      message: '¿Estás seguro que quieres borrar éste usuario de la clase?',
+      message: '¿Estás seguro/a que quieres borrar éste usuario de la clase?',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.deleteClass(classToDelete);
@@ -204,7 +206,6 @@ export class ClasesComponent extends CommonComponent implements OnInit {
       (rs) => {
         if(rs){
           this.usuarios = rs;
-        console.log(this.usuarios);
         this.noUsers = false;
         }else {
           this.noUsers = true;
@@ -245,8 +246,8 @@ export class ClasesComponent extends CommonComponent implements OnInit {
       (rs) => { 
         if(rs){
         this.usuarios = rs;
-        console.log(this.usuarios);
-        this.noUsers = false;}
+        this.noUsers = false;
+      }
 
       else {
           this.noUsers = true;

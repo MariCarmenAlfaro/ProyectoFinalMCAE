@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { UserProfile } from '../entities/userProfile/userProfile.interface';
-
 
 @Injectable({
   providedIn: 'root'
@@ -18,12 +16,12 @@ export class LoginService {
   public getAllUsers(){
 
     var url= this.baseUrl+`/User`;
-    return this.http.get<UserProfile[]>(
+    return this.http.get<any[]>(
       url
     )
   }
 
-    public authenticateLogin(emailAddress: string, password: string): Observable<UserProfile> {
+    public authenticateLogin(emailAddress: string, password: string): Observable<any> {
       const url = `${this.baseUrl}/login?emailAddress=${emailAddress}&password=${password}`;
       
       const body = {
@@ -31,10 +29,7 @@ export class LoginService {
         password: password
       };
 
-      return this.http.post<UserProfile>(url, body);
+      return this.http.post<any>(url, body);
        }
-    
-  // getUserRole(){
-  //   return this.user.role;
-  // }
+
 }

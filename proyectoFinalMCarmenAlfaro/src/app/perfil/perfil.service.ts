@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UserProfile } from '../entities/userProfile/userProfile.interface';
 
 @Injectable({
   providedIn: 'root',

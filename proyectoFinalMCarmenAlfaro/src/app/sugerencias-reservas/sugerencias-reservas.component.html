@@ -33,7 +33,10 @@
 
             </p-table>
         </ng-container>
+        <ng-container *ngIf="!this.suggestions">
             <p>¡Parece que no tienes peticiones por revisar!</p>
+        </ng-container>
+            
         </p-tabPanel>
         <p-tabPanel header="Peticiones realizadas">
 

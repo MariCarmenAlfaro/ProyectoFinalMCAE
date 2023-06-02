@@ -1,5 +1,5 @@
 <div class="preciosDiv">
-<p-table [value]="totalPrice" [paginator]="true" [rows]="10" [showCurrentPageReport]="true">
+<p-table [value]="totalPrice" [paginator]="true" [rows]="6" >
     <ng-template pTemplate="header">
         <tr>
             <th>Servicio</th>
@@ -60,11 +60,17 @@
 </p-table>
 
 <p-sidebar [(visible)]="editPrice">
+  <p-panel header="Edición de precio">
   <form [formGroup]="priceFormChange">
   <input type="text" class="form-control"  formControlName="typeService">
+  <br>
   <input type="number" class="form-control"  formControlName="price">
-  <button type="submit" pButton class="button-circle" (click)="savePrices()" icon="pi pi-check"></button>
+  <br>
+  <div class="btnDerecha">
+  <button type="submit" pButton class="button-circle" (click)="updatePrices()" icon="pi pi-check"></button>
+  </div>
   </form>
+  </p-panel>
 </p-sidebar>
 
 </div>
@@ -72,10 +78,10 @@
 
 <p-confirmDialog #cd [style]="{width:'50vw'}">
   <ng-template pTemplate="header">
-    <h3>Eliminar precio</h3>
+    <h3>¡Cuidado!</h3>
   </ng-template>
   <ng-template pTemplate="footer">
-    <button type="button" pButton icon="pi pi-times" label="No" (click)="cd.reject()"></button>
-    <button type="button" pButton icon="pi pi-check" label="Si" (click)="cd.accept()"></button>
+    <button type="button" pButton icon="pi pi-times" class="button-circle" (click)="cd.reject()"></button>
+    <button type="button" pButton icon="pi pi-check" class="button-circle" (click)="cd.accept()"></button>
   </ng-template>
 </p-confirmDialog>

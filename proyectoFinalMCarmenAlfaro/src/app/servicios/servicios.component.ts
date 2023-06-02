@@ -1,27 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Injector, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ReservationExcService } from './servicios.service';
-import { ReservationExc } from '../entities/reservationExc.interface';
 import { ClasesService } from '../clases/clases.service';
-
+import { CommonComponent } from '../common/common.component';
 
 @Component({
   selector: 'app-servicios',
   templateUrl: './servicios.component.html',
   styleUrls: ['./servicios.component.scss'],
 })
-export class ServiciosComponent implements OnInit {
+export class ServiciosComponent extends CommonComponent implements OnInit {
   respuestaOk: boolean;
-  mnjConfirm:boolean=false;
-clases:any=[];
-precios
-priceExcPlaya
-priceExcMontana
-priceClase
-priceEstablo
-priceCumple
-
-
+  mnjConfirm: boolean = false;
+  clases: any = [];
+  precios;
+  priceExcPlaya;
+  priceExcMontana;
+  priceClase;
+  priceEstablo;
+  priceCumple;
   excursionForm = new FormGroup({
     name: new FormControl('', Validators.required),
     email: new FormControl('', Validators.required),
@@ -31,19 +28,29 @@ priceCumple
   });
   constructor(
     public reservationService: ReservationExcService,
-     public clasesService: ClasesService) {}
-
-  ngOnInit(): void {
-  
-   
-    this.clasesService.getAllClassesOrderBy().subscribe(rs=>{
-      this.clases=rs;
-      console.log(rs)
-    })
-    this.readPrices()
+    public clasesService: ClasesService,
+    protected injector: Injector
+  ) {
+    super(injector);
   }
 
-  reservarExcursion() {
+  ngOnInit(): void {
+    this.clasesService.getAllClassesOrderBy().subscribe(
+      (rs) => {
+        if (rs) {
+          this.clases = rs;
+        } else {
+          this.showMessage('error', 'Error al obtener las clases');
+        }
+      },
+      (error) => {
+        this.showMessage('error', error.error);
+      }
+    );
+    this.readPrices();
+  }
+
+  reserveExcursion() {
     var name = this.excursionForm.get('name').value;
     var email = this.excursionForm.get('email').value;
     var people = this.excursionForm.get('people').value;
@@ -54,45 +61,49 @@ priceCumple
       .postReservation(name, email, people, date, type)
       .subscribe(
         (rs) => {
-          this.respuestaOk = rs;
-          console.log(rs)
-          if(rs == true){
-          this.mnjConfirm=true;
-     }
-        });
-        
-    
-    console.log(this.excursionForm.value);
-    
+          if (rs) {
+            this.respuestaOk = rs;
+            this.mnjConfirm = true;
+          } else {
+            this.showMessage('error', 'Error al reservar la excursión');
+          }
+        },
+        (error) => {
+          this.showMessage('error', error.error);
+        }
+      );
   }
   readPrices() {
-    this.reservationService.readPrices().subscribe((rs) => {
-      this.precios= rs;
-      console.log(this.precios);
-
-      this.precios.forEach(precio => {
-
-        switch (precio.typeService) {
-          case "Excursion Playa":
-            this.priceExcPlaya = precio.price;
-            break;
-          case "Excursion Montaña":
-            this.priceExcMontana = precio.price;
-            break;
-          case "Establo":
-            this.priceEstablo = precio.price;
-            break;
-          case "Clase":
-            this.priceClase = precio.price;
-            break;
-          case "Fiesta Cumpleaños":
-            this.priceCumple = precio.price;
-            break;
+    this.reservationService.readPrices().subscribe(
+      (rs) => {
+        if (rs) {
+          this.precios = rs;
+          this.precios.forEach((precio) => {
+            switch (precio.typeService) {
+              case 'Excursion Playa':
+                this.priceExcPlaya = precio.price;
+                break;
+              case 'Excursion Montaña':
+                this.priceExcMontana = precio.price;
+                break;
+              case 'Establo':
+                this.priceEstablo = precio.price;
+                break;
+              case 'Clase':
+                this.priceClase = precio.price;
+                break;
+              case 'Fiesta Cumpleaños':
+                this.priceCumple = precio.price;
+                break;
+            }
+          });
+        } else {
+          this.showMessage('error', 'Error al obtener los precios');
         }
-      });
-
-      
-      
-    });
+      },
+      (error) => {
+        this.showMessage('error', error.error);
+      }
+    );
   }
 }

@@ -10,21 +10,16 @@ import { CommonComponent } from '../common/common.component';
   styleUrls: ['./pagos.component.scss'],
 })
 export class PagosComponent extends CommonComponent implements OnInit {
-
   typeServices = [];
   showPaymentForm = false;
   paymentForm: FormGroup;
-  nombresPagos=[];
+  nombresPagos = [];
 
-  constructor(
-    public pagosService: PagosService,
-    protected injector: Injector
-    ) {
-      super(injector)
-    }
+  constructor(public pagosService: PagosService, protected injector: Injector) {
+    super(injector);
+  }
 
   ngOnInit(): void {
-
     this.getTypesServicesPrice();
     this.getPricePayUser();
     this.paymentForm = new FormGroup({
@@ -37,22 +32,18 @@ export class PagosComponent extends CommonComponent implements OnInit {
   }
 
   savePayment() {
-    // guardar el pago
-    console.log(this.paymentForm.value);
-
     this.pagosService.updatePayment(this.paymentForm.value).subscribe(
       (rs) => {
         if (rs) {
-          console.log('pago actualizado');
-          console.log(rs);
-          this.getPricePayUser()
+          this.getPricePayUser();
           this.getTypesServicesPrice();
-
           this.showPaymentForm = false;
+        } else {
+          this.showMessage('error', 'Error al modificar el pago');
         }
       },
       (error) => {
-        console.error(error);
+        this.showMessage('error', error.error);
       }
     );
   }
@@ -62,35 +53,41 @@ export class PagosComponent extends CommonComponent implements OnInit {
       (rs) => {
         if (rs) {
           this.typeServices = rs;
-          console.log("precios y nombres")
-          console.log(this.typeServices)
+        } else {
+          this.showMessage('error', 'Error al obtener los servicios');
         }
       },
       (error) => {
-        console.error(error);
+        this.showMessage('error', error.error);
       }
     );
   }
-  createPaymentForm(payment) {
 
+  createPaymentForm(payment) {
     if (this.typeServices.length > 0) {
       this.paymentForm = new FormGroup({
         payId: new FormControl(payment.payId),
         userId: new FormControl(payment.userId),
         payDate: new FormControl(payment.payDate),
         priceId: new FormControl(payment.priceId),
-        payMethod: new FormControl(payment.payMethod)
+        payMethod: new FormControl(payment.payMethod),
       });
-      console.log(this.paymentForm.value)
-
       this.showPaymentForm = true;
-    } 
+    }
   }
   getPricePayUser() {
-    this.pagosService.getPricePayUser().subscribe((rs) => {
-      this.nombresPagos=  rs
-      
-    });
+    this.pagosService.getPricePayUser().subscribe(
+      (rs) => {
+        if (rs) {
+          this.nombresPagos = rs;
+        } else {
+          this.showMessage('error', 'Error al obtener los pagos');
+        }
+      },
+      (error) => {
+        this.showMessage('error', error.error);
+      }
+    );
   }
   clear(table) {
     table.clear();

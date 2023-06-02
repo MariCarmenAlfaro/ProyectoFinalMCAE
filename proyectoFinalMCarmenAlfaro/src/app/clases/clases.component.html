@@ -2,7 +2,8 @@
     <button class="button-circleBlack" icon="pi pi-user-plus" (click)="addUserToClass()" pButton
         pTooltip="Añadir usuario a clase" tooltipPosition="top"></button>
     <p-table #dt1 [value]="clases" dataKey="id" [rows]="10" [showCurrentPageReport]="true"
-        [rowsPerPageOptions]="[10, 25, 50]" [globalFilterFields]="['classDay', 'classHour', 'classLevel']">
+        [rowsPerPageOptions]="[10, 25, 50]" [globalFilterFields]="['classDay', 'classHour', 'classLevel']"
+        [loading]="loading">
         <ng-template pTemplate="header">
             <tr>
                 <th>
@@ -87,7 +88,8 @@
 </ng-template>
 <ng-template pTemplate="emptymessage">
     <tr>
-        <td colspan="7">Oh! Parece que habido un error.</td>
+
+
     </tr>
 </ng-template>
 </p-table>
@@ -100,24 +102,27 @@
     <hr>
     <ng-container *ngFor="let user of this.usuarios">
         <div>
-        <p class="alumnos">
-            <i class="fa-regular fa-heart"></i> {{user.userName}}
-        <div class="eliminarUser">
-            <button class="button-circle " icon="pi pi-trash" (click)="deleteClassDialog(user.id)" pButton
-                pTooltip="Borrar" tooltipPosition="top"></button>
-        </div>
+            <div class="alumnos">
+                <div class="eliminarUser">
+                    <div>
+                    <i class="fa-regular fa-heart"></i> {{user.userName}}
+                </div>
+                    <button class="button-circle " icon="pi pi-trash" (click)="deleteClassDialog(user.id)" pButton
+                        pTooltip="Borrar" tooltipPosition="top"></button>
+                </div>
+            </div>
         </div>
 
     </ng-container>
-    <ng-container *ngIf="this.noUsers">
-        <p-progressSpinner aria-label="Loading"></p-progressSpinner>
+    <ng-container *ngIf="this.usuarios <=0">
+
         <p class="alumnos">Oh vaya! Parece que aún no hay alumnos hoy...</p>
     </ng-container>
 
 </p-sidebar>
 
 <p-sidebar [(visible)]="showDialogAddUser">
-    <div class="col-12 altoClases">
+    <div class="col-12 ">
         <div class="desplegables">
             <label for="">Alumno:</label><br>
             <p-dropdown [options]="allUsers" [(ngModel)]="selectedUser" optionLabel="userName"
@@ -135,7 +140,7 @@
             <ng-container *ngIf="classesDayHour.length>0">
                 <label for="">Clases disponibles: </label> <br>
                 <p-dropdown [options]="classesDayHour" [(ngModel)]="selectedClass" placeholder="Selecciona el día"
-                     optionLabel="classDay">
+                    optionLabel="classDay">
                     <ng-template let-option pTemplate="item">
                         <span>{{ option.classDay }} - {{ option.classHour }}</span>
                     </ng-template>

@@ -1,9 +1,7 @@
 import { Component, Injector } from '@angular/core';
 import { GestionService } from '../gestion/gestion.service';
 import { CaballosService } from '../caballo/caballos.service';
-import {
-  ConfirmEventType
-} from 'primeng/api';
+import { ConfirmEventType } from 'primeng/api';
 import { SugerenciasService } from './sugerencias.service';
 import { CommonComponent } from '../common/common.component';
 
@@ -16,9 +14,9 @@ export class SugerenciasReservasComponent extends CommonComponent {
   suggestions = [];
   suggestionArchived = [];
   suggestion;
-  reserva
-  reservasRs=[];
-  reservasArcvhived=[]
+  reserva;
+  reservasRs = [];
+  reservasArcvhived = [];
   currentSuggestion;
   currentReserva;
   peticionArchivo = false;
@@ -28,43 +26,54 @@ export class SugerenciasReservasComponent extends CommonComponent {
     public caballosService: CaballosService,
     public sugerenciasService: SugerenciasService,
     protected injector: Injector
-    ) {
-      super(injector)
-    }
+  ) {
+    super(injector);
+  }
+
   ngOnInit(): void {
     this.readSuggestion();
     this.readReserva();
-
   }
 
   readSuggestion() {
-    this.suggestionArchived=[]
-    this.suggestions=[]
+    this.suggestionArchived = [];
+    this.suggestions = [];
     this.gestionService.readSuggestions().subscribe((rs) => {
-      rs.forEach((visto) => {
-        if (visto.checked == true) {
-          this.suggestionArchived.push(visto);
-        } else {
-          this.suggestions.push(visto);
-        }
-      });
-
-      console.log(rs);
+      if (rs) {
+        rs.forEach((visto) => {
+          if (visto.checked == true) {
+            this.suggestionArchived.push(visto);
+          } else {
+            this.suggestions.push(visto);
+          }
+        });
+      } else {
+        this.showMessage('error', 'Error al leer las sugerencias');
+      }
     });
   }
+
   readReserva() {
-    this.reservasRs=[]
-    this.reservasArcvhived=[]
-    this.gestionService.readReservas().subscribe((rs) => {
-      rs.forEach((visto) => {
-        if (visto.checked == true) {
-          this.reservasArcvhived.push(visto);
+    this.reservasRs = [];
+    this.reservasArcvhived = [];
+    this.gestionService.readReservas().subscribe(
+      (rs) => {
+        if (rs) {
+          rs.forEach((visto) => {
+            if (visto.checked == true) {
+              this.reservasArcvhived.push(visto);
+            } else {
+              this.reservasRs.push(visto);
+            }
+          });
         } else {
-          this.reservasRs.push(visto);
+          this.showMessage('error', 'Error al leer las reservas');
         }
-      });
-      console.log(rs);
-    });
+      },
+      (error) => {
+        this.showMessage('error', error.error);
+      }
+    );
   }
 
   checkedSuggestion(suggestion) {
@@ -77,18 +86,23 @@ export class SugerenciasReservasComponent extends CommonComponent {
       peticion: this.currentSuggestion.emailUser,
       checked: true,
     };
-    console.log(this.suggestion);
+
     this.sugerenciasService
       .updateSuggestion(this.currentSuggestion.id, this.suggestion)
       .subscribe((rs) => {
-    if(rs){
-      this.readSuggestion()
-    }
+        if (rs) {
+          this.readSuggestion();
+        }else{
+          this.showMessage('error','Error al modificar las sugerencias')
+        }
+      },
+      (error) => {
+        this.showMessage('error',error.error)
       });
   }
   checkedReserva(reserva) {
     this.currentReserva = reserva;
-    console.log(this.currentReserva)
+    console.log(this.currentReserva);
     this.reserva = {
       reservationId: this.currentReserva.reservationId,
       reservationName: this.currentReserva.reservationName,
@@ -97,32 +111,39 @@ export class SugerenciasReservasComponent extends CommonComponent {
       numPeople: this.currentReserva.numPeople,
       dateExcursion: this.currentReserva.dateExcursion,
       checked: true,
-    }; 
+    };
     this.sugerenciasService
       .updateReserva(this.currentReserva.reservationId, this.reserva)
       .subscribe((rs) => {
-       if(rs){
-        this.readReserva()
-       }
+        if (rs) {
+          this.readReserva();
+        }else{
+          this.showMessage('error','Error al modificar las reservas')
+        }
+      },
+      (error) => {
+        this.showMessage('error',error.error)
       });
   }
   deleteReserva(id) {
     this.sugerenciasService.deleteReserva(id).subscribe((rs) => {
-      rs;
       if (rs) {
         this.readReserva();
+        this.showMessage('info','Reserva eliminada correctamente')
+      }else{
+        this.showMessage('error','Error al eliminar la reserva')
       }
     });
   }
+
   deleteReservaDialog(reserva) {
     this.currentReserva = reserva;
     this.confirmationService.confirm({
-      message: '¿Estás seguro que quieres eliminar ésta reseva?',
+      message: '¿Estás seguro/a que quieres eliminar ésta reserva?',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.deleteReserva(this.currentReserva.reservationId);
-      }
-      
+      },
     });
   }
   deleteSuggestion(id) {
@@ -130,17 +151,23 @@ export class SugerenciasReservasComponent extends CommonComponent {
       rs;
       if (rs) {
         this.readSuggestion();
+        this.showMessage('info','Sugerencia eliminada correctamente')
+      }else{
+        this.showMessage('error','Error al eliminar la sugerencia')
       }
+    },
+    (error) => {
+      this.showMessage('error',error.error)
     });
   }
   deleteSugestionDialog(suggestion) {
     this.currentSuggestion = suggestion;
     this.confirmationService.confirm({
-      message: '¿Estás seguro que quieres eliminar ésta petición?',
+      message: '¿Estás seguro/a que quieres eliminar ésta petición?',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.deleteSuggestion(this.currentSuggestion.id);
-      }
+      },
     });
   }
 }

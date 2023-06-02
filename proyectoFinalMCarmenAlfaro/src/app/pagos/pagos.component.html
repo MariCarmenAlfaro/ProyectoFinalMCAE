@@ -2,7 +2,7 @@
 
     <ng-container *ngIf="this.nombresPagos.length > 0">
         <div class="col-12">
-            <p-table #dt1 [value]="nombresPagos" dataKey="id" [rows]="10" [showCurrentPageReport]="true"
+            <p-table #dt1 [value]="nombresPagos" dataKey="id" [rows]="5"
                 [globalFilterFields]="['userId', 'payDate', 'priceId']" [paginator]="true">
                 <ng-template pTemplate="caption">
                     <div class="flex">
@@ -107,11 +107,11 @@
                     <label for="payDate">Fecha de pago</label>
                 </div>
                
-                    <div class="form-floating mb-2 altoClases">
+                    <div class="form-floating mb-2">
                         <p-dropdown formControlName="priceId" [options]="typeServices" optionLabel="typeService"
                             optionValue="priceId" placeholder="Tipo servicio"></p-dropdown>
                     </div>
-                    <div class="form-floating mb-2 altoClases">
+                    <div class="form-floating mb-2">
                         <p-dropdown formControlName="payMethod" [options]="payMethods" optionLabel="name"
                             optionValue="name" placeholder="Metodo de pago" ></p-dropdown>
 

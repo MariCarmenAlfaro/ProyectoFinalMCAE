@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Injector, OnInit } from '@angular/core';
 import { PerfilService } from './perfil.service';
 import { LoginService } from '../login/login.service';
-import { UserProfile } from '../entities/userProfile/userProfile.interface';
-import { FieldsetModule } from 'primeng/fieldset';
+
 import {
   FormBuilder,
   FormControl,
@@ -11,21 +10,22 @@ import {
 } from '@angular/forms';
 import { ContactService } from '../contact/contact.service';
 import { PagosService } from '../pagos/pagos.service';
+import { CommonComponent } from '../common/common.component';
 @Component({
   selector: 'app-perfil',
   templateUrl: './perfil.component.html',
   styleUrls: ['./perfil.component.scss'],
 })
-export class PerfilComponent implements OnInit {
+export class PerfilComponent extends CommonComponent implements OnInit {
   datosUser: any;
-  datosClases
+  datosClases;
   datosPagos = [];
   userType = false;
   formClass = false;
   formBarn = false;
   btnSolicitud = false;
   paymentForm: FormGroup;
-  usuario: UserProfile = JSON.parse(window.localStorage.getItem('user'));
+  usuario = JSON.parse(window.localStorage.getItem('user'));
   alumno = this.usuario.userType == 'Alumno';
   dueño = this.usuario.userType == 'Dueño';
   admin = this.usuario.userType == 'Admin';
@@ -42,8 +42,11 @@ export class PerfilComponent implements OnInit {
     public loginService: LoginService,
     public contactService: ContactService,
     public pagosService: PagosService,
-    private formBuilder: FormBuilder
-  ) {}
+    private formBuilder: FormBuilder,
+    protected injector: Injector
+  ) {
+    super(injector);
+  }
 
   ngOnInit(): void {
     this.readUserLocalStorage();
@@ -74,29 +77,49 @@ export class PerfilComponent implements OnInit {
   }
   readUserById() {
     this.usuario = JSON.parse(window.localStorage.getItem('user'));
-    console.log(this.usuario);
-    this.perfilService.getReadById(this.usuario.userId).subscribe((rs) => {
-      this.datosUser = rs;
-      console.log(this.datosUser);
-    });
+
+    this.perfilService.getReadById(this.usuario.userId).subscribe(
+      (rs) => {
+        if (rs) {
+          this.datosUser = rs;
+        } else {
+          this.showMessage('error', 'Error al obtener los usuarios');
+        }
+      },
+      (error) => {
+        this.showMessage('error', error.error);
+      }
+    );
   }
   readUserClass() {
     this.usuario = JSON.parse(window.localStorage.getItem('user'));
-    this.perfilService
-      .getReadByIdExtendedAlumno(this.usuario.userId)
-      .subscribe((rs) => {
-        this.datosClases = rs;
-        console.log(this.datosClases)
-      });
+    this.perfilService.getReadByIdExtendedAlumno(this.usuario.userId).subscribe(
+      (rs) => {
+        if (rs) {
+          this.datosClases = rs;
+        } else {
+          this.showMessage('error', 'Error al obtener las clases');
+        }
+      },
+      (error) => {
+        this.showMessage('error', error.error);
+      }
+    );
   }
   readMoneyMonth() {
     this.usuario = JSON.parse(window.localStorage.getItem('user'));
-    this.perfilService
-      .getReadMoneyMonthById(this.usuario.userId)
-      .subscribe((rs) => {
-        this.datosPagos = rs;
-        console.log(this.datosPagos);
-      });
+    this.perfilService.getReadMoneyMonthById(this.usuario.userId).subscribe(
+      (rs) => {
+        if (rs) {
+          this.datosPagos = rs;
+        } else {
+          this.showMessage('error', 'Error al obtener las mensualidades');
+        }
+      },
+      (error) => {
+        this.showMessage('error', error.error);
+      }
+    );
   }
   mostrarFormulario() {
     this.showForm = true;
@@ -117,31 +140,24 @@ export class PerfilComponent implements OnInit {
         peticion: this.changeForm.value.peticion,
       };
     }
-    console.log(this.formularioCambios);
-    this.contactService
-      .insertSuggestions(this.formularioCambios)
-      .subscribe((rs) => {
-        rs;
+
+    this.contactService.insertSuggestions(this.formularioCambios).subscribe(
+      (rs) => {
         if (rs) {
-          console.log('Ok');
           this.showForm = false;
-          this.messageService.add({
-            severity: 'info',
-            summary: 'Insercción correcta',
-            detail: 'Caballo creado correctamente.',
-          });
+          this.showMessage('info', 'Sugerencia enviada con éxito');
         } else {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Rejected',
-            detail: 'Error al intentar insertar el caballo',
-          });
+          this.showMessage('error', 'Error al enviar la sugerencia');
         }
-      });
+      },
+      (error) => {
+        this.showMessage('error', error.error);
+      }
+    );
   }
+
   pagarPago(pago) {
     this.pagarPagos = true;
-
     this.updatePay = {
       payId: pago.payId,
       userId: this.datosUser.userId,
@@ -150,20 +166,19 @@ export class PerfilComponent implements OnInit {
       payMethod: 'Tarjeta',
     };
   }
+
   pagarDeuda() {
-    console.log(this.updatePay)
     if (this.paymentForm.valid) {
       this.pagosService.updatePayment(this.updatePay).subscribe((rs) => {
-        rs;
-        console.log(rs);
         this.pagarPagos = false;
         this.readUserLocalStorage();
         this.readUserById();
         this.readMoneyMonth();
-        //TODO poner toast
+        this.showMessage('info', '¡Pago realizado con éxito!');
       });
     } else {
       this.paymentForm.markAllAsTouched();
+      this.showMessage('error', 'Error al realizar el pago');
     }
   }
 }

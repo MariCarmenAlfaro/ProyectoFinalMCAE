@@ -1,15 +1,9 @@
 .containerPeticion{
     margin: 1%;
 }
-// p-button.register{
-   
-//     color: #fff!important;
-//     background: black!important;
-//     border: 1px solid black!important;
-// }
-.altoClases{
-    height: 80vh;
-}
+
+
+
 .usuarios{
     width: 90%;
     margin: auto;
@@ -18,11 +12,7 @@
 .clasesUser{
     padding: 1%;
 }
-.btnDerecha{
-    display: flex;
-    justify-content: flex-end;
-    padding: 1%;
-}
+
 .contrasenya{
     display: flex;
     align-items: center;
@@ -33,4 +23,19 @@ color: rgb(255, 123, 184);
 .text-primary {
     --bs-text-opacity: 1;
     color: rgb(255, 123, 184)!important;
+}
+.alinearBtn{
+    display: flex;
+    align-items: center;
+}
+div.col-12 .altoDiv{
+    height: 90vh;
+}
+
+.p-sidebar-active .p-sidebar-content {
+    min-height: 90vh !important;
+}
+:host .p-sidebar .p-sidebar-content {
+    background-color: red;;
+    min-height: 90vh !important;
 }

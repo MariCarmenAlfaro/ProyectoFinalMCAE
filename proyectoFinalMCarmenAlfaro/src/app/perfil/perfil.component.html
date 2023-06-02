@@ -25,67 +25,72 @@
             <ng-container *ngIf="!this.datosClases">
                 <p>¡Oh vaya! Parece ser que aún no estás apuntado a ninguna clase</p>
             </ng-container>
-            <ng-container *ngIf="this.datosClases">
-                <p> Día de clase:<strong>{{this.datosClases?.classDay}}</strong> a las
-                    <strong>{{this.datosClases?.classHour}}</strong> </p>
 
-                <p>Tu nivel es: <strong>{{this.datosClases?.classLevel}}</strong> </p>
+            <ng-container *ngFor="let clase of datosClases">
+                <p> Día de clase:<strong>{{clase?.classDay}}</strong> a las
+                    <strong>{{clase?.classHour}}</strong>
+                </p>
+                <p>Tu nivel es: <strong>{{clase?.classLevel}}</strong> </p>
+
             </ng-container>
+
+
         </p-fieldset>
     </ng-container>
 
 
-<br><br>
+    <br><br>
     <ng-container *ngIf="this.datosPagos">
-        
+
         <p-accordion>
             <p-accordionTab>
                 <p-header>
-                <div class="flex align-items-center text-primary">
-                    <span class="pi pi-heart-fill"></span>&nbsp;
-                    <span class="font-bold text-lg perfilDatos">Mensualidades</span>
-                </div>
+                    <div class="flex align-items-center text-primary">
+                        <span class="pi pi-heart-fill"></span>&nbsp;
+                        <span class="font-bold text-lg perfilDatos">Mensualidades</span>
+                    </div>
                 </p-header>
                 <ng-container *ngIf="!this.datosUser">
                     <p>¡Oh vaya! Parece ser que aún no tienes ningún pago por realizar ni realizado</p>
                 </ng-container>
                 <ng-container *ngIf="this.datosPagos">
-                <p-table [value]="datosPagos" [paginator]="true" [rows]="5" [showCurrentPageReport]="true"
-                [tableStyle]="{ 'min-width': '40rem' }">
-                <ng-template pTemplate="header">
-                    <tr>
-                        <th style="width:25%">Mensualidad</th>
-                        <th style="width:25%">Servicio</th>
-                        <th style="width:25%">Fecha
-                        <p-columnFilter type="date" field="name" display="menu"></p-columnFilter>
-                        </th>
-                        <th style="width:25%">Pagado</th>
-                        <th style="width:25%">Por pagar</th>
-                    </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-pago>
-                    <tr>
-                        <td>{{ pago.price }}€</td>
-                        <td>{{ pago.typeService}}</td>
-                        <td>{{ pago.payDate | date:'dd - MM - yyyy' }}</td>
-                        <td>{{ pago.payMethod }}</td>
-                        <td>
-                            <ng-container *ngIf="pago.payMethod === 'Pendiente'">
-                                <button type="button" icon="pi pi-euro" pButton class="button-circle" (click)="pagarPago(pago)"></button>
-                              </ng-container>
-                        </td>
-                    </tr>
-                </ng-template>
-            </p-table>
-        </ng-container>
+                    <p-table [value]="datosPagos" [paginator]="true" [rows]="5" [showCurrentPageReport]="true"
+                        [tableStyle]="{ 'min-width': '40rem' }">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th style="width:25%">Mensualidad</th>
+                                <th style="width:25%">Servicio</th>
+                                <th style="width:25%">Fecha
+                                    <p-columnFilter type="date" field="name" display="menu"></p-columnFilter>
+                                </th>
+                                <th style="width:25%">Pagado</th>
+                                <th style="width:25%">Por pagar</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-pago>
+                            <tr>
+                                <td>{{ pago.price }}€</td>
+                                <td>{{ pago.typeService}}</td>
+                                <td>{{ pago.payDate | date:'dd - MM - yyyy' }}</td>
+                                <td>{{ pago.payMethod }}</td>
+                                <td>
+                                    <ng-container *ngIf="pago.payMethod === 'Pendiente'">
+                                        <button type="button" icon="pi pi-euro" pButton class="button-circle"
+                                            (click)="pagarPago(pago)"></button>
+                                    </ng-container>
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </ng-container>
 
             </p-accordionTab>
-       
+
         </p-accordion>
 
-        
+
     </ng-container>
-    <div class="btnDerecho">
+    <div class="btnDerecha">
         <button class="button-circleBlackChanges" pButton *ngIf="btnSolicitud" (click)="mostrarFormulario()">Solicitud
             cambios</button>
     </div>
@@ -111,8 +116,7 @@
                 </p-panel>
                 <div class="modal-footer">
                     <br><br>
-                    <button class="button-circle" icon="pi pi-check" pButton
-                        (click)="insertComent()"></button>
+                    <button class="button-circle" icon="pi pi-check" pButton (click)="insertComent()"></button>
 
                 </div>
             </form>
@@ -143,36 +147,44 @@
 
     <p-sidebar [(visible)]="pagarPagos">
         <p-panel header="Pagar">
-       
-        <form [formGroup]="paymentForm" (ngSubmit)="pagarDeuda()"  [class.invalid]="paymentForm.invalid" [class.valid]="paymentForm.valid">
-            <label for="cardNumber">*Número de tarjeta:</label>
-            <input type="text" id="cardNumber" formControlName="cardNumber" placeholder="2906201931012000" required>
-            <br>
-            <div *ngIf="paymentForm.get('cardNumber').invalid && (paymentForm.get('cardNumber').dirty || paymentForm.get('cardNumber').touched)">
-              <div *ngIf="paymentForm.get('cardNumber').errors.required">El número de tarjeta es obligatorio.</div>
-              <div *ngIf="paymentForm.get('cardNumber').errors.pattern">Sólo dieciseis dígitos.</div>
 
-            </div>
-          <br>
-            <label for="cardExpiry">*Fecha de expiración:</label>
-            <input type="text" id="cardExpiry" formControlName="cardExpiry" placeholder="01/31" required>
-            <div *ngIf="paymentForm.get('cardExpiry').invalid && (paymentForm.get('cardExpiry').dirty || paymentForm.get('cardExpiry').touched)">
-              <div *ngIf="paymentForm.get('cardExpiry').errors.required">La fecha de expiración es obligatoria.</div>
-              <div *ngIf="paymentForm.get('cardExpiry').errors.pattern">La fecha de expiración debe tener el formato MM/AA.</div>
-            </div>
-          <br><br>
-            <label for="cardCvv">*CVV:</label><br>
-            <input type="text" id="cardCvv" formControlName="cardCvv" placeholder="123" required><br>
-            <div *ngIf="paymentForm.get('cardCvv').invalid && (paymentForm.get('cardCvv').dirty || paymentForm.get('cardCvv').touched)">
-              <div *ngIf="paymentForm.get('cardCvv').errors.required">El CVV es obligatorio.</div>
-              <div *ngIf="paymentForm.get('cardCvv').errors.pattern">El CVV debe contener solo dígitos.</div>
-            </div>
-       
-          <br><br>
-          <div class="btnDerecha">
-            <button type="submit" class="button-circle" pButton [disabled]="paymentForm.invalid" icon="pi pi-check"></button>
-            </div>
-          </form>
-           </p-panel>
+            <form [formGroup]="paymentForm" (ngSubmit)="pagarDeuda()" [class.invalid]="paymentForm.invalid"
+                [class.valid]="paymentForm.valid">
+                <label for="cardNumber">*Número de tarjeta:</label>
+                <input type="text" id="cardNumber" formControlName="cardNumber" placeholder="2906201931012000" required>
+                <br>
+                <div
+                    *ngIf="paymentForm.get('cardNumber').invalid && (paymentForm.get('cardNumber').dirty || paymentForm.get('cardNumber').touched)">
+                    <div *ngIf="paymentForm.get('cardNumber').errors.required">El número de tarjeta es obligatorio.
+                    </div>
+                    <div *ngIf="paymentForm.get('cardNumber').errors.pattern">Sólo dieciseis dígitos.</div>
+
+                </div>
+                <br>
+                <label for="cardExpiry">*Fecha de expiración:</label>
+                <input type="text" id="cardExpiry" formControlName="cardExpiry" placeholder="01/31" required>
+                <div
+                    *ngIf="paymentForm.get('cardExpiry').invalid && (paymentForm.get('cardExpiry').dirty || paymentForm.get('cardExpiry').touched)">
+                    <div *ngIf="paymentForm.get('cardExpiry').errors.required">La fecha de expiración es obligatoria.
+                    </div>
+                    <div *ngIf="paymentForm.get('cardExpiry').errors.pattern">La fecha de expiración debe tener el
+                        formato MM/AA.</div>
+                </div>
+                <br><br>
+                <label for="cardCvv">*CVV:</label><br>
+                <input type="text" id="cardCvv" formControlName="cardCvv" placeholder="123" required><br>
+                <div
+                    *ngIf="paymentForm.get('cardCvv').invalid && (paymentForm.get('cardCvv').dirty || paymentForm.get('cardCvv').touched)">
+                    <div *ngIf="paymentForm.get('cardCvv').errors.required">El CVV es obligatorio.</div>
+                    <div *ngIf="paymentForm.get('cardCvv').errors.pattern">El CVV debe contener solo dígitos.</div>
+                </div>
+
+                <br><br>
+                <div class="btnDerecha">
+                    <button type="submit" class="button-circle" pButton [disabled]="paymentForm.invalid"
+                        icon="pi pi-check"></button>
+                </div>
+            </form>
+        </p-panel>
     </p-sidebar>
 </div>

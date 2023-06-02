@@ -6,8 +6,8 @@
 
     <!-- tabla usuarios -->
     <ng-container *ngIf="users">
-        <p-table #dt1 [value]="users" [paginator]="true" dataKey="id" [rows]="10"
-            [globalFilterFields]="['userName', 'emailAddress', 'userType']">
+        <p-table #dt1 [value]="users" [paginator]="true" dataKey="id" [rows]="5"
+            [globalFilterFields]="['userName', 'emailAddress', 'userType']" >
             <ng-template pTemplate="caption">
                 <div class="flex btnDerecha">
                     <button pButton class="button-circle" icon="pi pi-filter-slash" (click)="clear(dt1)"></button>
@@ -73,8 +73,8 @@
 
                             <button class="button-circle " icon="pi pi-euro" (click)=addPayment(user.userId) pButton
                                 pTooltip="Añadir pago" tooltipPosition="top"></button>
-                            <button class="button-circle " icon="pi pi-trash" (click)=deleteUserDialog(user)
-                                pButton pTooltip="Borrar" tooltipPosition="top"></button>
+                            <button class="button-circle " icon="pi pi-trash" (click)=deleteUserDialog(user) pButton
+                                pTooltip="Borrar" tooltipPosition="top"></button>
 
 
                         </div>
@@ -89,7 +89,7 @@
             </ng-template>
             <ng-template pTemplate="emptymessage">
                 <tr>
-                    <td colspan="7">No customers found.</td>
+                    <td colspan="7">No se han encontrado datos.</td>
                 </tr>
             </ng-template>
 
@@ -103,10 +103,11 @@
 
         <p-panel header="" icon="pi pi-heart">
             <ng-template pTemplate="header">
-                <span class="text-primary font-semibold text-xl"> <i class="fa-regular fa-heart"></i> {{ currentUser.userName }}<div class="btnDerecha">
-                 
-               </div> </span>
-               </ng-template>
+                <span class="text-primary font-semibold text-xl"> <i class="fa-regular fa-heart"></i> {{
+                    currentUser.userName }}<div class="btnDerecha">
+
+                    </div> </span>
+            </ng-template>
 
             <strong>Tipo usuario: </strong>
             <pre>   {{currentUser.userType}}</pre>
@@ -114,11 +115,13 @@
             <pre>   {{currentUser.emailAddress}}</pre>
             <strong>Fecha de registro: </strong>
             <pre>   {{currentUser.registrationDate | date:'dd - MM - yyyy'}}</pre>
+
+            <div class="btnDerecha">
+                <button class="button-circle" icon="pi pi-pencil" pButton
+                    (click)="mostrarEditarUsuario(currentUser)"></button>
+            </div>
         </p-panel>
-        <div class="btnDerecha">
-            <button class="button-circle" icon="pi pi-pencil" pButton
-                (click)="mostrarEditarUsuario(currentUser)"></button>
-        </div>
+
     </div>
 
     <div class="col-12" *ngIf="showEditUser">
@@ -131,8 +134,8 @@
                 </div>
 
                 <div class="form-floating mb-2">
-                    <p-dropdown formControlName="userType" [options]="userTypes"
-                     optionLabel="name" optionValue="name"  placeholder="Tipo usuario"></p-dropdown>
+                    <p-dropdown formControlName="userType" [options]="userTypes" optionLabel="name" optionValue="name"
+                        placeholder="Tipo usuario"></p-dropdown>
                 </div>
                 <div class="form-floating mb-2">
 
@@ -161,7 +164,7 @@
 </p-sidebar>
 <p-sidebar [(visible)]="showDialog">
     <ng-container *ngIf="showCreateUser">
-      
+
         <div class="col-12">
             <form class="row g-3 f  romReserva" [formGroup]="form">
                 <div class="modal-body">
@@ -171,7 +174,8 @@
                     </div>
 
                     <div class="form-floating mb-2">
-                        <p-dropdown formControlName="userType" [options]="userTypes" optionLabel="name" optionValue="name" placeholder="Tipo usuario"></p-dropdown>
+                        <p-dropdown formControlName="userType" [options]="userTypes" optionLabel="name"
+                            optionValue="name" placeholder="Tipo usuario"></p-dropdown>
                     </div>
                     <div class="form-floating mb-2">
 
@@ -194,10 +198,10 @@
                 <div class="contrasenya">
                     <button type="submit" class="button-circle" pButton icon="pi pi-heart
                         " (click)="generatePassword()"></button> <label for=""> Generar contraseña</label>
-            </div>
+                </div>
 
                 <div class="modal-footer">
-                   
+
                     <div class="modal-footer btnDerecha">
                         <button type="submit" class="button-circle" pButton icon="pi pi-check
                     " (click)="postNewUser()"></button>
@@ -255,35 +259,43 @@
 
     <!-- pago -->
     <ng-container *ngIf="showPaymentForm">
+       
+        <p-panel header="" icon="pi pi-heart">
+            <ng-template pTemplate="header">
+                <span class="text-primary font-semibold text-xl">
+                    <i class="fa-regular fa-heart"></i> Crear pago
+                </span>
+            </ng-template>
 
-        <div class="col-12">
-            <p><i class="fa-regular fa-heart"></i> Crear pago</p>
-            <form class="row g-3 f  romReserva" [formGroup]="paymentForm">
-                <div class="modal-body">
-                    <div class="form-floating mb-2">
-                        <input type="date" class="form-control" placeholder="Fecha de pago" formControlName="payDate">
-                        <label for="payDate">Fecha de pago</label>
+            <div class="col-12 altoDiv">
+
+                <form class="row g-3 f  romReserva" [formGroup]="paymentForm">
+                    <div class="modal-body">
+                        <div class="form-floating mb-2">
+                            <input type="date" class="form-control" placeholder="Fecha de pago"
+                                formControlName="payDate">
+                            <label for="payDate">Fecha de pago</label>
+                        </div>
+
+                        <div class="form-floating mb-2">
+                            <p-dropdown formControlName="priceId" [options]="typeServices" optionLabel="typeService"
+                                optionValue="priceId" placeholder="Tipo servicio"></p-dropdown>
+                        </div>
+                        <div class="form-floating mb-2">
+                            <p-dropdown formControlName="payMethod" [options]="payMethods" optionLabel="name"
+                                optionValue="name" placeholder="Metodo de pago"></p-dropdown>
+
+                        </div>
+                        <div class="btnDerecha">
+                        <button type="submit" class="button-circle" icon="pi pi-check" pButton
+                            (click)="savePayment()"></button>
+                            </div>
                     </div>
 
-                    <div class="form-floating mb-2">
-                        <p-dropdown formControlName="priceId" [options]="typeServices" optionLabel="typeService"
-                            optionValue="priceId" placeholder="Tipo servicio"></p-dropdown>
-                    </div>
-                    <div class="form-floating mb-2">
-                        <p-dropdown formControlName="payMethod" [options]="payMethods" optionLabel="name"
-                            optionValue="name" placeholder="Metodo de pago"></p-dropdown>
-
-                    </div>
-
-                </div>
-                <div class="modal-footer">
-
-                    <button type="submit" class="button-circle" icon="pi pi-check" pButton
-                        (click)="savePayment()"></button>
-
-                </div>
-            </form>
-        </div>
+                </form>
+            </div>
+        </p-panel>
+    
     </ng-container>
 
 </p-sidebar>
@@ -299,7 +311,12 @@
         <ng-container *ngIf="horsesUser.length > 0">
 
             <div class="col-12 m-1" *ngFor="let horse of horsesUser">
-                <p-panel header="{{horse.horseName}}">
+                <p-panel header="">
+                    <ng-template pTemplate="header">
+                        <span class="text-primary font-semibold text-xl">
+                            <i class="fa-regular fa-heart"></i>{{horse.horseName}}
+                        </span>
+                    </ng-template>
                     <strong>Alimentación:</strong>
                     <pre>   {{horse.foodType}}</pre>
                     <strong>Link cámara:</strong>
@@ -320,27 +337,37 @@
     </div>
 </p-sidebar>
 
+<!-- clases -->
 <p-sidebar [(visible)]="clasesDisplay">
-    <button class="button-circle " icon="pi pi-plus" routerLink="/clases" pButton pTooltip="Añadir usuario a clase"
-        tooltipPosition="top"></button>&nbsp;<label>Añadir clase</label>
-    <ng-container *ngIf="currentUserClases != null">
-        <div class="col-12">
+    <div class="alinearBtn">
+        <button class="button-circle " icon="pi pi-plus" routerLink="/clases" pButton pTooltip="Añadir usuario a clase"
+            tooltipPosition="top"></button>&nbsp;<label>Añadir clase</label>
+    </div>
 
-            <ng-container *ngFor="let clases of currentUserClases">
-                <p-panel header="Horario" class="clasesUser">
+    <div class="col-12">
+
+
+        <ng-container *ngFor="let clases of currentUserClases">
+            <ng-container>
+                <p-panel header=" Clase" class="clasesUser">
                     <p>Día : {{clases.classDay}} </p>
                     <p>Hora {{clases.classHour}} </p>
                     <p>Nivel: {{clases.classLevel}}</p>
                 </p-panel>
+
             </ng-container>
 
-        </div>
-    </ng-container>
-    <ng-container *ngIf="currentUserClases === null">
-        <div class="col-12">
-            <h3>¡Todavía no tiene clases!</h3>
-        </div>
-    </ng-container>
+        </ng-container>
+        <ng-container *ngIf="this.currentUserClases.length <= 0">
+            <br><br>
+            <div class="col-12">
+                <h3>¡Todavía no tiene clases!</h3>
+            </div>
+        </ng-container>
+
+    </div>
+
+    
 
 </p-sidebar>
 

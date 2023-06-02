@@ -1,6 +1,4 @@
 import { Injectable } from '@angular/core';
-import { ReservationExc } from '../entities/reservationExc.interface';
-import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({

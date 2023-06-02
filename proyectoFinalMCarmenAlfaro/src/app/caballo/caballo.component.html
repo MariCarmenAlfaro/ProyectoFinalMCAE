@@ -3,14 +3,8 @@
     <div class="col-12">
       <div class="col-12 my-3">
         <!-- <button class="button-circleBlack" icon="pi pi-plus" (click)="this.createForm(null)"></button> -->
-        <button
-        class="button-circleBlack "
-        icon="pi pi-plus"
-        (click)="this.createForm(null)"
-        pButton
-        pTooltip="addhorse"
-        tooltipPosition="top"
-      ></button> 
+        <button class="button-circleBlack " icon="pi pi-plus" (click)="this.createForm(null)" pButton
+          pTooltip="addhorse" tooltipPosition="top"></button>
 
       </div>
 
@@ -18,119 +12,104 @@
         <p-progressSpinner aria-label="Loading"></p-progressSpinner>
       </div>
       <div class="col-12" *ngIf="this.horses.length > 0">
-        <p-table   #dt1
-    [value]="horses"
-    [paginator]="true"
-    dataKey="id"
-    [rows]="10"
-    [showCurrentPageReport]="true"
-    [rowsPerPageOptions]="[10, 25, 50]"
-    [globalFilterFields]="['horseName', 'barnNum', 'foodType','horseType', 'ownerName']"
- 
->
-    <ng-template pTemplate="caption">
-        <div class="flex">
-            <button pButton class="p-button-outlined button-circle" icon="pi pi-filter-slash" (click)="clear(dt1)"></button>
-           
-        </div>
-    </ng-template>
+        <p-table #dt1 [value]="horses" [paginator]="true" dataKey="id" [rows]="5"
+          [globalFilterFields]="['horseName', 'barnNum', 'foodType','horseType', 'ownerName']">
+          <ng-template pTemplate="caption">
+            <div class="flex">
+              <div class="btnDerecha">
+                <button pButton class="p-button-outlined button-circle" icon="pi pi-filter-slash"
+                  (click)="clear(dt1)"></button>
+              </div>
+            </div>
+          </ng-template>
           <ng-template pTemplate="header" let-columns>
             <tr>
-              <th>
+              <th style="width: 15vw;">
                 <div class="flex align-items-center">
-                    Nombre
-                    <p-columnFilter type="text" field="horseName" display="menu"></p-columnFilter>
+                  Nombre
+                  <p-columnFilter type="text" field="horseName" display="menu"></p-columnFilter>
                 </div>
-            </th>
+              </th>
 
               <th>Nº de cuadra</th>
               <th>Alimentación</th>
               <th>
                 <div class="flex align-items-center">
                   Tipo
-          
-                    <p-columnFilter type="text" field="horseType" display="menu"></p-columnFilter>
-     
+
+                  <p-columnFilter type="text" field="horseType" display="menu"></p-columnFilter>
+
                 </div>
-                
-            </th>
-             
+
+              </th>
+
               <th></th>
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-horse let-columns="columns">
             <tr>
-              <td>{{horse.horseName}}</td>
-              <td>{{horse.barnNum}}</td>
-              <td>{{horse.foodType}}</td>
-              <td>{{horse.horseType}}</td>
-          
-              
+              <td>{{horse?.horseName}}</td>
+              <td>{{horse?.barnNum}}</td>
+              <td>{{horse?.foodType}}</td>
+              <td>{{horse?.horseType}}</td>
+
+
               <td>
-                <button
-                class="button-circle "
-                icon="pi pi-eye"
-                (click)="verCamara()"
-                pButton
-                pTooltip="Ver directo"
-                tooltipPosition="top"
-              ></button>
-               <button
-                class="button-circle "
-                icon="pi pi-plus"
-                (click)="showInfoHorse(horse)"
-                pButton
-                pTooltip="+ info"
-                tooltipPosition="top"
-              ></button> 
 
-              <button
-              class="button-circle "
-              icon="fa-regular fa-pen-to-square"
-              (click)="selectHorse(horse)"
-              pButton
-              pTooltip="Borrar"
-              tooltipPosition="top"
-            ></button>
+                <button class="button-circle " icon="fa-solid fa-horse-head" (click)="showInfoHorse(horse)" pButton
+                  pTooltip="+ info" tooltipPosition="top"></button>
 
-              <button
-              class="button-circle "
-              icon="pi pi-trash"
-              (click)="deleteHorseDialog(horse.horseId)"
-              pButton
-              pTooltip="Borrar"
-              tooltipPosition="top"
-            ></button>
+
+                <button class="button-circle " icon="pi pi-camera" (click)="showCamara()" pButton pTooltip="Ver directo"
+                  tooltipPosition="top"></button>
+                <button class="button-circle " icon="pi pi-trash" (click)="deleteHorseDialog(horse.horseId)" pButton
+                  pTooltip="Borrar" tooltipPosition="top"></button>
               </td>
             </tr>
           </ng-template>
-         
+
         </p-table>
       </div>
 
     </div>
-    <p-sidebar [(visible)]="showInfoDialog"> 
+    <p-sidebar [(visible)]="showInfoDialog">
 
       <div class="col-12" *ngIf="currentHorseInfo">
-        
-        <p>Nombre: {{currentHorseInfo.horseName}}</p>
-        <p>Número de cuadra: {{currentHorseInfo.barnNum}}</p>
-        <p>Tipo: {{currentHorseInfo.horseType}}</p>
-        <ng-container *ngIf="currentHorseInfo.horseType=='Privado'">
-        <p> Dueño: {{ownerName.userName}}</p>
-        </ng-container>
-        <p>Alimentación: {{currentHorseInfo.foodType}}</p>
-        <p>Fecha registro: {{currentHorseInfo.registrationDate | date:'dd - mm - yyyy'}}</p>
-        <p>Link a cámara: {{currentHorseInfo.cameraUrl}}</p>
-        <p>Observaciones: {{currentHorseInfo.observation}}</p>
+        <p-panel header="" icon="pi pi-heart">
+          <ng-template pTemplate="header">
+            <span class="text-primary font-semibold text-xl"> <i class="fa-regular fa-heart"></i> {{
+              currentHorseInfo?.horseName }}<div class="btnDerecha">
+
+              </div> </span>
+          </ng-template>
+          <p>Número de cuadra: <strong>{{currentHorseInfo?.barnNum}}</strong> </p>
+          <p>Tipo:<strong>{{currentHorseInfo?.horseType}}</strong> </p>
+          <ng-container *ngIf="currentHorseInfo.horseType=='Privado'">
+            <p> Dueño:<strong>{{ownerName?.userName}}</strong> </p>
+          </ng-container>
+          <p>Alimentación: <strong>{{currentHorseInfo?.foodType}}</strong></p>
+          <p>Fecha registro: <strong>{{currentHorseInfo?.registrationDate | date:'dd - mm - yyyy'}}</strong></p>
+
+          <p>Observaciones: <strong>{{currentHorseInfo?.observation}}</strong></p>
+          <div class="btnDerecha">
+            <button class="button-circle " icon="pi pi-pencil" (click)="selectHorse(currentHorseInfo)" pButton
+              pTooltip="Borrar" tooltipPosition="top"></button>
+          </div>
+
+        </p-panel>
+
+
+
+
+
       </div>
-      
+
     </p-sidebar>
 
     <p-sidebar [(visible)]="showDialog">
       <div class="col-12">
-        <p *ngIf="this.createNewHorse === true">Registrar caballo</p>
-        <p *ngIf="this.createNewHorse === false">Actualizar caballo</p>
+        <p *ngIf="this.createNewHorse === true"><i class="fa-regular fa-heart"></i>&nbsp; Registrar caballo de clase</p>
+        <p *ngIf="this.createNewHorse === false"><i class="fa-regular fa-heart"></i>&nbsp; Actualizar caballo</p>
         <div *ngIf="this.currentHorse">
           <form class="row g-3 f  romReserva" [formGroup]="form">
             <div class="modal-body">
@@ -140,48 +119,56 @@
               </div>
               <div class="form-floating mb-2">
                 <input type="text" class="form-control" placeholder="Barrera" formControlName="barnNum">
-                <label for="barnNum">Barrera</label>
+                <label for="barnNum">NªCuadra</label>
               </div>
               <div class="form-floating mb-2">
                 <input type="text" class="form-control" placeholder="Camara" formControlName="cameraUrl">
-                <label for="cameraUrl">Camara</label>
+                <label for="cameraUrl">Link cámara</label>
               </div>
               <div class="form-floating mb-2">
-                <p-dropdown formControlName="foodType" [options]="foodHorseTypes" optionLabel="name" optionValue="name" placeholder="Comida"></p-dropdown>
+                <p-dropdown formControlName="foodType" [options]="foodHorseTypes" optionLabel="name" optionValue="name"
+                  placeholder="Comida"></p-dropdown>
               </div>
 
               <div class="form-floating mb-2">
                 <input type="text" class="form-control" placeholder="Observaciones" formControlName="observation">
                 <label for="observation">Observaciones</label>
               </div>
-                 <div class="form-floating mb-2">
-                    <input type="date" class="form-control"  placeholder="Fecha registro"
-                      formControlName="registrationDate" >
-                    <label for="registrationDate">Fecha registro</label>
-                  </div>
-                 
+              <div class="form-floating mb-2">
+                <!-- <p-calendar formControlName="registrationDate" [showButtonBar]="true"></p-calendar> -->
+                <input type="date" class="form-control" placeholder="Fecha registro" formControlName="registrationDate">
+                <label for="registrationDate">Fecha de registro</label>
+              </div>
+
               <ng-container *ngIf="this.createNewHorse === false">
 
-                <div class="form-floating mb-2">
+                <!-- <div class="form-floating mb-2">
                   <input type="text" class="form-control" placeholder="Tipo" formControlName="horseType">
                   <label for="horseType">Tipo</label>
-                </div>
+                </div> -->
                 <div class="form-floating mb-2">
-                  <input type="text" class="form-control" placeholder="Dueño" formControlName="ownerId">
-                  <label for="ownerId">Dueño</label>
+                  <p-dropdown formControlName="horseType" [options]="horseType" optionLabel="name" optionValue="name"
+                    placeholder="Tipo"></p-dropdown>
                 </div>
+
+
+                <div class="form-floating mb-2">
+                  <p-dropdown formControlName="ownerId" [options]="userLists" optionLabel="userName" optionValue="userId"
+                    placeholder="Dueño"></p-dropdown>
+                </div>
+
               </ng-container>
-          
-  
+
+
             </div>
 
 
 
-           
+
 
             <div class="modal-footer">
 
-              <p-button type="submit" class="btn btn-primary guardarLogin" icon="pi pi-check" (click)="updateHorse()"></p-button>
+              <button type="submit" class="button-circle" pButton icon="pi pi-check" (click)="updateHorse()"></button>
 
             </div>
           </form>
@@ -193,11 +180,11 @@
     <p-toast></p-toast>
     <p-confirmDialog #cd [style]="{width:'50vw'}">
       <ng-template pTemplate="header">
-        <h3>Eliminar caballo</h3>
+        <h3>¡Cuidado!</h3>
       </ng-template>
       <ng-template pTemplate="footer">
-        <button type="button" pButton icon="pi pi-times" label="No" (click)="cd.reject()"></button>
-        <button type="button" pButton icon="pi pi-check" label="Sí" (click)="cd.accept()"></button>
+        <button type="button" pButton icon="pi pi-times" class="button-circle" (click)="cd.reject()"></button>
+        <button type="button" pButton icon="pi pi-check" class="button-circle" (click)="cd.accept()"></button>
       </ng-template>
     </p-confirmDialog>
 
@@ -213,30 +200,24 @@
             <span class="font-bold text-lg caballoDatos">Tu caballo aún no ha sido registrado.</span>
           </div>
         </ng-template>
-    
+
       </p-fieldset>
     </ng-container>
     <ng-container *ngIf="this.horses.length>0">
       <p-fieldset class="containerCaballo" *ngFor="let horse of this.horses">
         <ng-template pTemplate="header">
           <div class="flex align-items-center text-primary">
-           
-            <span class="font-bold text-lg caballoDatos">{{this.horse.horseName}}</span>
+
+            <span class="font-bold text-lg caballoDatos">{{this.horse?.horseName}}</span>
           </div>
         </ng-template>
-        <p>Nombre: <strong>{{this.horse.horseName}}</strong>  </p>
-        <p>Fecha registro:<strong>{{this.horse.registrationDate | date:'dd - mm - yyyy'}}</strong>  </p>
-        <p>Número de establo:<strong>{{this.horse.barnNum}}</strong>  </p>
-        <p>Alimentación:<strong>{{this.horse.foodType}}</strong>  </p>
-        <p>Observación:<strong>{{this.horse.observation}}</strong>  </p>
-        <p>Link de cámara: <button
-          class="button-circle "
-          icon="pi pi-eye"
-          (click)="verCamara()"
-          pButton
-          pTooltip="Ver directo"
-          tooltipPosition="top"
-        ></button> </p>
+        <p>Nombre: <strong>{{this.horse?.horseName}}</strong> </p>
+        <p>Fecha registro:<strong>{{this.horse?.registrationDate | date:'dd - mm - yyyy'}}</strong> </p>
+        <p>Número de establo:<strong>{{this.horse?.barnNum}}</strong> </p>
+        <p>Alimentación:<strong>{{this.horse?.foodType}}</strong> </p>
+        <p>Observación:<strong>{{this.horse?.observation}}</strong> </p>
+        <p>Link de cámara: <button class="button-circle " icon="pi pi-eye" (click)="showCamara()" pButton
+            pTooltip="Ver directo" tooltipPosition="top"></button> </p>
       </p-fieldset>
     </ng-container>
   </ng-container>
