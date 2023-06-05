@@ -30,10 +30,12 @@ export class CaballoComponent extends CommonComponent implements OnInit {
   ownerName;
   duenyo;
   userLists=[]
-
+  loading: boolean;
 
   ngOnInit(): void {
+    this.loading = true;
     this.knowUserType();
+    
   }
   knowUserType() {
     this.usuario = JSON.parse(window.localStorage.getItem('user'));
@@ -68,7 +70,7 @@ export class CaballoComponent extends CommonComponent implements OnInit {
     .subscribe((rs) => {
       if(rs){
         this.horses = rs;
-        console.log(this.horses);
+    
       } else {
         this.showMessage('error', 'Error al intentar obtener el caballo')
       }
@@ -161,10 +163,10 @@ export class CaballoComponent extends CommonComponent implements OnInit {
 
   getAllHorses() {
     this.caballosService.getAllHorses().subscribe(
-      (response) => {
-        if(response){
-          this.horses = response;
-          console.log(response);
+      (rs) => {
+        if(rs){
+          this.horses = rs;
+          this.loading = false;
         }else {
           this.showMessage('error', 'Error al obtener todos los caballos')
         }
@@ -184,7 +186,7 @@ export class CaballoComponent extends CommonComponent implements OnInit {
     this.currentHorseInfo = horse;
     this.showInfoDialog = true;
   if(horse.ownerId !=null){
-    this.caballosService.getOwnerById(horse.ownerId).subscribe((rs) => {
+    this.gestionService.getOwnerById(horse.ownerId).subscribe((rs) => {
       if(rs){
         this.ownerName = rs;
       console.log(this.ownerName)

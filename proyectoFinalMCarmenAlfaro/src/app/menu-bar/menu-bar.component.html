@@ -1,6 +1,6 @@
 <div class="centroMenu">
 
-  <div class="encabezadoBar mt-2">
+  <div class="encabezadoBar m-2">
     <div class="tituloBar">
       <h2>El Bocado Bar</h2>
       <h5>Menú diario</h5>
@@ -14,7 +14,7 @@
 
 
     <ng-container *ngFor="let menu of menus">
-      <div class="card my-2" >
+      <div class="card my-2">
         <div class="card-body">
 
           <div class="card-title">
@@ -22,8 +22,10 @@
               <div>
                 <i class="fa-regular fa-heart"></i> <span class="mx-1">{{menu.menuDate}}</span>
               </div>
+
               <button *ngIf="editMenuButton" type="submit" class="button-circle" pButton icon="pi pi-pencil"
                 (click)="editMenu(menu)"></button>
+
             </div>
           </div>
 
@@ -46,11 +48,10 @@
       <hr>
 
       <input type="text" class="form-control" name="nameMenu" formControlName="nameMenu">
-<br>
-      <button type="submit" class="button-circle" pButton (click)="updateMenu()" icon="pi pi-check">
-
-      </button>
-
+      <br>
+      <div class="btnDerecha">
+        <button type="submit" class="button-circle" pButton (click)="updateMenu()" icon="pi pi-check"></button>
+      </div>
     </form>
   </ng-container>
 </p-sidebar>

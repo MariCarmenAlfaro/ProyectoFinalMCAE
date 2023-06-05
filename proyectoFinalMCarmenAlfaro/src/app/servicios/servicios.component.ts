@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ReservationExcService } from './servicios.service';
 import { ClasesService } from '../clases/clases.service';
 import { CommonComponent } from '../common/common.component';
+import { PreciosService } from '../precios/precios.service';
 
 @Component({
   selector: 'app-servicios',
@@ -29,6 +30,7 @@ export class ServiciosComponent extends CommonComponent implements OnInit {
   constructor(
     public reservationService: ReservationExcService,
     public clasesService: ClasesService,
+    public preciosService: PreciosService,
     protected injector: Injector
   ) {
     super(injector);
@@ -74,7 +76,7 @@ export class ServiciosComponent extends CommonComponent implements OnInit {
       );
   }
   readPrices() {
-    this.reservationService.readPrices().subscribe(
+    this.preciosService.getReadAllPrices().subscribe(
       (rs) => {
         if (rs) {
           this.precios = rs;

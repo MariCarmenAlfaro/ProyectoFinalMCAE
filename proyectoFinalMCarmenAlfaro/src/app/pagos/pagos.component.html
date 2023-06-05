@@ -1,9 +1,8 @@
 <div class="pagosDiv">
 
-    <ng-container *ngIf="this.nombresPagos.length > 0">
         <div class="col-12">
             <p-table #dt1 [value]="nombresPagos" dataKey="id" [rows]="5"
-                [globalFilterFields]="['userId', 'payDate', 'priceId']" [paginator]="true">
+                [globalFilterFields]="['userId', 'payDate', 'priceId']" [paginator]="true" [loading]="loading">
                 <ng-template pTemplate="caption">
                     <div class="flex">
                         <button pButton class="button-circle" icon="pi pi-filter-slash" (click)="clear(dt1)"></button>
@@ -87,13 +86,13 @@
                 </ng-template>
             </p-table>
         </div>
-    </ng-container>
-    <ng-container *ngIf="this.nombresPagos.length <= 0">
+
+    <!-- <ng-container *ngIf="this.nombresPagos.length <= 0">
         <div class="col-12">
-            <p-progressSpinner aria-label="Loading"></p-progressSpinner>
+       
             <p>Oh vaya! Parece ser que no tienes pago todavía</p>
         </div>
-    </ng-container>
+    </ng-container> -->
 </div>
 
 

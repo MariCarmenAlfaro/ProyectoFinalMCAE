@@ -9,6 +9,11 @@ export class SugerenciasService {
   constructor( private http: HttpClient) {
    
    }
+   public insertSuggestions(comment){
+    const url = `${this.baseUrl}/Suggestion`;
+   
+    return this.http.post<boolean>(url, comment);
+   }
    public deleteSuggestion(id){
     const url = `${this.baseUrl}/Suggestion/${id}`;
     return this.http.delete<any>(url);

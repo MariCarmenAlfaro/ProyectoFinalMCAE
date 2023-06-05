@@ -10,11 +10,7 @@ export class ContactService {
   constructor( private http: HttpClient) {
    
    }
-public insertSuggestions(comment){
-  const url = `${this.baseUrl}/Suggestion`;
- 
-  return this.http.post<boolean>(url, comment);
- }
+
 }
 
 

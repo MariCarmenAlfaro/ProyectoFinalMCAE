@@ -16,13 +16,7 @@ export class CaballosService {
       url
     )
   }
-  public getOwnerById(id){
-
-    var url= this.baseUrl+`/User/${id}`;
-    return this.http.get<any>(
-      url
-    )
-  }
+ 
 public getHorseByOnwerId(id){
   var url= this.baseUrl+`/Horse/owner/${id}`;
   return this.http.get<any[]>(

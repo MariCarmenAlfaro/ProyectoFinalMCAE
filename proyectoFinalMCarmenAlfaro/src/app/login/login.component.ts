@@ -36,10 +36,10 @@ loginForm = new FormGroup({
   
     var emailAddress = this.loginForm.get('emailAddress').value;
     var password = this.loginForm.get('psswdUser').value;
-    this.loginService.authenticateLogin(emailAddress, password).subscribe((response: any) => {
-         if (response) {
+    this.loginService.authenticateLogin(emailAddress, password).subscribe((rs) => {
+         if (rs) {
           this.showLoading()
-          this.userProfiles = response;
+          this.userProfiles = rs;
           window.localStorage.setItem("user", JSON.stringify(this.userProfiles));
           this.loginService.user = JSON.parse(window.localStorage.getItem("user"))
           this.loginService.showModal  = false;
@@ -56,9 +56,6 @@ loginForm = new FormGroup({
         this.closeLoading();
          this.showMessage('error', error.error)
        });
-    
-    
-
   }
 
 

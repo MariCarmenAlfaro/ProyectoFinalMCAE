@@ -1,5 +1,5 @@
 <div class="clas">
-    <button class="button-circleBlack" icon="pi pi-user-plus" (click)="addUserToClass()" pButton
+    <button class="button-circleBlack mb-2" icon="pi pi-user-plus" (click)="addUserToClass()" pButton
         pTooltip="Añadir usuario a clase" tooltipPosition="top"></button>
     <p-table #dt1 [value]="clases" dataKey="id" [rows]="10" [showCurrentPageReport]="true"
         [rowsPerPageOptions]="[10, 25, 50]" [globalFilterFields]="['classDay', 'classHour', 'classLevel']"
@@ -8,7 +8,7 @@
             <tr>
                 <th>
                     <div class="flex align-items-center">
-                <th><i class="bi bi-suit-heart-fill"></i></th>
+                <th><i class="pi pi-heart"></i></th>
 </div>
 </th>
 <th>
@@ -157,10 +157,10 @@
 <p-toast></p-toast>
 <p-confirmDialog #cd [style]="{width:'50vw'}">
     <ng-template pTemplate="header">
-        <h3>Eliminar usuario de clase</h3>
+        <h3>¡Cuidado!</h3>
     </ng-template>
     <ng-template pTemplate="footer">
-        <button type="button" pButton icon="pi pi-times" label="No" (click)="cd.reject()"></button>
-        <button type="button" pButton icon="pi pi-check" label="Si" (click)="cd.accept()"></button>
+        <button type="button" pButton icon="pi pi-times" class="button-circle"  pButton (click)="cd.reject()"></button>
+        <button type="button" pButton icon="pi pi-check" class="button-circle" pButton (click)="cd.accept()"></button>
     </ng-template>
 </p-confirmDialog>

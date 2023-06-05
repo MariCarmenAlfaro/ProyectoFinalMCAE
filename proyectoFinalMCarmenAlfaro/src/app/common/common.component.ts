@@ -39,8 +39,8 @@ export class CommonComponent {
           closable: false,
           closeOnEscape: false,
           styleClass: 'loading',
-          width: '90%',
-          height: '90%'
+          width: '60vw',
+          height: '60vh'
           
     });
   

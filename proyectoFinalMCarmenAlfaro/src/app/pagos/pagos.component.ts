@@ -14,12 +14,13 @@ export class PagosComponent extends CommonComponent implements OnInit {
   showPaymentForm = false;
   paymentForm: FormGroup;
   nombresPagos = [];
-
+  loading: boolean;
   constructor(public pagosService: PagosService, protected injector: Injector) {
     super(injector);
   }
 
   ngOnInit(): void {
+    this.loading = true;
     this.getTypesServicesPrice();
     this.getPricePayUser();
     this.paymentForm = new FormGroup({
@@ -38,6 +39,7 @@ export class PagosComponent extends CommonComponent implements OnInit {
           this.getPricePayUser();
           this.getTypesServicesPrice();
           this.showPaymentForm = false;
+          this.loading = false;
         } else {
           this.showMessage('error', 'Error al modificar el pago');
         }

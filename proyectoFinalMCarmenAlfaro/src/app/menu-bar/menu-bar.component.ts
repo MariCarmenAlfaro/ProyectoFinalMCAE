@@ -57,8 +57,7 @@ export class MenuBarComponent extends CommonComponent implements OnInit {
           this.price = rs;
         }else{
           this.showMessage('error', 'Error al obtener los precios');
-        }
-        
+        }  
       },
       (error) => {
         this.showMessage('error', error.error);
@@ -83,6 +82,7 @@ export class MenuBarComponent extends CommonComponent implements OnInit {
         this.readMenus();
         this.showEditMenu = false;
         this.currentMenu = null;
+        this.showMessage('info','Menú actualizado')
       }else{
         this.showMessage('error','Error al actualizar el menu')
       }

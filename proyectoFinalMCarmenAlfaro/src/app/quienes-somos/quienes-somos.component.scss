@@ -22,8 +22,15 @@ p{
     margin: auto;
     
 }
-
+h3{
+    border-bottom: 1px solid black;
+  }
 .textoFoto{
     text-align: center;
 
+}
+.imagen{
+    
+    display: flex;
+    justify-content: center;
 }

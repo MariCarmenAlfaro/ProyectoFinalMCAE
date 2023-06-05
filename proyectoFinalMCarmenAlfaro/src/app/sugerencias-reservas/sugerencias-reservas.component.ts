@@ -92,6 +92,7 @@ export class SugerenciasReservasComponent extends CommonComponent {
       .subscribe((rs) => {
         if (rs) {
           this.readSuggestion();
+          this.showMessage('info','Sugerencia realizada!')
         }else{
           this.showMessage('error','Error al modificar las sugerencias')
         }
@@ -102,7 +103,6 @@ export class SugerenciasReservasComponent extends CommonComponent {
   }
   checkedReserva(reserva) {
     this.currentReserva = reserva;
-    console.log(this.currentReserva);
     this.reserva = {
       reservationId: this.currentReserva.reservationId,
       reservationName: this.currentReserva.reservationName,
@@ -117,6 +117,7 @@ export class SugerenciasReservasComponent extends CommonComponent {
       .subscribe((rs) => {
         if (rs) {
           this.readReserva();
+          this.showMessage('info','¡Reserva realizada!')
         }else{
           this.showMessage('error','Error al modificar las reservas')
         }

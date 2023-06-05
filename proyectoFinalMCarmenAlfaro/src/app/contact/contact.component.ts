@@ -2,6 +2,7 @@ import { Component, Injector, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ContactService } from './contact.service';
 import { CommonComponent } from '../common/common.component';
+import { SugerenciasService } from '../sugerencias-reservas/sugerencias.service';
 
 @Component({
   selector: 'app-contact',
@@ -20,6 +21,7 @@ export class ContactComponent extends CommonComponent implements OnInit {
   });
 
   constructor(public contactService: ContactService,
+    public sugerenciaService: SugerenciasService,
     protected injector: Injector){
       super(injector)
   }
@@ -35,8 +37,7 @@ export class ContactComponent extends CommonComponent implements OnInit {
       clubId: this.clubId,
     };
 
-    this.contactService.insertSuggestions(this.comment).subscribe((rs) => {
-      rs;
+    this.sugerenciaService.insertSuggestions(this.comment).subscribe((rs) => {
       if (rs) {
         this.mnjConfirm = true;
       }else{

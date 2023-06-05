@@ -8,15 +8,24 @@
   margin: 0.5rem;
   margin: 2% 3%;
 }
-
+h4{
+  border-bottom: 1px solid black;
+}
+.titulo
+{
+text-align: center;
+background-color: black;
+color: rgb(255, 78, 190);
+padding: 1%;
+}
 
 img.card-img-top{
-  width: 30%;
+  width: 25%;
   margin: 2%;
 
 }
 .accordion{
-  width: 80%;
+  width: 90%;
   margin: auto;
 }
 .btnReservar{
@@ -46,13 +55,21 @@ table{
 }
 .alto{
   background-color: rgba(255, 221, 237, 0.754);}
-.imagenClases{
+.imagenClases, .informacionClases{
 width: 50%;
-float: left;
+
+  }
+  .clases{
+    display: flex;
+    justify-content: space-around;
+  }
+  .imagenClases{
+    display: flex;
+    justify-content: center;
   }
   .imagen{
   padding: 5%;
-    max-height: 300px;
+    max-height: 350px;
   }
   .rrss{
     color: black;

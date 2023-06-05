@@ -5,9 +5,9 @@
     </div>
 
     <!-- tabla usuarios -->
-    <ng-container *ngIf="users">
+    
         <p-table #dt1 [value]="users" [paginator]="true" dataKey="id" [rows]="5"
-            [globalFilterFields]="['userName', 'emailAddress', 'userType']" >
+            [globalFilterFields]="['userName', 'emailAddress', 'userType']" [loading]="loading" >
             <ng-template pTemplate="caption">
                 <div class="flex btnDerecha">
                     <button pButton class="button-circle" icon="pi pi-filter-slash" (click)="clear(dt1)"></button>
@@ -78,11 +78,6 @@
 
 
                         </div>
-
-
-
-
-
                     </td>
 
                 </tr>
@@ -95,7 +90,7 @@
 
 
         </p-table>
-    </ng-container>
+   
 </div>
 <p-sidebar [(visible)]="showDialogUser">
 
@@ -125,7 +120,7 @@
     </div>
 
     <div class="col-12" *ngIf="showEditUser">
-        <p> <i class="fa-regular fa-heart"></i>Edición</p>
+        <p> <i class="fa-regular fa-heart"></i> &nbsp;Edición</p>
         <form class="row g-3 f  romReserva" [formGroup]="updateUserForm">
             <div class="modal-body">
                 <div class="form-floating mb-2">
@@ -155,7 +150,7 @@
 
             <div class="modal-footer">
 
-                <button type="submit" class="btn btn-primary guardarLogin" (click)="updateUser()">Guardar</button>
+                <button type="submit"pButton class="button-circle" icon="pi pi-check" (click)="updateUser()"></button>
 
             </div>
         </form>
@@ -166,6 +161,7 @@
     <ng-container *ngIf="showCreateUser">
 
         <div class="col-12">
+            <p>  <span class="pi pi-heart mr-2"></span> &nbsp; Nuevo usuario</p>
             <form class="row g-3 f  romReserva" [formGroup]="form">
                 <div class="modal-body">
                     <div class="form-floating mb-2">
@@ -198,6 +194,8 @@
                 <div class="contrasenya">
                     <button type="submit" class="button-circle" pButton icon="pi pi-heart
                         " (click)="generatePassword()"></button> <label for=""> Generar contraseña</label>
+                        
+                        <p for=""> {{this.psswdUser}} </p>
                 </div>
 
                 <div class="modal-footer">
@@ -215,7 +213,12 @@
     <!-- añadir caballo  -->
     <ng-container *ngIf="showAddHorseToUser">
         <div class="col-12">
-            <p>Añadir caballo</p>
+            <p-panel>
+                <ng-template pTemplate="header">
+                <span class="text-primary font-semibold text-xl">
+                    <i class="fa-regular fa-heart"></i> &nbsp;Añadir caballo
+                </span>
+    </ng-template>
             <form class="row g-3 f  romReserva" [formGroup]="formHorseOwner">
                 <div class="modal-body">
                     <div class="form-floating mb-2">
@@ -249,11 +252,12 @@
                 </div>
 
                 <div class="modal-footer btnDerecha">
-                    <button type="submit" class="button-circle" pButton icon="pi pi-ch
+                    <button type="submit" class="button-circle" pButton icon="pi pi-check
                   " (click)="savePrivateHorse()"></button>
 
                 </div>
             </form>
+        </p-panel>
         </div>
     </ng-container>
 
@@ -314,13 +318,13 @@
                 <p-panel header="">
                     <ng-template pTemplate="header">
                         <span class="text-primary font-semibold text-xl">
-                            <i class="fa-regular fa-heart"></i>{{horse.horseName}}
+                            <i class="fa-regular fa-heart"></i> &nbsp;{{horse.horseName}}
                         </span>
                     </ng-template>
                     <strong>Alimentación:</strong>
                     <pre>   {{horse.foodType}}</pre>
-                    <strong>Link cámara:</strong>
-                    <pre>   {{horse.cameraUrl}}</pre>
+                    <strong>Cuadra:</strong>
+                    <pre>   {{horse.barnNum}}</pre>
 
                     <strong>Observaciones: </strong>
                     <pre>   {{horse.observation}}</pre>
@@ -349,7 +353,10 @@
 
         <ng-container *ngFor="let clases of currentUserClases">
             <ng-container>
-                <p-panel header=" Clase" class="clasesUser">
+                <p-panel class="clasesUser">
+                    <span class="text-primary font-semibold text-xl">
+                        <i class="fa-regular fa-heart"></i> &nbsp;Clase 
+                    </span>
                     <p>Día : {{clases.classDay}} </p>
                     <p>Hora {{clases.classHour}} </p>
                     <p>Nivel: {{clases.classLevel}}</p>

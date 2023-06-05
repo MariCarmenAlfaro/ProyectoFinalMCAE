@@ -100,7 +100,7 @@ export class ClasesComponent extends CommonComponent implements OnInit {
 
   }
   getPrices(){
-  this.preciosService.getReadAllPrices().subscribe(rs=>{
+  this.preciosService.getReadAllPrices().subscribe((rs)=>{
     if(rs){
       console.log(rs)
       rs.forEach(clases => {
@@ -129,11 +129,10 @@ export class ClasesComponent extends CommonComponent implements OnInit {
     };
     this.getPrices()
     console.log(this.newClassUser)
-    this.clasesService.insertUserToClass(this.newClassUser).subscribe(rs=>{
+    this.clasesService.insertUserToClass(this.newClassUser).subscribe((rs)=>{
       
      
-      if(rs){
-        console.log(rs)  
+      if(rs){ 
         this.showMessage("info","Se ha creado la clase correctamente" )
         this.insertButtonDisabled = false;
         this.showDialogAddUser = false;
@@ -145,7 +144,7 @@ export class ClasesComponent extends CommonComponent implements OnInit {
         }
     
         console.log(this.newPayment)
-        this.pagosService.createNewPayment(this.newPayment).subscribe(rs=>{
+        this.pagosService.createNewPayment(this.newPayment).subscribe((rs)=>{
           
           if(rs){
             this.showMessage("info","se ha creado el pago para este usuario" )   
@@ -172,6 +171,7 @@ export class ClasesComponent extends CommonComponent implements OnInit {
       if (rs) {
         this.getClasses();
         this.showDialog = false;
+        this.showMessage('info','Usuario borrado con éxito de la clase')
       }  else {
         this.showMessage('error','Error al intentar borrar la clase')
       }

@@ -6,6 +6,9 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { PerfilService } from '../perfil/perfil.service';
 import { ClasesService } from '../clases/clases.service';
 import { CommonComponent } from '../common/common.component';
+import { SugerenciasService } from '../sugerencias-reservas/sugerencias.service';
+import { PagosService } from '../pagos/pagos.service';
+import { PreciosService } from '../precios/precios.service';
 @Component({
   selector: 'app-gestion',
   templateUrl: './gestion.component.html',
@@ -42,18 +45,22 @@ export class GestionComponent extends CommonComponent implements OnInit {
   selectedLevel = null;
   newClassUser: any;
   insertButtonDisabled = false;
-
+  loading: boolean;
   constructor(
     public gestionService: GestionService,
     public caballosService: CaballosService,
     public perfilService: PerfilService,
     public clasesService: ClasesService,
+    public sugerenciasService: SugerenciasService,
+    public pagosService: PagosService,
+    public preciosService: PreciosService,
     protected injector: Injector
   ) {
     super(injector);
   }
 
   ngOnInit(): void {
+    this.loading = true;
     this.readAll();
   }
 
@@ -75,6 +82,7 @@ export class GestionComponent extends CommonComponent implements OnInit {
       (rs) => {
         if (rs) {
           this.users = rs;
+          this.loading = false;
         } else {
           this.showMessage('error', 'Error al intentar leer los usuarios');
         }
@@ -113,7 +121,7 @@ export class GestionComponent extends CommonComponent implements OnInit {
         if (rs) {
           this.showDialogUser = false;
           this.readAll();
-          this.showMessage('info', 'Usuario creado correctamente');
+          this.showMessage('info', 'Usuario creado con éxito');
         } else {
           this.showMessage('error', 'Error al intentar crear el usuario');
         }
@@ -139,6 +147,7 @@ export class GestionComponent extends CommonComponent implements OnInit {
       (rs) => {
         if (rs) {
           this.addPayment(this.formHorseOwner.value.ownerId);
+          this.showMessage('info', 'Caballo añadido con éxito');
         } else {
           this.showMessage('error', 'Error al crear el caballo');
         }
@@ -150,7 +159,7 @@ export class GestionComponent extends CommonComponent implements OnInit {
   }
 
   createPaymentForm() {
-    this.gestionService.getTypesServicesPrice().subscribe(
+    this.preciosService.getReadAllPrices().subscribe(
       (rs) => {
         if (rs) {
           this.typeServices = rs;
@@ -177,12 +186,11 @@ export class GestionComponent extends CommonComponent implements OnInit {
   }
 
   savePayment() {
-    console.log(this.paymentForm.value);
     if (this.paymentForm.value.payMethod == '') {
       this.paymentForm.value.payMethod = null;
     }
 
-    this.gestionService.createNewPayment(this.paymentForm.value).subscribe(
+    this.pagosService.createNewPayment(this.paymentForm.value).subscribe(
       (rs) => {
         if (rs) {
           this.readAll();
@@ -190,6 +198,7 @@ export class GestionComponent extends CommonComponent implements OnInit {
           this.showAddHorseToUser = false;
           this.showPaymentForm = false;
           this.showDialog = false;
+          this.showMessage('info', 'Pago registrado con éxito');
         } else {
           this.showMessage('error', 'Error al intentar crear el pago');
         }
@@ -200,17 +209,30 @@ export class GestionComponent extends CommonComponent implements OnInit {
     );
   }
   deleteUser(user) {
-    this.gestionService.getHorsesByUserId(user.userId).subscribe(
+    user.userType = 'Inactivo';
+    this.gestionService.updateUser(user).subscribe(
+      (rs) => {
+        if (rs === true) {
+          this.readAll();
+          this.showMessage('info', 'Usuario eliminado correctamente');
+        } else {
+          this.showMessage('error', 'Error al intentar borrar el usuario');
+        }
+      },
+      (error) => {
+        this.showMessage('error', error.error);
+      }
+    );
+    this.caballosService.getHorseByOnwerId(user.userId).subscribe(
       (rs) => {
         if (rs) {
           let horses = rs;
-          console.log('caballos a eliminar');
-          console.log(horses);
-
           horses.forEach((horse) => {
-            this.caballosService.deleteHorse(horse.horseId).subscribe((rs) => {
+            horse.ownerId = null
+            console.log(horse)
+            this.caballosService.updateHorse(horse).subscribe((rs) => {
               if (rs) {
-                console.log('caballo ' + horse.horseId + ' eliminado');
+     
               }
             });
           });
@@ -229,7 +251,7 @@ export class GestionComponent extends CommonComponent implements OnInit {
           clases.forEach((clase) => {
             this.clasesService.deleteClassUser(clase.id).subscribe((rs) => {
               if (rs) {
-                this.showMessage('info', 'Clase eliminada con éxito');
+                this.showMessage('info', 'Clase del usuario eliminada con éxito');
               }
             });
           });
@@ -243,20 +265,7 @@ export class GestionComponent extends CommonComponent implements OnInit {
       }
     );
 
-    user.userType = 'Inactivo';
-    this.gestionService.updateUser(user).subscribe(
-      (response) => {
-        if (response === true) {
-          this.readAll();
-          this.showMessage('info', 'Usuario eliminado correctamente');
-        } else {
-          this.showMessage('error', 'Error al intentar borrar el usuario');
-        }
-      },
-      (error) => {
-        this.showMessage('error', error.error);
-      }
-    );
+
   }
   deleteUserDialog(user) {
     this.confirmationService.confirm({
@@ -309,7 +318,7 @@ export class GestionComponent extends CommonComponent implements OnInit {
 
     this.horsesUser = [];
 
-    this.gestionService.getHorsesByUserId(userId).subscribe(
+    this.caballosService.getHorseByOnwerId(userId).subscribe(
       (rs) => {
         if (rs) {
           this.horsesUser = rs;
@@ -338,7 +347,6 @@ export class GestionComponent extends CommonComponent implements OnInit {
         ownerId: new FormControl(this.currentUserId),
       });
       this.showAddHorseToUser = true;
-
       this.showDialog = true;
       this.showAddHorseToUser = true;
       this.showCreateUser = false;

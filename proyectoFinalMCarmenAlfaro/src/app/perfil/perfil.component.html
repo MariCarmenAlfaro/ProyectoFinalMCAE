@@ -40,7 +40,7 @@
 
 
     <br><br>
-    <ng-container *ngIf="this.datosPagos">
+    <ng-container *ngIf="this.tablaMensualidades">
 
         <p-accordion>
             <p-accordionTab>
@@ -50,10 +50,10 @@
                         <span class="font-bold text-lg perfilDatos">Mensualidades</span>
                     </div>
                 </p-header>
-                <ng-container *ngIf="!this.datosUser">
+                <ng-container *ngIf="this.datosPagos.length<=0">
                     <p>¡Oh vaya! Parece ser que aún no tienes ningún pago por realizar ni realizado</p>
                 </ng-container>
-                <ng-container *ngIf="this.datosPagos">
+                <ng-container *ngIf="this.datosPagos.length>0">
                     <p-table [value]="datosPagos" [paginator]="true" [rows]="5" [showCurrentPageReport]="true"
                         [tableStyle]="{ 'min-width': '40rem' }">
                         <ng-template pTemplate="header">

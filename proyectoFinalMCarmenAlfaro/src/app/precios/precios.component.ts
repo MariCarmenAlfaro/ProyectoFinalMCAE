@@ -14,6 +14,7 @@ export class PreciosComponent extends CommonComponent {
   addPriceButtonDisabled = false;
   editPrice = false;
   currentPrice;
+  loading: boolean;
   priceFormChange: FormGroup;
   newServiceForm = new FormGroup({
     typeService: new FormControl(''),
@@ -28,6 +29,7 @@ export class PreciosComponent extends CommonComponent {
   }
 
   ngOnInit(): void {
+    this.loading = true;
     this.readAll();
     this.priceFormChange = new FormGroup({
       priceId: new FormControl(''),
@@ -40,6 +42,7 @@ export class PreciosComponent extends CommonComponent {
       (rs) => {
         if (rs) {
           this.totalPrice = rs;
+          this.loading = false;
         } else {
           this.showMessage('error', 'Error al obtener los precios');
         }
@@ -74,7 +77,6 @@ export class PreciosComponent extends CommonComponent {
   }
   editPrices(price) {
     this.currentPrice = price;
-
     this.priceFormChange = new FormGroup({
       priceId: new FormControl(this.currentPrice.priceId),
       typeService: new FormControl(this.currentPrice.typeService),

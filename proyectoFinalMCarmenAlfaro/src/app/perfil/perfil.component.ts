@@ -11,6 +11,7 @@ import {
 import { ContactService } from '../contact/contact.service';
 import { PagosService } from '../pagos/pagos.service';
 import { CommonComponent } from '../common/common.component';
+import { SugerenciasService } from '../sugerencias-reservas/sugerencias.service';
 @Component({
   selector: 'app-perfil',
   templateUrl: './perfil.component.html',
@@ -23,6 +24,7 @@ export class PerfilComponent extends CommonComponent implements OnInit {
   userType = false;
   formClass = false;
   formBarn = false;
+  tablaMensualidades=false
   btnSolicitud = false;
   paymentForm: FormGroup;
   usuario = JSON.parse(window.localStorage.getItem('user'));
@@ -43,6 +45,7 @@ export class PerfilComponent extends CommonComponent implements OnInit {
     public contactService: ContactService,
     public pagosService: PagosService,
     private formBuilder: FormBuilder,
+    public sugerenciaService: SugerenciasService,
     protected injector: Injector
   ) {
     super(injector);
@@ -67,17 +70,18 @@ export class PerfilComponent extends CommonComponent implements OnInit {
       this.readUserClass();
       this.btnSolicitud = true;
       this.formClass = true;
+      this.tablaMensualidades=true
     } else if (this.dueño) {
       this.btnSolicitud = true;
       this.userType = true;
       this.formBarn = true;
+      this.tablaMensualidades=true
     } else if (this.admin) {
       this.userType = true;
     }
   }
   readUserById() {
     this.usuario = JSON.parse(window.localStorage.getItem('user'));
-
     this.perfilService.getReadById(this.usuario.userId).subscribe(
       (rs) => {
         if (rs) {
@@ -141,7 +145,7 @@ export class PerfilComponent extends CommonComponent implements OnInit {
       };
     }
 
-    this.contactService.insertSuggestions(this.formularioCambios).subscribe(
+    this.sugerenciaService.insertSuggestions(this.formularioCambios).subscribe(
       (rs) => {
         if (rs) {
           this.showForm = false;
