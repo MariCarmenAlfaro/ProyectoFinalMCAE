@@ -39,18 +39,18 @@ namespace HipicaAlfaro.Api.Controllers
             return Ok(menuBar);
         }
 
-        [HttpPost]
-        public IActionResult Create(MenuBar menuBar)
-        {
-            int result = 0;
-            using (var db = new MySqlConnection(_connection))
-            {
-                var sql = "INSERT INTO MenuBar (MenuName, MenuDate, MenuPriceId) VALUES (@MenuName, @MenuDate, @MenuPriceId);";
+        //[HttpPost]
+        //public IActionResult Create(MenuBar menuBar)
+        //{
+        //    int result = 0;
+        //    using (var db = new MySqlConnection(_connection))
+        //    {
+        //        var sql = "INSERT INTO MenuBar (MenuName, MenuDate, MenuPriceId) VALUES (@MenuName, @MenuDate, @MenuPriceId);";
 
-                result = db.Execute(sql, menuBar);
-            }
-            return Ok(result > 0);
-        }
+        //        result = db.Execute(sql, menuBar);
+        //    }
+        //    return Ok(result > 0);
+        //}
 
         [HttpPut("{id}")]
         public bool Update(int id, MenuBar menuBar)
@@ -72,28 +72,28 @@ namespace HipicaAlfaro.Api.Controllers
 
         }
 
-        [HttpDelete("{id}")]
-        public ActionResult<bool> Delete(int id)
-        {
-            var menuBarToDelete = ReadById(id);
-            if (menuBarToDelete == null)
-            {
-                return NotFound();
-            }
-            using (var db = new MySqlConnection(_connection))
-            {
-                var sql = "DELETE FROM MenuBar WHERE MenuId = @MenuId;";
-                int rowsDelete = db.Execute(sql, new { MenuId = id });
-                if (rowsDelete == 1)
-                {
-                    return Ok(true);
-                }
-                else
-                {
-                    return Ok(false);
-                }
-            }
-        }
+        //[HttpDelete("{id}")]
+        //public ActionResult<bool> Delete(int id)
+        //{
+        //    var menuBarToDelete = ReadById(id);
+        //    if (menuBarToDelete == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    using (var db = new MySqlConnection(_connection))
+        //    {
+        //        var sql = "DELETE FROM MenuBar WHERE MenuId = @MenuId;";
+        //        int rowsDelete = db.Execute(sql, new { MenuId = id });
+        //        if (rowsDelete == 1)
+        //        {
+        //            return Ok(true);
+        //        }
+        //        else
+        //        {
+        //            return Ok(false);
+        //        }
+        //    }
+        //}
 
     }
 }

@@ -86,27 +86,27 @@ namespace HipicaAlfaro.Api.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
-        public ActionResult<bool> Delete(int id)
-        {
-            var paymentToDelete = ReadById(id);
-            if (paymentToDelete == null)
-            {
-                return NotFound();
-            }
-            using (var db = new MySqlConnection(_connection))
-            {
-                var sql = "DELETE FROM payments WHERE PayId = @PayId;";
-                int rowsDelete = db.Execute(sql, new { PayId = id });
-                if (rowsDelete == 1)
-                {
-                    return Ok(true);
-                }
-                else
-                {
-                    return Ok(false);
-                }
-            }
-        }
+        //[HttpDelete("{id}")]
+        //public ActionResult<bool> Delete(int id)
+        //{
+        //    var paymentToDelete = ReadById(id);
+        //    if (paymentToDelete == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    using (var db = new MySqlConnection(_connection))
+        //    {
+        //        var sql = "DELETE FROM payments WHERE PayId = @PayId;";
+        //        int rowsDelete = db.Execute(sql, new { PayId = id });
+        //        if (rowsDelete == 1)
+        //        {
+        //            return Ok(true);
+        //        }
+        //        else
+        //        {
+        //            return Ok(false);
+        //        }
+        //    }
+        //}
     }
 }

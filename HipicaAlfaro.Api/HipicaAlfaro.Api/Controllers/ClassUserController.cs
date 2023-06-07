@@ -11,18 +11,18 @@ namespace HipicaAlfaro.Api.Controllers
     {
         private string _connection = @"Server=localhost;Password=1234; Database=horseClubDB; Uid=root;";
 
-        [HttpGet]
-        public IActionResult ReadAll()
-        {
-            IEnumerable<ClassUser> list = null;
-            using (var db = new MySqlConnection(_connection))
-            {
-                var sql = "SELECT Id, UserId, ClassId FROM ClassUser;";
+        //[HttpGet]
+        //public IActionResult ReadAll()
+        //{
+        //    IEnumerable<ClassUser> list = null;
+        //    using (var db = new MySqlConnection(_connection))
+        //    {
+        //        var sql = "SELECT Id, UserId, ClassId FROM ClassUser;";
 
-                list = db.Query<ClassUser>(sql);
-            }
-            return Ok(list);
-        }
+        //        list = db.Query<ClassUser>(sql);
+        //    }
+        //    return Ok(list);
+        //}
 
         [HttpGet("{id}")]
         public IActionResult ReadById(int id)
@@ -53,24 +53,24 @@ namespace HipicaAlfaro.Api.Controllers
             return Ok(result > 0);
         }
 
-        [HttpPut("{id}")]
-        public bool Update(int id, ClassUser classUser)
-        {
-            var classUserToUpdate = ReadById(id);
-            if (classUserToUpdate == null)
-            {
-                return false;
-            }
+        //[HttpPut("{id}")]
+        //public bool Update(int id, ClassUser classUser)
+        //{
+        //    var classUserToUpdate = ReadById(id);
+        //    if (classUserToUpdate == null)
+        //    {
+        //        return false;
+        //    }
 
-            classUser.Id = id;
+        //    classUser.Id = id;
 
-            using (var db = new MySqlConnection(_connection))
-            {
-                var sql = "UPDATE ClassUser SET UserId = @UserId, ClassId = @ClassId WHERE Id = @Id;";
-                var rowsUpdate = db.Execute(sql, classUser);
-                return rowsUpdate > 0;
-            }
-        }
+        //    using (var db = new MySqlConnection(_connection))
+        //    {
+        //        var sql = "UPDATE ClassUser SET UserId = @UserId, ClassId = @ClassId WHERE Id = @Id;";
+        //        var rowsUpdate = db.Execute(sql, classUser);
+        //        return rowsUpdate > 0;
+        //    }
+        //}
 
         [HttpDelete("{id}")]
         public ActionResult<bool> Delete(int id)

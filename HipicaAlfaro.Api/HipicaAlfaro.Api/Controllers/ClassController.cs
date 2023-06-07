@@ -12,19 +12,19 @@ namespace HipicaAlfaro.Api.Controllers
     {
         private string _connection = @"Server=localhost;Password=1234; Database=horseClubDB; Uid=root;";
 
-        [HttpGet]
-        public IActionResult ReadAll()
-        {
-            IEnumerable<Class> list = null;
-            using (var db = new MySqlConnection(_connection))
-            {
-                var sql = "SELECT classId, classDay, classHour, classLevel FROM classes;";
+        //[HttpGet]
+        //public IActionResult ReadAll()
+        //{
+        //    IEnumerable<Class> list = null;
+        //    using (var db = new MySqlConnection(_connection))
+        //    {
+        //        var sql = "SELECT classId, classDay, classHour, classLevel FROM classes;";
 
-                list = db.Query<Class>(sql);
-            }
-            return Ok(list);
+        //        list = db.Query<Class>(sql);
+        //    }
+        //    return Ok(list);
 
-        }
+        //}
         [HttpGet("orderBy")]
         public IActionResult ReadAllOrderBy()
         {
@@ -130,24 +130,24 @@ namespace HipicaAlfaro.Api.Controllers
             return Ok(result > 0);
         }
 
-        [HttpPut]
-        public bool Update(int id,Class classes)
-        {
-            var classToUpdate = ReadById(id);
-            if (classToUpdate == null)
-            {
-                return false;
-            }
-            classes.ClassId = id;
+        //[HttpPut]
+        //public bool Update(int id,Class classes)
+        //{
+        //    var classToUpdate = ReadById(id);
+        //    if (classToUpdate == null)
+        //    {
+        //        return false;
+        //    }
+        //    classes.ClassId = id;
 
-            using (var db = new MySqlConnection(_connection))
-            {
-                var sql = "UPDATE classes SET classDay = @ClassDay, classHour = @ClassHour, classLevel = @ClassLevel WHERE classId = @ClassId;";
-                var rowsUpdate = db.Execute(sql, classes);
-                return rowsUpdate > 0;
-            }
+        //    using (var db = new MySqlConnection(_connection))
+        //    {
+        //        var sql = "UPDATE classes SET classDay = @ClassDay, classHour = @ClassHour, classLevel = @ClassLevel WHERE classId = @ClassId;";
+        //        var rowsUpdate = db.Execute(sql, classes);
+        //        return rowsUpdate > 0;
+        //    }
 
-        }
+        //}
 
         [HttpDelete("{id}")]
         public ActionResult<bool> Delete(int id)
