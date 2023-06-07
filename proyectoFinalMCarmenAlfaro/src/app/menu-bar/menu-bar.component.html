@@ -12,7 +12,11 @@
 
   <div class="col-12 container-cards mt-2">
 
-
+    <ng-container *ngIf="!menus">
+      <div class="card">
+        <p-progressSpinner></p-progressSpinner>
+    </div>
+    </ng-container>
     <ng-container *ngFor="let menu of menus">
       <div class="card my-2">
         <div class="card-body">
@@ -54,4 +58,5 @@
       </div>
     </form>
   </ng-container>
+
 </p-sidebar>

@@ -153,3 +153,26 @@ a.nav-link,.navbar-brand{
 .navbar {
     font-size: 1.25rem;
 }
+.p-dialog.p-confirm-dialog .p-confirm-dialog-message {
+    margin-left: 1rem;
+    font-size: x-large;
+}
+.encabezadosTablas{
+    display: flex;
+    justify-content: space-between;
+}
+.titulo
+{
+text-align: center;
+background-color: black;
+color: rgb(255, 78, 190);
+padding: 1%;
+}
+.tituloPestañas
+{
+text-align: center;
+background-color: black;
+color: rgb(255, 78, 190);
+padding: 1%;
+margin-bottom: 2%;
+}

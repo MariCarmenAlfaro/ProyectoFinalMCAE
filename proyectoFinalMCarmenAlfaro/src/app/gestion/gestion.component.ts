@@ -2,7 +2,7 @@ import { Component, Injectable, Injector, OnInit } from '@angular/core';
 import { GestionService } from './gestion.service';
 import { CaballosService } from '../caballo/caballos.service';
 import { FormControl, FormGroup } from '@angular/forms';
-
+import { Validators } from '@angular/forms';
 import { PerfilService } from '../perfil/perfil.service';
 import { ClasesService } from '../clases/clases.service';
 import { CommonComponent } from '../common/common.component';
@@ -103,7 +103,11 @@ export class GestionComponent extends CommonComponent implements OnInit {
       userType: new FormControl(''),
       registrationDate: new FormControl(''),
       emailAddress: new FormControl(''),
-      psswdUser: new FormControl(''),
+      psswdUser: new FormControl('', [
+        Validators.required,
+        Validators.minLength(8),
+        Validators.pattern(/^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{8,}$/)
+      ]),
     });
     this.showPaymentForm = false;
     this.showAddHorseToUser = false;
@@ -115,8 +119,7 @@ export class GestionComponent extends CommonComponent implements OnInit {
     this.gestionService.postNewUser(this.form.value).subscribe(
       (rs) => {
         this.newUserId = rs.insertedId;
-        console.log(this.newUserId);
-
+     
         this.showDialog = false;
         if (rs) {
           this.showDialogUser = false;

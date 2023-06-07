@@ -39,7 +39,7 @@ export class PagosComponent extends CommonComponent implements OnInit {
           this.getPricePayUser();
           this.getTypesServicesPrice();
           this.showPaymentForm = false;
-          this.loading = false;
+       
         } else {
           this.showMessage('error', 'Error al modificar el pago');
         }
@@ -55,6 +55,7 @@ export class PagosComponent extends CommonComponent implements OnInit {
       (rs) => {
         if (rs) {
           this.typeServices = rs;
+          this.loading=false
         } else {
           this.showMessage('error', 'Error al obtener los servicios');
         }

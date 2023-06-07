@@ -1,10 +1,10 @@
 <div class="contenedorReservas">
 
-
+    <h2 class="tituloPestañas">Peticiones y Reservas</h2>
     <p-tabView> 
         <p-tabPanel header="Peticiones">
         <ng-container *ngIf="this.suggestions">
-            <p-table [value]="this.suggestions" [tableStyle]="{ 'min-width': '30rem' }">
+            <p-table [value]="this.suggestions" [tableStyle]="{ 'min-width': '30rem' }" [loading]="loading" >
 
                 <ng-template pTemplate="header">
                     <tr>

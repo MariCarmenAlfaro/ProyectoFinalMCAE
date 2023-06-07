@@ -147,7 +147,7 @@ export class ClasesComponent extends CommonComponent implements OnInit {
         this.pagosService.createNewPayment(this.newPayment).subscribe((rs)=>{
           
           if(rs){
-            this.showMessage("info","se ha creado el pago para este usuario" )   
+            this.showMessage("info","Se ha creado el pago para este usuario" )   
           }  else {
             this.showMessage('error','Error al intentar borrar el caballo')
           }

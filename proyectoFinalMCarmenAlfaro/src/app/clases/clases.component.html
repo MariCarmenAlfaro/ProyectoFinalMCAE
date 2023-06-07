@@ -1,14 +1,19 @@
 <div class="clas">
-    <button class="button-circleBlack mb-2" icon="pi pi-user-plus" (click)="addUserToClass()" pButton
-        pTooltip="Añadir usuario a clase" tooltipPosition="top"></button>
-    <p-table #dt1 [value]="clases" dataKey="id" [rows]="10" [showCurrentPageReport]="true"
+    <!-- <button class="button-circleBlack mb-2" icon="pi pi-user-plus" (click)="addUserToClass()" pButton
+        pTooltip="Añadir usuario a clase" tooltipPosition="top"></button> -->
+        <h2 class="tituloPestañas">Clases</h2>
+       
+        <p-table #dt1 [value]="clases" dataKey="id" [rows]="10" [showCurrentPageReport]="true"
         [rowsPerPageOptions]="[10, 25, 50]" [globalFilterFields]="['classDay', 'classHour', 'classLevel']"
         [loading]="loading">
         <ng-template pTemplate="header">
             <tr>
                 <th>
                     <div class="flex align-items-center">
-                <th><i class="pi pi-heart"></i></th>
+                <th>
+                    <button class="button-circle mb-2" icon="pi pi-user-plus" (click)="addUserToClass()" pButton
+                        pTooltip="Añadir usuario a clase" tooltipPosition="top"></button>
+                </th>
 </div>
 </th>
 <th>
@@ -96,7 +101,7 @@
 
 
 </div>
-
+<!-- Se muestra los alumnos de una clase -->
 <p-sidebar [(visible)]="showDialog">
     <strong>Usuarios de la clase: </strong> <br>
     <hr>
@@ -105,8 +110,8 @@
             <div class="alumnos">
                 <div class="eliminarUser">
                     <div>
-                    <i class="fa-regular fa-heart"></i> {{user.userName}}
-                </div>
+                        <i class="fa-regular fa-heart"></i> {{user.userName}}
+                    </div>
                     <button class="button-circle " icon="pi pi-trash" (click)="deleteClassDialog(user.id)" pButton
                         pTooltip="Borrar" tooltipPosition="top"></button>
                 </div>
@@ -120,7 +125,7 @@
     </ng-container>
 
 </p-sidebar>
-
+<!-- Añadir usuario a una nueva clase -->
 <p-sidebar [(visible)]="showDialogAddUser">
     <div class="col-12 ">
         <div class="desplegables">
@@ -148,9 +153,10 @@
             </ng-container>
         </div>
 
-
-        <button class="button-circle" icon="pi pi-check" (click)="insertUserToClass()" pButton
-            pTooltip="Añadir usuario a clase" tooltipPosition="top" [disabled]="this.insertButtonDisabled"></button>
+        <div class="btnDerecha">
+            <button class="button-circle" icon="pi pi-check" (click)="insertUserToClass()" pButton
+                pTooltip="Añadir usuario a clase" tooltipPosition="top" [disabled]="this.insertButtonDisabled"></button>
+        </div>
     </div>
 </p-sidebar>
 
@@ -160,7 +166,7 @@
         <h3>¡Cuidado!</h3>
     </ng-template>
     <ng-template pTemplate="footer">
-        <button type="button" pButton icon="pi pi-times" class="button-circle"  pButton (click)="cd.reject()"></button>
+        <button type="button" pButton icon="pi pi-times" class="button-circle" pButton (click)="cd.reject()"></button>
         <button type="button" pButton icon="pi pi-check" class="button-circle" pButton (click)="cd.accept()"></button>
     </ng-template>
 </p-confirmDialog>

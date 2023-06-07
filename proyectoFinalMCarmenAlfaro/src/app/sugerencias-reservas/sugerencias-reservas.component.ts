@@ -20,7 +20,7 @@ export class SugerenciasReservasComponent extends CommonComponent {
   currentSuggestion;
   currentReserva;
   peticionArchivo = false;
-
+  loading: boolean;
   constructor(
     public gestionService: GestionService,
     public caballosService: CaballosService,
@@ -31,6 +31,7 @@ export class SugerenciasReservasComponent extends CommonComponent {
   }
 
   ngOnInit(): void {
+    this.loading = true;
     this.readSuggestion();
     this.readReserva();
   }
@@ -47,6 +48,7 @@ export class SugerenciasReservasComponent extends CommonComponent {
             this.suggestions.push(visto);
           }
         });
+        this.loading = false;
       } else {
         this.showMessage('error', 'Error al leer las sugerencias');
       }
@@ -66,6 +68,7 @@ export class SugerenciasReservasComponent extends CommonComponent {
               this.reservasRs.push(visto);
             }
           });
+          this.loading = false;
         } else {
           this.showMessage('error', 'Error al leer las reservas');
         }

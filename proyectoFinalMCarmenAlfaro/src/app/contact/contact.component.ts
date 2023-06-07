@@ -27,7 +27,6 @@ export class ContactComponent extends CommonComponent implements OnInit {
   }
 
   ngOnInit(): void {}
-
   onSubmit() {
     this.comment = {
       commentType: this.commentType,

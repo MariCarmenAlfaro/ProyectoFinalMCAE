@@ -60,7 +60,7 @@ export class CommonComponent {
     let summary;
     console.log(severity)
     if(severity === "error"){
-      summary = '¡Ups! Algo no ha ido bien'
+      summary = '¡Ups! Algo no ha ido bien...'
     }
     if(severity === "info"){
       summary = '¡Genial!'

@@ -1,25 +1,18 @@
 <div class="caballo">
   <ng-container *ngIf="userTypeAdmin">
-    <div class="col-12">
-      <div class="col-12 my-3">
-        <!-- <button class="button-circleBlack" icon="pi pi-plus" (click)="this.createForm(null)"></button> -->
-        <button class="button-circleBlack " icon="pi pi-plus" (click)="this.createForm(null)" pButton
-          pTooltip="addhorse" tooltipPosition="top"></button>
 
-      </div>
-
-      <!-- <div class="col-12" *ngIf="this.horses.length <= 0">
-        
-      </div> -->
-      <div class="col-12" >
+      <div class="col-12">
+        <h2 class="tituloPestañas">Caballos</h2>
         <p-table #dt1 [value]="horses" [paginator]="true" dataKey="id" [rows]="5"
-          [globalFilterFields]="['horseName', 'barnNum', 'foodType','horseType', 'ownerName']"  [loading]="loading">
+          [globalFilterFields]="['horseName', 'barnNum', 'foodType','horseType', 'ownerName']" [loading]="loading">
           <ng-template pTemplate="caption">
-            <div class="flex">
-              <div class="btnDerecha">
+           
+              <div class="flex encabezadosTablas">
                 <button pButton class="p-button-outlined button-circle" icon="pi pi-filter-slash"
                   (click)="clear(dt1)"></button>
-              </div>
+                <button class="button-circleBlack " icon="pi pi-plus" (click)="this.createForm(null)" pButton
+                  pTooltip="addhorse" tooltipPosition="top"></button>
+           
             </div>
           </ng-template>
           <ng-template pTemplate="header" let-columns>
@@ -71,7 +64,7 @@
         </p-table>
       </div>
 
-    </div>
+   
     <p-sidebar [(visible)]="showInfoDialog">
 
       <div class="col-12" *ngIf="currentHorseInfo">
@@ -153,8 +146,8 @@
 
 
                 <div class="form-floating mb-2">
-                  <p-dropdown formControlName="ownerId" [options]="userLists" optionLabel="userName" optionValue="userId"
-                    placeholder="Dueño"></p-dropdown>
+                  <p-dropdown formControlName="ownerId" [options]="userLists" optionLabel="userName"
+                    optionValue="userId" placeholder="Dueño"></p-dropdown>
                 </div>
 
               </ng-container>
