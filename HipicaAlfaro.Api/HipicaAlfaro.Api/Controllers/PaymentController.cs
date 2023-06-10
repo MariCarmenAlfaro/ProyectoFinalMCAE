@@ -2,8 +2,6 @@
 using HipicaAlfaro.Api.Models;
 using Microsoft.AspNetCore.Mvc;
 using MySql.Data.MySqlClient;
-using System;
-using System.Collections.Generic;
 
 namespace HipicaAlfaro.Api.Controllers
 {
@@ -16,19 +14,28 @@ namespace HipicaAlfaro.Api.Controllers
         [HttpGet]
         public IActionResult ReadAll()
         {
-            IEnumerable<Payment> list = null;
+            try
+            {
+                IEnumerable<Payment> list = null;
             using (var db = new MySqlConnection(_connection))
             {
                 var sql = "SELECT PayId, UserId, PayDate, PriceId, PayMethod FROM payments;";
- 
+
                 list = db.Query<Payment>(sql);
             }
             return Ok(list);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error al obtener los pagos");
+            }
         }
-        [HttpGet("precioPagoUser")]
+        [HttpGet("pricePaymentUser")]
         public IActionResult ReadAllWithUserAndPrice()
         {
-            IEnumerable<PayPriceUser> list = null;
+            try
+            {
+                IEnumerable<PayPriceUser> list = null;
             using (var db = new MySqlConnection(_connection))
             {
                 var sql = "Select payId, payments.userId, payDate, payMethod, prices.priceId, prices.price, prices.typeService, userprofile.userName, userprofile.emailAddress from payments inner join prices on payments.priceId =  prices.priceId inner join userprofile on payments.userId= userprofile.userId order by payDate desc;";
@@ -36,12 +43,19 @@ namespace HipicaAlfaro.Api.Controllers
                 list = db.Query<PayPriceUser>(sql);
             }
             return Ok(list);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error al obtener los pagos");
+            }
         }
 
         [HttpGet("{id}")]
         public IActionResult ReadById(int id)
         {
-            Payment payment = null;
+            try
+            {
+                Payment payment = null;
             using (var db = new MySqlConnection(_connection))
             {
                 var sql = "SELECT PayId, UserId, PayDate, PriceId, PayMethod FROM payments WHERE PayId = @PayId;";
@@ -52,12 +66,19 @@ namespace HipicaAlfaro.Api.Controllers
                 return NotFound();
             }
             return Ok(payment);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error al obtener el pago");
+            }
         }
 
         [HttpPost]
         public IActionResult Create(Payment payment)
         {
-            int result = 0;
+            try
+            {
+                int result = 0;
             using (var db = new MySqlConnection(_connection))
             {
                 var sql = "INSERT INTO payments (UserId, PayDate, PriceId, PayMethod) VALUES (@UserId, @PayDate, @PriceId, @PayMethod);";
@@ -65,16 +86,23 @@ namespace HipicaAlfaro.Api.Controllers
                 result = db.Execute(sql, payment);
             }
             return Ok(result > 0);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error al crear los pagos");
+            }
         }
 
         [HttpPut("{id}")]
-        public bool Update(int id, Payment payment)
+        public IActionResult Update(int id, Payment payment)
         {
-            var paymentToUpdate = ReadById(id);
+            try
+            {
+                var paymentToUpdate = ReadById(id);
             if (paymentToUpdate == null)
             {
-                return false;
-            }
+                    return NotFound();
+                }
 
             payment.PayId = id;
 
@@ -82,31 +110,20 @@ namespace HipicaAlfaro.Api.Controllers
             {
                 var sql = "UPDATE payments SET UserId = @UserId, PayDate = @PayDate, PriceId = @PriceId, PayMethod = @PayMethod WHERE PayId = @PayId;";
                 var rowsUpdate = db.Execute(sql, payment);
-                return rowsUpdate > 0;
+                    if (rowsUpdate > 0)
+                    {
+                        return Ok(true);
+                    }
+                    else
+                    {
+                        return Ok(false);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error al modificar los pagos");
             }
         }
-
-        //[HttpDelete("{id}")]
-        //public ActionResult<bool> Delete(int id)
-        //{
-        //    var paymentToDelete = ReadById(id);
-        //    if (paymentToDelete == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    using (var db = new MySqlConnection(_connection))
-        //    {
-        //        var sql = "DELETE FROM payments WHERE PayId = @PayId;";
-        //        int rowsDelete = db.Execute(sql, new { PayId = id });
-        //        if (rowsDelete == 1)
-        //        {
-        //            return Ok(true);
-        //        }
-        //        else
-        //        {
-        //            return Ok(false);
-        //        }
-        //    }
-        //}
     }
 }

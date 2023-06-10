@@ -15,61 +15,96 @@ namespace HipicaAlfaro.Api.Controllers
         [HttpGet]
         public IActionResult ReadAll()
         {
-            IEnumerable<Suggestions> list = null;
-            using (var db = new MySqlConnection(_connection))
+            try
             {
-                var sql = "SELECT id, commentType, userName, emailUser, peticion, checked FROM suggestions;";
+                IEnumerable<Suggestions> list = null;
+                using (var db = new MySqlConnection(_connection))
+                {
+                    var sql = "SELECT id, commentType, userName, emailUser, peticion, checked FROM suggestions;";
 
-                list = db.Query<Suggestions>(sql);
+                    list = db.Query<Suggestions>(sql);
+                }
+                return Ok(list);
             }
-            return Ok(list);
+            catch (Exception ex)
+            {
+                return BadRequest("Error al obtener las sugerencias");
+            }
 
         }
 
         [HttpGet("{id}")]
         public IActionResult ReadById(int id)
         {
-            Suggestions classItem = null;
-            using (var db = new MySqlConnection(_connection))
+            try
             {
-                var sql = "SELECT id, commentType, userName, emailUser, peticion, checked FROM suggestions WHERE id = @Id;";
-                classItem = db.QueryFirstOrDefault<Suggestions>(sql, new { id });
+                Suggestions sugerencia = null;
+                using (var db = new MySqlConnection(_connection))
+                {
+                    var sql = "SELECT id, commentType, userName, emailUser, peticion, checked FROM suggestions WHERE id = @Id;";
+                    sugerencia = db.QueryFirstOrDefault<Suggestions>(sql, new { id });
+                }
+                if (sugerencia == null)
+                {
+                    return NotFound();
+                }
+                return Ok(sugerencia);
             }
-            if (classItem == null)
+            catch (Exception ex)
             {
-                return NotFound();
+                return BadRequest("Error al obtener la sugerencia");
             }
-            return Ok(classItem);
         }
 
         [HttpPost]
         public IActionResult Create(Suggestions suggestions)
         {
-            int result = 0;
-            using (var db = new MySqlConnection(_connection))
+            try
             {
-                var sql = "INSERT INTO suggestions (commentType, userName, emailUser, peticion,clubId) VALUES (@CommentType, @UserName, @EmailUser, @Peticion, @ClubId);";
+                int result = 0;
+                using (var db = new MySqlConnection(_connection))
+                {
+                    var sql = "INSERT INTO suggestions (commentType, userName, emailUser, peticion,clubId) VALUES (@CommentType, @UserName, @EmailUser, @Peticion, @ClubId);";
 
-                result = db.Execute(sql, suggestions);
+                    result = db.Execute(sql, suggestions);
+                }
+                return Ok(result > 0);
             }
-            return Ok(result > 0);
+            catch (Exception ex)
+            {
+                return BadRequest("Error al insertar la sugerencia");
+            }
         }
 
         [HttpPut]
-        public bool Update(int id, Suggestions suggestions)
+        public IActionResult Update(int id, Suggestions suggestions)
         {
-            var sugggestionUpdate = ReadById(id);
-            if (sugggestionUpdate == null)
+            try
             {
-                return false;
-            }
-            suggestions.Id = id;
+                var sugggestionUpdate = ReadById(id);
+                if (sugggestionUpdate == null)
+                {
+                    return NotFound();
+                }
+                suggestions.Id = id;
 
-            using (var db = new MySqlConnection(_connection))
+                using (var db = new MySqlConnection(_connection))
+                {
+                    var sql = "UPDATE suggestions SET commentType = @CommentType, userName = @UserName, emailUser = @EmailUser, peticion=@Peticion, checked= @Checked WHERE id = @Id;";
+                    var rowsUpdate = db.Execute(sql, suggestions);
+                    if (rowsUpdate > 0)
+                    {
+                        return Ok(true);
+                    }
+                    else
+                    {
+                        return Ok(false);
+                    }
+                }
+            }
+            catch (Exception ex)
             {
-                var sql = "UPDATE suggestions SET commentType = @CommentType, userName = @UserName, emailUser = @EmailUser, peticion=@Peticion, checked= @Checked WHERE id = @Id;";
-                var rowsUpdate = db.Execute(sql, suggestions);
-                return rowsUpdate > 0;
+                return BadRequest("Error al modificar la sugerencia");
             }
 
         }
@@ -77,23 +112,30 @@ namespace HipicaAlfaro.Api.Controllers
         [HttpDelete("{id}")]
         public ActionResult<bool> Delete(int id)
         {
-            var classToDelete = ReadById(id);
-            if (classToDelete == null)
+            try
             {
-                return NotFound();
+                var classToDelete = ReadById(id);
+                if (classToDelete == null)
+                {
+                    return NotFound();
+                }
+                using (var db = new MySqlConnection(_connection))
+                {
+                    var sql = "DELETE FROM suggestions WHERE id = @Id;";
+                    int rowsDelete = db.Execute(sql, new { Id = id });
+                    if (rowsDelete == 1)
+                    {
+                        return Ok(true);
+                    }
+                    else
+                    {
+                        return Ok(false);
+                    }
+                }
             }
-            using (var db = new MySqlConnection(_connection))
+            catch (Exception ex)
             {
-                var sql = "DELETE FROM suggestions WHERE id = @Id;";
-                int rowsDelete = db.Execute(sql, new { Id = id });
-                if (rowsDelete == 1)
-                {
-                    return Ok(true);
-                }
-                else
-                {
-                    return Ok(false);
-                }
+                return BadRequest("Error al eliminar la sugerencia");
             }
         }
     }

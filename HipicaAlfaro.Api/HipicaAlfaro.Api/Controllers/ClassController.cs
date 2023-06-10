@@ -12,26 +12,16 @@ namespace HipicaAlfaro.Api.Controllers
     {
         private string _connection = @"Server=localhost;Password=1234; Database=horseClubDB; Uid=root;";
 
-        //[HttpGet]
-        //public IActionResult ReadAll()
-        //{
-        //    IEnumerable<Class> list = null;
-        //    using (var db = new MySqlConnection(_connection))
-        //    {
-        //        var sql = "SELECT classId, classDay, classHour, classLevel FROM classes;";
 
-        //        list = db.Query<Class>(sql);
-        //    }
-        //    return Ok(list);
-
-        //}
         [HttpGet("orderBy")]
         public IActionResult ReadAllOrderBy()
         {
-            List<Class> result = new List<Class>();
-            using (var db = new MySqlConnection(_connection))
+            try
             {
-                var sql = @"SELECT
+                List<Class> result = new List<Class>();
+                using (var db = new MySqlConnection(_connection))
+                {
+                    var sql = @"SELECT
                        
                         classHour,
                         GROUP_CONCAT(IF(classDay = 'Lunes', classLevel, NULL)) AS Lunes,
@@ -43,132 +33,153 @@ namespace HipicaAlfaro.Api.Controllers
                     FROM classes
                     GROUP BY classHour
                     ORDER BY classHour";
-             
-                var queryResult = db.Query(sql);
 
-                foreach (dynamic row in queryResult)
-                {
-                    Class classResult = new Class
+                    var queryResult = db.Query(sql);
+
+                    foreach (dynamic row in queryResult)
                     {
-                        ClassHour = row.classHour,
-                        Lunes = row.Lunes,
-                        Martes = row.Martes,
-                        Miercoles = row.Miércoles,
-                        Jueves = row.Jueves,
-                        Viernes = row.Viernes,
-                        Sabado = row.Sábado
-                    };
+                        Class classResult = new Class
+                        {
+                            ClassHour = row.classHour,
+                            Lunes = row.Lunes,
+                            Martes = row.Martes,
+                            Miercoles = row.Miércoles,
+                            Jueves = row.Jueves,
+                            Viernes = row.Viernes,
+                            Sabado = row.Sábado
+                        };
 
-                    result.Add(classResult);
+                        result.Add(classResult);
+                    }
                 }
+
+                return Ok(result);
             }
-
-            return Ok(result);
-
+            catch (Exception ex)
+            {
+                return BadRequest("Error al obtener las clases");
+            }
         }
 
         [HttpGet("{id}")]
         public IActionResult ReadById(int id)
         {
-            Class classItem = null;
-            using (var db = new MySqlConnection(_connection))
+            try
             {
-                var sql = "SELECT classId, classDay, classHour, classLevel FROM classes WHERE classId = @ClassId;";
-                classItem = db.QueryFirstOrDefault<Class>(sql, new { ClassId = id });
+                Class classItem = null;
+                using (var db = new MySqlConnection(_connection))
+                {
+                    var sql = "SELECT classId, classDay, classHour, classLevel FROM classes WHERE classId = @ClassId;";
+                    classItem = db.QueryFirstOrDefault<Class>(sql, new { ClassId = id });
+                }
+                if (classItem == null)
+                {
+                    return NotFound();
+                }
+                return Ok(classItem);
             }
-            if (classItem == null)
+            catch (Exception ex)
             {
-                return NotFound();
+                return BadRequest("Error al obtener la clase de usuario por ID.");
             }
-            return Ok(classItem);
         }
         [HttpGet("userByClassId")]
         public IActionResult GetClass(string classDay, string classHour)
         {
-            List<UserExtended> classesList = new List<UserExtended>();
-            
+            try
+            {
+                List<UserExtended> classesList = new List<UserExtended>();
+
                 using (var db = new MySqlConnection(_connection))
-            {
-                var sql = @"select classUser.id, classes.classId, userProfile.userId, userprofile.userName, userprofile.emailAddress from classes  inner join classUser on classes.classId = classUser.classId inner join userprofile on classUser.userId = userprofile.userId where classHour = @ClassHour and classDay = @ClassDay;
+                {
+                    var sql = @"select classUser.id, classes.classId, userProfile.userId, userprofile.userName, userprofile.emailAddress from classes  inner join classUser on classes.classId = classUser.classId inner join userprofile on classUser.userId = userprofile.userId where classHour = @ClassHour and classDay = @ClassDay;
 ";
-                classesList = db.Query<UserExtended>(sql, new { ClassDay = classDay, ClassHour = classHour }).ToList();
+                    classesList = db.Query<UserExtended>(sql, new { ClassDay = classDay, ClassHour = classHour }).ToList();
+                }
+                if (classesList.Count == 0)
+                {
+                    classesList = new List<UserExtended>();
+                }
+                return Ok(classesList);
             }
-            if (classesList.Count == 0)
+            catch (Exception ex)
             {
-                classesList = new List<UserExtended>();    
+                return BadRequest("Error al obtener las clases.");
             }
-            return Ok(classesList);
         }
         [HttpGet("filterByLevel")]
         public IActionResult GetClassesByLevel(string classLevel)
         {
-            List<Class> classesList = new List<Class>();
+            try
+            {
+                List<Class> classesList = new List<Class>();
 
-            using (var db = new MySqlConnection(_connection))
-            {
-                var sql = @"SELECT classId, classDay, classHour, classLevel FROM classes where classLevel like @classLevel;;
+                using (var db = new MySqlConnection(_connection))
+                {
+                    var sql = @"SELECT classId, classDay, classHour, classLevel FROM classes where classLevel like @classLevel;;
 ";
-                classesList = db.Query<Class>(sql, new { ClassLevel = classLevel }).ToList();
+                    classesList = db.Query<Class>(sql, new { ClassLevel = classLevel }).ToList();
+                }
+                if (classesList.Count == 0)
+                {
+                    return NotFound();
+                }
+                return Ok(classesList);
             }
-            if (classesList.Count == 0)
+            catch (Exception ex)
             {
-                return NotFound();
+                return BadRequest("Error al obtener las clases.");
             }
-            return Ok(classesList);
         }
 
         [HttpPost]
         public IActionResult Create(Class classes)
         {
-            int result = 0;
-            using (var db = new MySqlConnection(_connection))
+            try
             {
-                var sql = "INSERT INTO classes (classDay, classHour, classLevel) VALUES (@ClassDay, @ClassHour, @ClassLevel);";
+                int result = 0;
+                using (var db = new MySqlConnection(_connection))
+                {
+                    var sql = "INSERT INTO classes (classDay, classHour, classLevel) VALUES (@ClassDay, @ClassHour, @ClassLevel);";
 
-                result = db.Execute(sql, classes);
+                    result = db.Execute(sql, classes);
+                }
+                return Ok(result > 0);
             }
-            return Ok(result > 0);
+            catch (Exception ex)
+            {
+                return BadRequest("Error al insertar la clase.");
+            }
         }
 
-        //[HttpPut]
-        //public bool Update(int id,Class classes)
-        //{
-        //    var classToUpdate = ReadById(id);
-        //    if (classToUpdate == null)
-        //    {
-        //        return false;
-        //    }
-        //    classes.ClassId = id;
-
-        //    using (var db = new MySqlConnection(_connection))
-        //    {
-        //        var sql = "UPDATE classes SET classDay = @ClassDay, classHour = @ClassHour, classLevel = @ClassLevel WHERE classId = @ClassId;";
-        //        var rowsUpdate = db.Execute(sql, classes);
-        //        return rowsUpdate > 0;
-        //    }
-
-        //}
 
         [HttpDelete("{id}")]
         public ActionResult<bool> Delete(int id)
         {
-            var classToDelete = ReadById(id);
-            if (classToDelete == null)
+            try
             {
-                return NotFound();
+                var classToDelete = ReadById(id);
+                if (classToDelete == null)
+                {
+                    return NotFound();
+                }
+                using (var db = new MySqlConnection(_connection))
+                {
+                    var sql = "DELETE FROM classes WHERE classId = @ClassId;";
+                    int rowsDelete = db.Execute(sql, new { ClassId = id });
+                    if (rowsDelete == 1)
+                    {
+                        return Ok(true);
+                    }
+                    else
+                    {
+                        return Ok(false);
+                    }
+                }
             }
-            using (var db = new MySqlConnection(_connection))
+            catch (Exception ex)
             {
-                var sql = "DELETE FROM classes WHERE classId = @ClassId;";
-                int rowsDelete = db.Execute(sql, new { ClassId = id });
-                if (rowsDelete == 1)
-                {
-                    return Ok(true);
-                }
-                else
-                {
-                    return Ok(false);
-                }
+                return BadRequest("Error al eliminar la clase");
             }
         }
 

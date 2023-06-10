@@ -2,10 +2,7 @@
 using HipicaAlfaro.Api.Models;
 using Microsoft.AspNetCore.Mvc;
 using MySql.Data.MySqlClient;
-using Org.BouncyCastle.Asn1.Ocsp;
-using System.Net.Mail;
 using System.Text;
-using System.Data.SqlClient;
 using System.Security.Cryptography;
 namespace HipicaAlfaro.Api.Controllers
 {
@@ -39,7 +36,6 @@ namespace HipicaAlfaro.Api.Controllers
         {
             try
             {
-
                 UserProfile userProfile = null;
                 using (var db = new MySqlConnection(_connection))
                 {
@@ -61,11 +57,19 @@ namespace HipicaAlfaro.Api.Controllers
         [HttpPost]
         public IActionResult Create(UserProfile userProfile)
         {
+
             try
             {
+                if (userProfile == null)
+                {
+                    return BadRequest("El perfil de usuario es requerido.");
+                }
+                //Generar el caracter introducido codificarlo 
                 var contrasenya = userProfile.PsswdUser;
                 SHA256 sha256 = SHA256.Create();
+                //Genera la secuencia en bytes
                 byte[] hash = sha256.ComputeHash(Encoding.UTF8.GetBytes(contrasenya));
+                //El hash se convierte en hexadecimal
                 var hexHash = BitConverter.ToString(hash).Replace("-", "");
                 var insertedId = 0;
                 using (var db = new MySqlConnection(_connection))
@@ -83,23 +87,18 @@ namespace HipicaAlfaro.Api.Controllers
                     }).SingleOrDefault();
                 }
 
-                if (insertedId == 0)
+                if (insertedId == null)
                 {
                     return BadRequest("No se pudo crear el perfil de usuario.");
                 }
 
                 return Ok(new { InsertedId = insertedId });
             }
-            //catch (MySqlException ex)
-            //{
-            //    return BadRequest("Error de MySQL al crear el perfil de usuario.");
-            //}
             catch (Exception ex)
             {
                 return BadRequest("Ocurrió un error al crear el perfil de usuario.");
             }
         }
-
 
         [HttpPut("{id}")]
         public IActionResult Update(int id, UserProfile userProfile)
@@ -109,7 +108,7 @@ namespace HipicaAlfaro.Api.Controllers
                 var userProfileToUpdate = ReadById(id);
                 if (userProfileToUpdate == null)
                 {
-                    return NotFound(); ;
+                    return NotFound(); 
                 }
 
                 userProfile.UserId = id;
@@ -132,7 +131,6 @@ namespace HipicaAlfaro.Api.Controllers
             {
                 return BadRequest("Error al obtener el perfil de usuario por ID.");
             }
-
         }
 
         [HttpDelete("{id}")]
@@ -173,12 +171,12 @@ namespace HipicaAlfaro.Api.Controllers
             {
                 using (var db = new MySqlConnection(_connection))
                 {
-                    var sql = "SELECT * FROM userProfile WHERE emailAddress = @EmailAddress";
+                    var sql = "SELECT userId, userName, userType, registrationDate, emailAddress, psswdUser FROM userProfile WHERE emailAddress = @EmailAddress and userType not like 'Inactivo';";
                     var userProfile = db.QuerySingleOrDefault<UserProfile>(sql, new { EmailAddress = emailAddress });
 
                     if (userProfile == null)
                     {
-                        return BadRequest("Correo electrónico o contraseña incorrectos");
+                        return BadRequest("Correo electrónico o contraseña ");
                     }
 
                     string hexHash = userProfile.PsswdUser;
@@ -202,11 +200,11 @@ namespace HipicaAlfaro.Api.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest("Error al obtener los precios de servicio del usuario.");
+                return BadRequest("Error al autenticar el susuario.");
             }
         }
 
-            [HttpGet("userExtendedClasses/{id}")]
+        [HttpGet("userExtendedClasses/{id}")]
         public IActionResult ReadByUserIdExtended(int id)
         {
             try
@@ -239,7 +237,7 @@ namespace HipicaAlfaro.Api.Controllers
             {
                 using (var conexion = new MySqlConnection(_connection))
                 {
-                    var query = "SELECT payId, payDate, payMethod, typeService, price, prices.priceId FROM payments INNER JOIN prices ON payments.priceId = prices.priceId WHERE payments.userId = @id;";
+                    var query = "SELECT payId, payDate, payMethod, typeService, price, prices.priceId FROM payments INNER JOIN prices ON payments.priceId = prices.priceId WHERE payments.userId = @id order by payDate desc;";
 
                     var resultado = conexion.Query<PriceForService>(query, new { id }).ToList();
 
