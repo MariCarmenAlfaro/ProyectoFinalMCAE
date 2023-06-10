@@ -36,6 +36,7 @@ export class PreciosComponent extends CommonComponent {
       typeService: new FormControl(''),
       price: new FormControl(''),
     });
+    this.verificarFormPrecio()
   }
   readAll() {
     this.priceService.getReadAllPrices().subscribe(
@@ -52,6 +53,14 @@ export class PreciosComponent extends CommonComponent {
       }
     );
   }
+  verificarFormPrecio(){
+    if(this.newServiceForm.value.price != '' && this.newServiceForm.value.typeService != ''){
+      return false
+    }else{
+      return true
+    }
+  }
+
   insertNewService() {
     this.addPriceButtonDisabled = true;
     let service = {

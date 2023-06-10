@@ -109,13 +109,13 @@
 
             <div class="btnDerecha">
                 <button class="button-circle" icon="pi pi-pencil" pButton
-                    (click)="mostrarEditarUsuario(currentUser)"></button>
+                    (click)="editUserShow(currentUser)"></button>
             </div>
         </p-panel>
 
     </div>
     <!-- Edicion usuarios -->
-    <div class="col-12" *ngIf="showEditUser">
+    <div class="col-12 p-3" *ngIf="showEditUser">
         <p> <i class="fa-regular fa-heart"></i> &nbsp;Edición</p>
         <form class="row g-3 f  romReserva" [formGroup]="updateUserForm">
             <div class="modal-body">
@@ -150,8 +150,8 @@
 <p-sidebar [(visible)]="showDialog">
     <ng-container *ngIf="showCreateUser">
 
-        <div class="col-12">
-            <p> <span class="pi pi-heart mr-2"></span> &nbsp; Nuevo usuario</p>
+        <div class="col-12 p-3">
+            <p> <span class="pi pi-heart-fill mr-2"></span> &nbsp; Nuevo usuario</p>
             <form class="row g-3 f" [formGroup]="form">
                 <div class="modal-body">
                     <div class="form-floating mb-2">
@@ -174,35 +174,35 @@
                         <label for="emailAddress">Email</label>
                     </div>
 
-                    <!-- <div class="form-floating mb-2">
+                    <div class="form-floating mb-2"
+>
                         <input type="password" class="form-control" placeholder="Contraseña"
-                            formControlName="psswdUser">
+                            formControlName="psswdUser" [ngClass]="{'ng-invalid':!this.form.controls.psswdUser.valid}">
                         <label for="psswdUser">Contraseña</label>
-                    </div> -->
-                    <div class="form-floating mb-2" [class.is-invalid]="form.get('psswdUser').invalid && form.get('psswdUser').touched">
-                        <input type="password" class="form-control" placeholder="Contraseña" formControlName="psswdUser">
-                        <label for="psswdUser">Contraseña</label>
-                        <div class="invalid-feedback" *ngIf="form.get('psswdUser').invalid && form.get('psswdUser').touched">
-                          <div *ngIf="form.get('psswdUser').errors?.required">La contraseña es requerida.</div>
-                          <div *ngIf="form.get('psswdUser').errors?.minlength">La contraseña debe tener al menos 8 caracteres.</div>
-                          <div *ngIf="form.get('psswdUser').errors?.pattern">La contraseña debe contener letras y números.</div>
+                        <div class="error"
+                            *ngIf="!this.form.controls.psswdUser.valid">
+                         
+                            <div *ngIf="form.get('psswdUser').errors?.minlength">La contraseña debe tener al menos 8
+                                caracteres.</div>
+                            <div *ngIf="form.get('psswdUser').errors?.pattern">La contraseña debe contener letras y
+                                números.</div>
                         </div>
-                      </div>
-                      
+                    </div>
+
 
                 </div>
                 <div class="contrasenya">
                     <button type="submit" class="button-circle" pButton icon="pi pi-heart
                         " (click)="generatePassword()"></button> <label for=""> Generar contraseña</label>
+                    <br> <br>
 
-                    <p for=""> {{this.psswdUser}} </p>
                 </div>
-
+                <p for=""> {{this.psswdUser}} </p>
                 <div class="modal-footer">
 
                     <div class="modal-footer btnDerecha">
                         <button type="submit" class="button-circle" pButton icon="pi pi-check
-                    " (click)="postNewUser()"></button>
+                    " (click)="postNewUser()" [disabled]="form.invalid"></button>
 
                     </div>
                 </div>
@@ -253,7 +253,7 @@
 
                     <div class="modal-footer btnDerecha">
                         <button type="submit" class="button-circle" pButton icon="pi pi-check
-                  " (click)="savePrivateHorse()"></button>
+                  " (click)="savePrivateHorse()" [disabled]="formHorseOwner.invalid"></button>
 
                     </div>
                 </form>
@@ -292,7 +292,7 @@
                         </div>
                         <div class="btnDerecha">
                             <button type="submit" class="button-circle" icon="pi pi-check" pButton
-                                (click)="savePayment()"></button>
+                                (click)="savePayment()" [disabled]="paymentForm.invalid" ></button>
                         </div>
                     </div>
 
@@ -347,16 +347,19 @@
         <button class="button-circle " icon="pi pi-plus" routerLink="/clases" pButton pTooltip="Añadir usuario a clase"
             tooltipPosition="top"></button>&nbsp;<label>Añadir clase</label>
     </div>
+    <br>
 
     <div class="col-12">
 
 
         <ng-container *ngFor="let clases of currentUserClases">
             <ng-container>
-                <p-panel class="clasesUser">
-                    <span class="text-primary font-semibold text-xl">
-                        <i class="fa-regular fa-heart"></i> &nbsp;Clase
-                    </span>
+                <p-panel header="">
+                    <ng-template pTemplate="header">
+                        <span class="text-primary font-semibold text-xl">
+                            <i class="fa-regular fa-heart"></i> &nbsp;Clase
+                        </span>
+                    </ng-template>
                     <p>Día : {{clases.classDay}} </p>
                     <p>Hora {{clases.classHour}} </p>
                     <p>Nivel: {{clases.classLevel}}</p>

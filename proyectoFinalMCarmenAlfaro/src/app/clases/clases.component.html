@@ -1,9 +1,7 @@
 <div class="clas">
-    <!-- <button class="button-circleBlack mb-2" icon="pi pi-user-plus" (click)="addUserToClass()" pButton
-        pTooltip="Añadir usuario a clase" tooltipPosition="top"></button> -->
-        <h2 class="tituloPestañas">Clases</h2>
-       
-        <p-table #dt1 [value]="clases" dataKey="id" [rows]="10" [showCurrentPageReport]="true"
+    <h2 class="tituloPestañas">Clases</h2>
+    <!-- Listado clases -->
+    <p-table #dt1 [value]="clases" dataKey="id" [rows]="10" [showCurrentPageReport]="true"
         [rowsPerPageOptions]="[10, 25, 50]" [globalFilterFields]="['classDay', 'classHour', 'classLevel']"
         [loading]="loading">
         <ng-template pTemplate="header">
@@ -17,43 +15,23 @@
 </div>
 </th>
 <th>
-    <div class="flex align-items-center">
-        Lunes
-
-    </div>
+    <div class="flex align-items-center">Lunes</div>
 </th>
 <th>
-    <div class="flex align-items-center">
-        Martes
-
-
-    </div>
+    <div class="flex align-items-center">Martes</div>
 </th>
 <th>
-    <div class="flex align-items-center">
-        Miércoles
-
-    </div>
+    <div class="flex align-items-center">Miércoles</div>
 </th>
 <th>
-    <div class="flex align-items-center">
-        Jueves
-
-    </div>
+    <div class="flex align-items-center">Jueves</div>
 </th>
 <th>
-    <div class="flex align-items-center">
-        Viernes
-
-    </div>
+    <div class="flex align-items-center">Viernes</div>
 </th>
 <th>
-    <div class="flex align-items-center">
-        Sábado
-
-    </div>
+    <div class="flex align-items-center">Sábado</div>
 </th>
-
 </tr>
 </ng-template>
 
@@ -67,38 +45,31 @@
             <span *ngIf="clases.lunes !== null" (click)="saberClaseLunes(clases.classHour)"> {{ clases.lunes }}</span>
         </td>
         <td class="clases">
-            <span *ngIf="clases.martes !== null" (click)="saberClaseMartes(clases.classHour)"> {{ clases.martes
-                }}</span>
+            <span *ngIf="clases.martes !== null" (click)="saberClaseMartes(clases.classHour)"> {{ clases.martes}}</span>
         </td>
         <td class="clases">
-            <span *ngIf="clases.miercoles !== null" (click)="saberClaseMiercoles(clases.classHour)">{{ clases.miercoles
-                }}</span>
+            <span *ngIf="clases.miercoles !== null" (click)="saberClaseMiercoles(clases.classHour)">{{ clases.miercoles}}</span>
 
         </td>
         <td class="clases">
-            <span *ngIf="clases.jueves !== null" (click)="saberClaseJueves(clases.classHour)">{{ clases.jueves }}</span>
+            <span *ngIf="clases.jueves !== null" (click)="saberClaseJueves(clases.classHour)">{{ clases.jueves}}</span>
 
         </td>
         <td class="clases">
-            <span *ngIf="clases.viernes !== null" (click)="saberClaseViernes(clases.classHour)">{{ clases.viernes
-                }}</span>
+            <span *ngIf="clases.viernes !== null" (click)="saberClaseViernes(clases.classHour)">{{ clases.viernes}}</span>
 
         </td>
         <td class="clases">
             <span *ngIf="clases.sabado !== null" (click)="saberClaseSabado(clases.classHour)">{{ clases.sabado }}</span>
         </td>
-
-
     </tr>
 </ng-template>
 <ng-template pTemplate="emptymessage">
     <tr>
-
-
+        <td colspan="7">Oh vaya! Parece ser que no tienes clases todavía</td>
     </tr>
 </ng-template>
 </p-table>
-
 
 </div>
 <!-- Se muestra los alumnos de una clase -->
@@ -138,7 +109,6 @@
             <label for="">Nivel:</label><br>
             <p-dropdown [options]="levelUser" [(ngModel)]="selectedLevel" optionLabel="name"
                 (onChange)="onChange($event)" placeholder="Seleciona el nivel"></p-dropdown>
-
         </div>
 
         <div class="desplegables">
@@ -155,7 +125,7 @@
 
         <div class="btnDerecha">
             <button class="button-circle" icon="pi pi-check" (click)="insertUserToClass()" pButton
-                pTooltip="Añadir usuario a clase" tooltipPosition="top" [disabled]="this.insertButtonDisabled"></button>
+                pTooltip="Añadir usuario a clase" tooltipPosition="top" [disabled]="verificarBotonClase()" ></button>
         </div>
     </div>
 </p-sidebar>

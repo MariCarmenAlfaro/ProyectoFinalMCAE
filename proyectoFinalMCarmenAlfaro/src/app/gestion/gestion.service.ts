@@ -18,26 +18,20 @@ export class GestionService {
   }
   public postNewUser(body:any) {
     var url = `${this.baseUrl}/User`;
-    return this.http.post<any>(url,body) ;
+    var rs= this.http.post<any>(url,body) ;
+    console.log(rs)
+    return rs;
   }
  public readAllUser(){
   var url = `${this.baseUrl}/User`;
     return this.http.get<any>(url) ;
  }
 
-//  public getTypesServicesPrice(){
-//   var url = `${this.baseUrl}/Price`;
-//     return this.http.get<any>(url) ;
-//  }
-
-//  public createNewPayment(body:any) {
-//   var url = `${this.baseUrl}/Payment`;
-//   return this.http.post<any>(url,body) ;
-// }
 public deleteUser(id){
 var url = `${this.baseUrl}/User/${id}`;
 return this.http.delete<any>(url) ;
 }
+
 public readSuggestions(){
   var url = `${this.baseUrl}/Suggestion`;
     return this.http.get<any>(url) ;

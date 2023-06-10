@@ -15,7 +15,7 @@ export class PagosService {
       return this.http.get<any>(url) ;
    }
    public getPricePayUser(){
-    var url = `${this.baseUrl}/Payment/precioPagoUser`;
+    var url = `${this.baseUrl}/Payment/pricePaymentUser`;
       return this.http.get<any>(url) ;
    }
    

@@ -52,16 +52,22 @@
             pButton
             pTooltip="Clases"
             tooltipPosition="top"
-            [disabled]="this.addPriceButtonDisabled"
+            [disabled]="verificarFormPrecio()"
           ></button>
-          
+        
           </td>
         </tr>
       </ng-template>
 </p-table>
-
+<!-- edicion del sesrvicio -->
 <p-sidebar [(visible)]="editPrice">
-  <p-panel header="Edición de precio">
+  <p-panel>
+    <p-header>
+      <div class="flex align-items-center text-primary">
+          <span class="pi pi-heart-fill"></span>&nbsp;
+          <span class="font-bold text-lg perfilDatos">Edición de precio</span>
+      </div>
+  </p-header>
   <form [formGroup]="priceFormChange">
   <input type="text" class="form-control"  formControlName="typeService">
   <br>

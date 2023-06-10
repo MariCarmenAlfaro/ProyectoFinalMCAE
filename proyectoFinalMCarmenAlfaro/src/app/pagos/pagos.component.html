@@ -86,19 +86,12 @@
                 </ng-template>
             </p-table>
         </div>
-
-    <!-- <ng-container *ngIf="this.nombresPagos.length <= 0">
-        <div class="col-12">
-       
-            <p>Oh vaya! Parece ser que no tienes pago todavía</p>
-        </div>
-    </ng-container> -->
 </div>
 
 
 <p-sidebar [(visible)]="showPaymentForm">
-    <div class="col-12">
-        <p>Editar pago</p>
+    <div class="col-12 p-3">
+        <p><i class="fa-regular fa-heart"></i>&nbsp;Editar pago</p>
         <form class="row g-3 f  romReserva" [formGroup]="paymentForm">
             <div class="modal-body">
                 <div class="form-floating mb-2">
@@ -113,14 +106,10 @@
                     <div class="form-floating mb-2">
                         <p-dropdown formControlName="payMethod" [options]="payMethods" optionLabel="name"
                             optionValue="name" placeholder="Metodo de pago" ></p-dropdown>
-
                     </div>
-
             </div>
-
             <div class="modal-footer">
-                <button type="submit" class="button-circle" pButton (click)="savePayment()" icon="pi pi-check"></button>
-
+                <button type="submit" class="button-circle" pButton (click)="savePayment()" icon="pi pi-check" [disabled]="paymentForm.invalid"></button>
             </div>
         </form>
     </div>

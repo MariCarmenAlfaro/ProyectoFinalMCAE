@@ -4,7 +4,7 @@
     <p-tabView> 
         <p-tabPanel header="Peticiones">
         <ng-container *ngIf="this.suggestions">
-            <p-table [value]="this.suggestions" [tableStyle]="{ 'min-width': '30rem' }" [loading]="loading" >
+            <p-table [value]="this.suggestions" [rows]="5"  [paginator]="true" [tableStyle]="{ 'min-width': '30rem' }" [loading]="loading" >
 
                 <ng-template pTemplate="header">
                     <tr>
@@ -33,14 +33,16 @@
 
             </p-table>
         </ng-container>
-        <ng-container *ngIf="!this.suggestions">
-            <p>¡Parece que no tienes peticiones por revisar!</p>
-        </ng-container>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="7">Oh vaya! Parece ser que no tienes peticiones todavía</td>
+            </tr>
+        </ng-template>
             
         </p-tabPanel>
         <p-tabPanel header="Peticiones realizadas">
 
-            <p-table [value]="this.suggestionArchived" [tableStyle]="{ 'min-width': '30rem' }">
+            <p-table [value]="this.suggestionArchived" [tableStyle]="{ 'min-width': '30rem' }" [rows]="5"  [paginator]="true">
 
                 <ng-template pTemplate="header">
                     <tr>
@@ -63,13 +65,17 @@
                         </td>
                     </tr>
                 </ng-template>
-
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="7">Oh vaya! Parece ser que no tienes peticiones archivadas todavía</td>
+                    </tr>
+                </ng-template>
             </p-table>
         </p-tabPanel>
 
         <p-tabPanel header="Reservas">
             <ng-container *ngIf="this.reservasRs">
-            <p-table [value]="this.reservasRs" [tableStyle]="{ 'min-width': '30rem' }">
+            <p-table [value]="this.reservasRs" [tableStyle]="{ 'min-width': '30rem' }" [rows]="5"  [paginator]="true">
 
                 <ng-template pTemplate="header">
                     <tr>
@@ -98,13 +104,17 @@
                         </td>
                     </tr>
                 </ng-template>
-
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="7">Oh vaya! Parece ser que no tienes reservas todavía</td>
+                    </tr>
+                </ng-template>
             </p-table>
         </ng-container>
         </p-tabPanel>
 
         <p-tabPanel header="Reservas realizadas">
-            <p-table [value]="this.reservasArcvhived" [tableStyle]="{ 'min-width': '30rem' }">
+            <p-table [value]="this.reservasArcvhived" [tableStyle]="{ 'min-width': '30rem' }" [rows]="5"  [paginator]="true">
 
                 <ng-template pTemplate="header">
                     <tr>
@@ -132,7 +142,11 @@
                         </td>
                     </tr>
                 </ng-template>
-
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="7">Oh vaya! Parece ser que no tienes reservas archivadas todavía</td>
+                    </tr>
+                </ng-template>
             </p-table>
         </p-tabPanel>
 
@@ -146,10 +160,10 @@
 
 <p-confirmDialog #cd [style]="{width:'50vw'}">
     <ng-template pTemplate="header">
-        <h3>Eliminar peticion</h3>
+        <h3>¡Cuidado!</h3>
     </ng-template>
     <ng-template pTemplate="footer">
-        <button type="button" class="button-circle" pButton icon="pi pi-times" label="No" (click)="cd.reject()"></button>
-        <button type="button" class="button-circle" pButton icon="pi pi-check" label="Si" (click)="cd.accept()"></button>
+        <button type="button" class="button-circle" pButton icon="pi pi-times" (click)="cd.reject()"></button>
+        <button type="button" class="button-circle" pButton icon="pi pi-check" (click)="cd.accept()"></button>
     </ng-template>
 </p-confirmDialog>

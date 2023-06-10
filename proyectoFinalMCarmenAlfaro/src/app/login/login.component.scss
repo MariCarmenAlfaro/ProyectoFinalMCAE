@@ -4,3 +4,10 @@
 .guardarLogin{
     margin: 1%;
 }
+.btn.disabled, .btn:disabled, fieldset:disabled .btn {
+    color:rgb(255, 255, 255);
+    pointer-events: none;
+    background-color: rgba(255, 78, 190, 0.817);
+    border-color:rgb(255, 78, 190);
+   
+}

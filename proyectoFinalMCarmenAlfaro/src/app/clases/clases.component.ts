@@ -77,8 +77,19 @@ export class ClasesComponent extends CommonComponent implements OnInit {
       });
   
   }
-  
+  verificarBotonClase(){
+    if((this.selectedClass && this.selectedLevel && this.selectedUser) !=null ) {
+      return false
+    } else {
+      return true
+    }
+  }
   addUserToClass() {
+    debugger
+    this.selectedClass=null
+    this.selectedLevel=null
+    this.classesDayHour= []
+    this.selectedUser=null
     if (this.allUsers.length <= 0) {
       this.gestionService.readAllUser().subscribe((rs) => {
         if (rs && rs.length > 0) {
@@ -87,14 +98,16 @@ export class ClasesComponent extends CommonComponent implements OnInit {
               this.allUsers.push(user);
             }
           });
+          this.showDialogAddUser = true;
         } else {
           this.showMessage('error','Error al añadir usuario a la clase')
         }
-        this.showDialogAddUser = true;
       },
       (error) => {
         this.showMessage('error',error.error)
       });
+    } else {
+      this.showDialogAddUser = true;
     }
 
 
@@ -106,8 +119,6 @@ export class ClasesComponent extends CommonComponent implements OnInit {
       rs.forEach(clases => {
         if(clases.typeService=="Clase"){
         this.barnPrice.push(clases)
-        console.log(this.barnPrice)
-        console.log(this.barnPrice[0].priceId)
         }
        } )
     }else {
@@ -128,10 +139,8 @@ export class ClasesComponent extends CommonComponent implements OnInit {
      
     };
     this.getPrices()
-    console.log(this.newClassUser)
     this.clasesService.insertUserToClass(this.newClassUser).subscribe((rs)=>{
       
-     
       if(rs){ 
         this.showMessage("info","Se ha creado la clase correctamente" )
         this.insertButtonDisabled = false;
@@ -142,8 +151,6 @@ export class ClasesComponent extends CommonComponent implements OnInit {
           payDate: this.currentDate,
           priceId:this.barnPrice[0].priceId
         }
-    
-        console.log(this.newPayment)
         this.pagosService.createNewPayment(this.newPayment).subscribe((rs)=>{
           
           if(rs){
@@ -163,9 +170,8 @@ export class ClasesComponent extends CommonComponent implements OnInit {
       this.showMessage('error',error.error)
     }
     )
-      
-  
   }
+
   deleteClass(classToDelete) {
     this.clasesService.deleteClassUser(classToDelete).subscribe((rs) => {
       if (rs) {

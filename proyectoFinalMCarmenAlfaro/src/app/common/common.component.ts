@@ -58,7 +58,7 @@ export class CommonComponent {
 
   showMessage(severity, detail){
     let summary;
-    console.log(severity)
+    //console.log(severity)
     if(severity === "error"){
       summary = '¡Ups! Algo no ha ido bien...'
     }

@@ -20,7 +20,7 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary "  (click)="this.loginService.showModal = false">Cerrar</button>
         <button type="submit" class="btn btn-primary guardarLogin"
-     (click)="loginBack()" 
+     (click)="loginBack()"  [disabled]="loginForm.invalid"
         >Guardar</button>
 
       </div>

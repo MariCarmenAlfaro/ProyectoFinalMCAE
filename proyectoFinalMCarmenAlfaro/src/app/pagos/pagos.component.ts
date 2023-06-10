@@ -39,6 +39,7 @@ export class PagosComponent extends CommonComponent implements OnInit {
           this.getPricePayUser();
           this.getTypesServicesPrice();
           this.showPaymentForm = false;
+          this.showMessage('info', 'Pago modificado con éxito');
        
         } else {
           this.showMessage('error', 'Error al modificar el pago');

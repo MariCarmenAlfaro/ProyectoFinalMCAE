@@ -27,11 +27,13 @@
             </ng-container>
 
             <ng-container *ngFor="let clase of datosClases">
-                <p> Día de clase:<strong>{{clase?.classDay}}</strong> a las
-                    <strong>{{clase?.classHour}}</strong>
-                </p>
-                <p>Tu nivel es: <strong>{{clase?.classLevel}}</strong> </p>
-
+                <div class="containerClases">
+                    <br>
+                    <p> Día de clase: <strong>{{clase?.classDay}}</strong> a las
+                        <strong> {{clase?.classHour}}</strong>
+                    </p>
+                    <p>Tu nivel es: <strong>{{clase?.classLevel}}</strong> </p>
+                </div>
             </ng-container>
 
 
@@ -63,7 +65,7 @@
                                 <th style="width:25%">Fecha
                                     <p-columnFilter type="date" field="name" display="menu"></p-columnFilter>
                                 </th>
-                                <th style="width:25%">Pagado</th>
+                                <th style="width:25%">Tipo</th>
                                 <th style="width:25%">Por pagar</th>
                             </tr>
                         </ng-template>
@@ -101,8 +103,13 @@
         </ng-template>
         <ng-container *ngIf="this.formClass">
             <form [formGroup]="changeForm">
-
-                <p-panel header="Solicitud de cambios">
+                <p-panel>
+                    <p-header>
+                        <div class="flex align-items-center text-primary">
+                            <span class="pi pi-heart-fill"></span>&nbsp;
+                            <span class="font-bold text-lg perfilDatos">Solicitud</span>
+                        </div>
+                    </p-header>
                     <p>Si desea cambiar su dia u hora de clase ¡Solicítelo desde aquí!</p>
                     <p>Por favor, intruduzca claramente el día de la semana o la hora a la que quiere cambiar</p>
                     <p>NO se aceptaran cambios sin dos días de antelación a la clase</p>
@@ -116,14 +123,22 @@
                 </p-panel>
                 <div class="modal-footer">
                     <br><br>
-                    <button class="button-circle" icon="pi pi-check" pButton (click)="insertComent()"></button>
+                    <button class="button-circle" icon="pi pi-check" pButton (click)="insertComent()"
+                        [disabled]="changeForm.invalid"></button>
 
                 </div>
             </form>
         </ng-container>
         <ng-container *ngIf="this.formBarn">
             <form [formGroup]="changeForm">
-                <p-panel header="Solicitud de cambios">
+                <p-panel>
+                    <p-header>
+                        <div class="flex align-items-center text-primary">
+                            <span class="pi pi-heart-fill"></span>&nbsp;
+                            <span class="font-bold text-lg perfilDatos">Solicitud</span>
+                        </div>
+                    </p-header>
+                  
                     <p>Si desea cambiar la cuadra o alimentación de su caballo ¡Solicítelo desde aquí!</p>
                     <div class="form-group">
                         <label for="comment">Escriba aquí el cambio: </label>
@@ -136,8 +151,8 @@
 
                     <br>
                     <br>
-                    <button type="submit" class="button-circle" icon="pi pi-check" pButton
-                        (click)="insertComent()"></button>
+                    <button type="submit" class="button-circle" icon="pi pi-check" pButton (click)="insertComent()"
+                        [disabled]="changeForm.invalid"></button>
 
                 </div>
             </form>
@@ -146,8 +161,13 @@
     </p-sidebar>
 
     <p-sidebar [(visible)]="pagarPagos">
-        <p-panel header="Pagar">
-
+        <p-panel>
+            <p-header>
+                <div class="flex align-items-center text-primary">
+                    <span class="pi pi-heart-fill"></span>&nbsp;
+                    <span class="font-bold text-lg perfilDatos">Pagar</span>
+                </div>
+            </p-header>
             <form [formGroup]="paymentForm" (ngSubmit)="pagarDeuda()" [class.invalid]="paymentForm.invalid"
                 [class.valid]="paymentForm.valid">
                 <label for="cardNumber">*Número de tarjeta:</label>
@@ -178,7 +198,6 @@
                     <div *ngIf="paymentForm.get('cardCvv').errors.required">El CVV es obligatorio.</div>
                     <div *ngIf="paymentForm.get('cardCvv').errors.pattern">El CVV debe contener solo dígitos.</div>
                 </div>
-
                 <br><br>
                 <div class="btnDerecha">
                     <button type="submit" class="button-circle" pButton [disabled]="paymentForm.invalid"

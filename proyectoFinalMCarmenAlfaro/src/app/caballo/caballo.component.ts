@@ -54,7 +54,6 @@ export class CaballoComponent extends CommonComponent implements OnInit {
             if(users.userType=="Dueño"){
                 this.userLists.push(users)
             }
-          
           });
       }else{
         this.showMessage('error', 'Error al intentar obtener los usuarios dueños')
@@ -81,7 +80,6 @@ export class CaballoComponent extends CommonComponent implements OnInit {
     
   }
 
- 
   updateHorse() {
     if (this.createNewHorse) {
       this.form.controls.horseType.setValue('Clase');
@@ -89,7 +87,6 @@ export class CaballoComponent extends CommonComponent implements OnInit {
       this.caballosService.createHorse(this.form.value).subscribe(
         (rs) => {
           if (rs) {
-            console.log('Ok');
             this.getAllHorses();
             this.showDialog = false;
             this.showMessage('info', 'Caballo creado correctamente.')
@@ -135,7 +132,6 @@ export class CaballoComponent extends CommonComponent implements OnInit {
         ownerId: new FormControl(horse.ownerId),
         registrationDate: new FormControl(new Date(horse.registrationDate)),
       });
-      console.log(this.form.value)
     } else {
       this.createNewHorse = true;
       this.form = new FormGroup({
@@ -156,8 +152,10 @@ export class CaballoComponent extends CommonComponent implements OnInit {
     console.log(this.form);
   }
 
-  showCamara(){
-    window.open('https://www.skylinewebcams.com/es/webcam/espana/islas-baleares/mallorca/mallorca-alcudia.html', '_blank');
+  showCamara(horse){
+    
+window.open(horse.cameraUrl, '_blank');
+    // window.open('https://www.skylinewebcams.com/es/webcam/espana/islas-baleares/mallorca/mallorca-alcudia.html', '_blank');
   }
   
 
