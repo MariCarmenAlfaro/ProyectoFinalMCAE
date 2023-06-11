@@ -3,28 +3,28 @@ INSERT INTO classes (classId, classDay, classHour, classLevel)
 VALUES
   (1, 'Lunes', '10', 'Bajo'),
   (2, 'Martes', '10', 'Medio'),
-  (3, 'Miércoles', '10', 'Alto'),
+  (3, 'Miercoles', '10', 'Alto'),
   (4, 'Jueves', '10', 'Bajo'),
   (5, 'Viernes', '10', 'Medio'),
-  (6, 'Sábado', '10', 'Alto'),
+  (6, 'Sabado', '10', 'Alto'),
   (7, 'Lunes', '12', 'Alto'),
   (8, 'Martes', '12', 'Bajo'),
-  (9, 'Miércoles', '12', 'Medio'),
+  (9, 'Miercoles', '12', 'Medio'),
   (10, 'Jueves', '12', 'Alto'),
   (11, 'Viernes', '12', 'Bajo'),
-  (12, 'Sábado', '12', 'Bajo'),
+  (12, 'Sabado', '12', 'Bajo'),
   (13, 'Lunes', '16', 'Medio'),
   (14, 'Martes', '16', 'Alto'),
-  (15, 'Miércoles', '16', 'Bajo'),
+  (15, 'Miercoles', '16', 'Bajo'),
   (16, 'Jueves', '16', 'Medio'),
   (17, 'Viernes', '16', 'Alto'),
-  (18, 'Sábado', '16', ''),
+  (18, 'Sabado', '16', null),
   (19, 'Lunes', '18', 'Bajo'),
   (20, 'Martes', '18', 'Medio'),
-  (21, 'Miércoles', '18', 'Alto'),
+  (21, 'Miercoles', '18', 'Alto'),
   (22, 'Jueves', '18', 'Bajo'),
   (23, 'Viernes', '18', 'Medio'),
-  (24, 'Viernes', '18', '');
+  (24, 'Viernes', '18', null);
 
 INSERT INTO horses (horseId, horseName, barnNum, foodType, horseType, observation, cameraUrl, registrationDate, ownerId)
 VALUES 

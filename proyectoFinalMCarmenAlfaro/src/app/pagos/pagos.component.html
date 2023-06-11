@@ -2,7 +2,7 @@
     <h2 class="tituloPestañas">Pagos</h2>
         <div class="col-12">
             <p-table #dt1 [value]="nombresPagos" dataKey="id" [rows]="5"
-                [globalFilterFields]="['userId', 'payDate', 'priceId']" [paginator]="true" [loading]="loading">
+                [globalFilterFields]="['userName', 'payDate', 'typeService']" [paginator]="true" [loading]="loading">
                 <ng-template pTemplate="caption">
                     <div class="flex">
                         <button pButton class="button-circle" icon="pi pi-filter-slash" (click)="clear(dt1)"></button>
@@ -14,7 +14,7 @@
                         <th>
                             <div class="flex align-items-center">
                                 Usuario
-                                <p-columnFilter type="text" field="userId" display="menu"></p-columnFilter>
+                                <p-columnFilter type="text" field="userName" display="menu"></p-columnFilter>
                             </div>
                         </th>
                         <th>
@@ -26,7 +26,7 @@
                         <th>
                             <div class="flex align-items-center">
                                 Servicio
-                                <p-columnFilter type="text" field="priceId" display="menu"></p-columnFilter>
+                                <p-columnFilter type="text" field="typeService" display="menu"></p-columnFilter>
                             </div>
                         </th>
                         <th>
@@ -88,7 +88,7 @@
         </div>
 </div>
 
-
+<!-- Edicion pago -->
 <p-sidebar [(visible)]="showPaymentForm">
     <div class="col-12 p-3">
         <p><i class="fa-regular fa-heart"></i>&nbsp;Editar pago</p>

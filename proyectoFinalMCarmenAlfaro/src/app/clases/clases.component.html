@@ -48,7 +48,8 @@
             <span *ngIf="clases.martes !== null" (click)="saberClaseMartes(clases.classHour)"> {{ clases.martes}}</span>
         </td>
         <td class="clases">
-            <span *ngIf="clases.miercoles !== null" (click)="saberClaseMiercoles(clases.classHour)">{{ clases.miercoles}}</span>
+            <span *ngIf="clases.miercoles !== null" (click)="saberClaseMiercoles(clases.classHour)">{{
+                clases.miercoles}}</span>
 
         </td>
         <td class="clases">
@@ -56,7 +57,8 @@
 
         </td>
         <td class="clases">
-            <span *ngIf="clases.viernes !== null" (click)="saberClaseViernes(clases.classHour)">{{ clases.viernes}}</span>
+            <span *ngIf="clases.viernes !== null" (click)="saberClaseViernes(clases.classHour)">{{
+                clases.viernes}}</span>
 
         </td>
         <td class="clases">
@@ -70,8 +72,8 @@
     </tr>
 </ng-template>
 </p-table>
-
 </div>
+
 <!-- Se muestra los alumnos de una clase -->
 <p-sidebar [(visible)]="showDialog">
     <strong>Usuarios de la clase: </strong> <br>
@@ -96,6 +98,7 @@
     </ng-container>
 
 </p-sidebar>
+
 <!-- Añadir usuario a una nueva clase -->
 <p-sidebar [(visible)]="showDialogAddUser">
     <div class="col-12 ">
@@ -104,18 +107,15 @@
             <p-dropdown [options]="allUsers" [(ngModel)]="selectedUser" optionLabel="userName"
                 placeholder="Seleciona un alumno"></p-dropdown>
         </div>
-
         <div class="desplegables">
             <label for="">Nivel:</label><br>
             <p-dropdown [options]="levelUser" [(ngModel)]="selectedLevel" optionLabel="name"
                 (onChange)="onChange($event)" placeholder="Seleciona el nivel"></p-dropdown>
         </div>
-
         <div class="desplegables">
             <ng-container *ngIf="classesDayHour.length>0">
                 <label for="">Clases disponibles: </label> <br>
-                <p-dropdown [options]="classesDayHour" [(ngModel)]="selectedClass" placeholder="Selecciona el día"
-                    optionLabel="classDay">
+                <p-dropdown [options]="classesDayHour" [(ngModel)]="selectedClass" placeholder="Selecciona el día" optionLabel="classDay">
                     <ng-template let-option pTemplate="item">
                         <span>{{ option.classDay }} - {{ option.classHour }}</span>
                     </ng-template>
@@ -125,11 +125,12 @@
 
         <div class="btnDerecha">
             <button class="button-circle" icon="pi pi-check" (click)="insertUserToClass()" pButton
-                pTooltip="Añadir usuario a clase" tooltipPosition="top" [disabled]="verificarBotonClase()" ></button>
+                pTooltip="Añadir usuario a clase" tooltipPosition="top" [disabled]="verifyBtnClass()"></button>
         </div>
     </div>
 </p-sidebar>
 
+<!-- Mensaje eliminacion clase -->
 <p-toast></p-toast>
 <p-confirmDialog #cd [style]="{width:'50vw'}">
     <ng-template pTemplate="header">

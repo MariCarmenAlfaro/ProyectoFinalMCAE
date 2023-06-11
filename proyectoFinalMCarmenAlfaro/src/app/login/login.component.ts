@@ -17,8 +17,7 @@ userId: number;
 closeModal= true;
 loginForm = new FormGroup({
   emailAddress: new FormControl('', Validators.required),
-    psswdUser: new FormControl('', Validators.required),
-
+  psswdUser: new FormControl('', Validators.required),
   });
 
   constructor(
@@ -28,12 +27,9 @@ loginForm = new FormGroup({
     super(injector)
   }
 
-
-
   ngOnInit(): void {}
 
   loginBack() {
-  
     var emailAddress = this.loginForm.get('emailAddress').value;
     var password = this.loginForm.get('psswdUser').value;
     this.loginService.authenticateLogin(emailAddress, password).subscribe((rs) => {
@@ -43,6 +39,8 @@ loginForm = new FormGroup({
           window.localStorage.setItem("user", JSON.stringify(this.userProfiles));
           this.loginService.user = JSON.parse(window.localStorage.getItem("user"))
           this.loginService.showModal  = false;
+          this.loginForm.controls.emailAddress.setValue('');
+          this.loginForm.controls.psswdUser.setValue('');
           setTimeout(()=> {
             this.closeLoading();
             this.ro.navigateByUrl('/home')

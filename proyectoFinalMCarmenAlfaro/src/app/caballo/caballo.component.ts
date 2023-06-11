@@ -4,7 +4,6 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { CommonComponent } from '../common/common.component';
 import { GestionService } from '../gestion/gestion.service';
 
-
 @Component({
   selector: 'app-caballo',
   templateUrl: './caballo.component.html',
@@ -14,9 +13,10 @@ export class CaballoComponent extends CommonComponent implements OnInit {
   constructor(
     public caballosService: CaballosService,
     public gestionService: GestionService,
-    readonly injector: Injector) {
-      super(injector)
-    }
+    readonly injector: Injector
+  ) {
+    super(injector);
+  }
   usuario;
   createNewHorse = false;
   showDialog = false;
@@ -29,13 +29,12 @@ export class CaballoComponent extends CommonComponent implements OnInit {
   userTypeOwner = false;
   ownerName;
   duenyo;
-  userLists=[]
+  userLists = [];
   loading: boolean;
 
   ngOnInit(): void {
     this.loading = true;
     this.knowUserType();
-    
   }
   knowUserType() {
     this.usuario = JSON.parse(window.localStorage.getItem('user'));
@@ -47,78 +46,81 @@ export class CaballoComponent extends CommonComponent implements OnInit {
       this.readHorseByOwnerId();
     }
   }
-  readAllUsers(){
-    this.gestionService.readAllUser().subscribe((rs)=>{
-       if(rs){
-          rs.forEach(users => {
-            if(users.userType=="Dueño"){
-                this.userLists.push(users)
+  readAllUsers() {
+    this.gestionService.readAllUser().subscribe(
+      (rs) => {
+        if (rs) {
+          rs.forEach((users) => {
+            if (users.userType == 'Dueño') {
+              this.userLists.push(users);
             }
           });
-      }else{
-        this.showMessage('error', 'Error al intentar obtener los usuarios dueños')
+        } else {
+          this.showMessage(
+            'error',
+            'Error al intentar obtener los usuarios dueños'
+          );
+        }
+      },
+      (error) => {
+        this.showMessage('error', error.error);
       }
-      
-    }, (error) => {
-      this.showMessage('error', error.error)
-    })
+    );
   }
   readHorseByOwnerId() {
     this.usuario = JSON.parse(window.localStorage.getItem('user'));
-    this.caballosService.getHorseByOnwerId(this.usuario.userId)
-    .subscribe((rs) => {
-      if(rs){
-        this.horses = rs;
-    
-      } else {
-        this.showMessage('error', 'Error al intentar obtener el caballo')
+    this.caballosService.getHorseByOnwerId(this.usuario.userId).subscribe(
+      (rs) => {
+        if (rs) {
+          this.horses = rs;
+        } else {
+          this.showMessage('error', 'Error al intentar obtener el caballo');
+        }
+      },
+      (error) => {
+        this.showMessage('error', error.error);
       }
-      
-    }, (error) => {
-      this.showMessage('error', error.error)
-    })
-    
+    );
   }
 
-  updateHorse() {
+  updateOrCreateHorse() {
     if (this.createNewHorse) {
       this.form.controls.horseType.setValue('Clase');
-      
       this.caballosService.createHorse(this.form.value).subscribe(
         (rs) => {
           if (rs) {
             this.getAllHorses();
             this.showDialog = false;
-            this.showMessage('info', 'Caballo creado correctamente.')
+            this.showMessage('info', 'Caballo creado correctamente.');
           } else {
-            this.showMessage('error', 'Error al intentar insertar el caballo')
+            this.showMessage('error', 'Error al intentar insertar el caballo');
           }
         },
         (error) => {
-          this.showMessage('error', error.error)
+          this.showMessage('error', error.error);
         }
       );
     } else {
-    
-       this.caballosService.updateHorse(this.form.value).subscribe((rs) => {
-         if (rs) {
-           this.getAllHorses();
-           this.showDialog = false; 
-           this.showInfoDialog= false;
-           this.showMessage('info', 'Caballo modificado correctamente.')
-         } else {
-           this.showMessage('error', 'Error al intentar modficar el caballo')
-         }
-       },
-       (error) => {
-        this.showMessage('error', error.error)
-       });
+      this.caballosService.updateHorse(this.form.value).subscribe(
+        (rs) => {
+          if (rs) {
+            this.getAllHorses();
+            this.showDialog = false;
+            this.showInfoDialog = false;
+            this.showMessage('info', 'Caballo modificado correctamente.');
+          } else {
+            this.showMessage('error', 'Error al intentar modficar el caballo');
+          }
+        },
+        (error) => {
+          this.showMessage('error', error.error);
+        }
+      );
     }
-
   }
 
   createForm(horse) {
-      this.readAllUsers()
+    this.readAllUsers();
     if (horse) {
       this.createNewHorse = false;
       this.form = new FormGroup({
@@ -144,7 +146,6 @@ export class CaballoComponent extends CommonComponent implements OnInit {
         registrationDate: new FormControl(''),
         ownerId: new FormControl(null),
       });
-
       this.currentHorse = true;
     }
 
@@ -152,50 +153,47 @@ export class CaballoComponent extends CommonComponent implements OnInit {
     console.log(this.form);
   }
 
-  showCamara(horse){
-    
-window.open(horse.cameraUrl, '_blank');
-    // window.open('https://www.skylinewebcams.com/es/webcam/espana/islas-baleares/mallorca/mallorca-alcudia.html', '_blank');
+  showCamara(horse) {
+    window.open(horse.cameraUrl, '_blank');
   }
-  
 
   getAllHorses() {
     this.caballosService.getAllHorses().subscribe(
       (rs) => {
-        if(rs){
+        if (rs) {
           this.horses = rs;
           this.loading = false;
-        }else {
-          this.showMessage('error', 'Error al obtener todos los caballos')
+        } else {
+          this.showMessage('error', 'Error al obtener todos los caballos');
         }
       },
       (error) => {
-        this.showMessage('error', error.error)
-       }
+        this.showMessage('error', error.error);
+      }
     );
   }
 
   selectHorse(horse) {
     this.currentHorse = horse;
-    console.log(this.currentHorse);
     this.createForm(horse);
   }
+
   showInfoHorse(horse) {
     this.currentHorseInfo = horse;
     this.showInfoDialog = true;
-  if(horse.ownerId !=null){
-    this.gestionService.getOwnerById(horse.ownerId).subscribe((rs) => {
-      if(rs){
-        this.ownerName = rs;
-      console.log(this.ownerName)
-      }else {
-        this.showMessage('error', 'Error al obtener el caballo')
-      }
-      
-    },
-    (error) => {
-      this.showMessage('error', error.error)
-     });
+    if (horse.ownerId != null) {
+      this.gestionService.getOwnerById(horse.ownerId).subscribe(
+        (rs) => {
+          if (rs) {
+            this.ownerName = rs;
+          } else {
+            this.showMessage('error', 'Error al obtener el caballo');
+          }
+        },
+        (error) => {
+          this.showMessage('error', error.error);
+        }
+      );
     }
   }
 
@@ -204,24 +202,24 @@ window.open(horse.cameraUrl, '_blank');
       (rs) => {
         if (rs === true) {
           this.getAllHorses();
-          this.showMessage('info','Caballo eliminado correctamente')
+          this.showMessage('info', 'Caballo eliminado correctamente');
         } else {
-          this.showMessage('error','Error al intentar borrar el caballo')
+          this.showMessage('error', 'Error al intentar borrar el caballo');
         }
       },
       (error) => {
-        this.showMessage('error',error.error)
+        this.showMessage('error', error.error);
       }
     );
   }
+  
   deleteHorseDialog(horseId) {
     this.confirmationService.confirm({
       message: '¿Estás seguro/a que quieres borrar este caballo?',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.deleteHorse(horseId);
-      }
-    
+      },
     });
   }
   clear(table) {

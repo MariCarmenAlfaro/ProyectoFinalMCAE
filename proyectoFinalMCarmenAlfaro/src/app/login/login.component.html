@@ -18,10 +18,8 @@
 
       
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary "  (click)="this.loginService.showModal = false">Cerrar</button>
         <button type="submit" class="btn btn-primary guardarLogin"
-     (click)="loginBack()"  [disabled]="loginForm.invalid"
-        >Guardar</button>
+     (click)="loginBack()" pButton [disabled]="loginForm.invalid" icon="pi pi-check"></button>
 
       </div>
     </form>

@@ -1,9 +1,6 @@
 import { Component, Injector, OnInit } from '@angular/core';
-import {
-  ConfirmEventType,
-} from 'primeng/api';
 import { ClasesService } from './clases.service';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { GestionService } from '../gestion/gestion.service';
 import { PagosService } from '../pagos/pagos.service';
 import { PreciosService } from '../precios/precios.service';
@@ -43,9 +40,8 @@ export class ClasesComponent extends CommonComponent implements OnInit {
       super(injector)
     }
   ngOnInit(): void {
-     this.loading = true;
+    this.loading = true;
     this.getClasses();
-   
   }
 
   getClasses() {
@@ -75,17 +71,17 @@ export class ClasesComponent extends CommonComponent implements OnInit {
       (error) => {
         this.showMessage('error',error.error)
       });
-  
   }
-  verificarBotonClase(){
+
+  verifyBtnClass(){
     if((this.selectedClass && this.selectedLevel && this.selectedUser) !=null ) {
       return false
     } else {
       return true
     }
   }
+
   addUserToClass() {
-    debugger
     this.selectedClass=null
     this.selectedLevel=null
     this.classesDayHour= []
@@ -109,9 +105,8 @@ export class ClasesComponent extends CommonComponent implements OnInit {
     } else {
       this.showDialogAddUser = true;
     }
-
-
   }
+
   getPrices(){
   this.preciosService.getReadAllPrices().subscribe((rs)=>{
     if(rs){
@@ -120,7 +115,7 @@ export class ClasesComponent extends CommonComponent implements OnInit {
         if(clases.typeService=="Clase"){
         this.barnPrice.push(clases)
         }
-       } )
+       })
     }else {
       this.showMessage('error','Error al obtener los precios')
     }
@@ -128,7 +123,6 @@ export class ClasesComponent extends CommonComponent implements OnInit {
     (error) => {
       this.showMessage('error',error.error)
     });
-
   }
 
   insertUserToClass() {
@@ -136,7 +130,6 @@ export class ClasesComponent extends CommonComponent implements OnInit {
     this.newClassUser = {
        userId: this.selectedUser.userId,
       classId: this.selectedClass.classId
-     
     };
     this.getPrices()
     this.clasesService.insertUserToClass(this.newClassUser).subscribe((rs)=>{
@@ -226,6 +219,7 @@ export class ClasesComponent extends CommonComponent implements OnInit {
     this.showDialog = true;
   }
   saberClaseMiercoles(classHour: string) {
+   debugger
     this.usuarios = [];
     this.clasesService.getUsersByClassId('Miercoles', classHour).subscribe(
       (rs) => {
@@ -253,9 +247,7 @@ export class ClasesComponent extends CommonComponent implements OnInit {
         if(rs){
         this.usuarios = rs;
         this.noUsers = false;
-      }
-
-      else {
+      } else {
           this.noUsers = true;
           this.showMessage('error', 'Error al intentar acceder a la clase')
         }
@@ -273,10 +265,9 @@ export class ClasesComponent extends CommonComponent implements OnInit {
       (rs) => {
         if(rs){
         this.usuarios = rs;
-        console.log(this.usuarios);
+   
         this.noUsers = false;
-        }
-        else {
+        } else {
           this.noUsers = true;
           this.showMessage('error', 'Error al intentar acceder a la clase')
         }
@@ -294,7 +285,6 @@ export class ClasesComponent extends CommonComponent implements OnInit {
       (rs) => {
         if(rs){
            this.usuarios = rs;
-        console.log(this.usuarios);
         this.noUsers = false;
         } else {
           this.noUsers = true;

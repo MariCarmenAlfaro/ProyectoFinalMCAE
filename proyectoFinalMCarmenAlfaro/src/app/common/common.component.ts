@@ -17,14 +17,10 @@ export class CommonComponent {
   userTypes = [{ name: 'Alumno' }, { name: 'Dueño' }, { name: 'Admin' }, { name: 'Invitado' },
               { name: 'Inactivo' }];
 
-  
-
-
   protected dialogService: DialogService
   protected messageService: MessageService
   protected confirmationService: ConfirmationService
 
-  
   constructor(injector: Injector) {
     this.dialogService = injector.get(DialogService)
     this.messageService = injector.get(MessageService)
@@ -32,8 +28,6 @@ export class CommonComponent {
    }
 
   showLoading(){
-  
-  
     this.loadingModal =this.dialogService.open(LoadingHorseComponent, { 
       showHeader: false,
           closable: false,
@@ -41,11 +35,8 @@ export class CommonComponent {
           styleClass: 'loading',
           width: '60vw',
           height: '60vh'
-          
     });
-  
-   
-      }
+    }
 
   closeLoading(){
     if (this.loadingModal) {
@@ -58,7 +49,6 @@ export class CommonComponent {
 
   showMessage(severity, detail){
     let summary;
-    //console.log(severity)
     if(severity === "error"){
       summary = '¡Ups! Algo no ha ido bien...'
     }
@@ -70,6 +60,5 @@ export class CommonComponent {
         summary: summary,
         detail: detail,
       });
-    
   }
 }

@@ -76,6 +76,7 @@
         </p-panel>
       </div>
     </p-sidebar>
+
     <!-- Añadir caballo de clase nuevo -->
     <p-sidebar [(visible)]="showDialog">
       <div class="col-12 p-3">
@@ -123,7 +124,7 @@
               </ng-container>
             </div>
             <div class="modal-footer">
-              <button type="submit" class="button-circle" pButton icon="pi pi-check" (click)="updateHorse()"
+              <button type="submit" class="button-circle" pButton icon="pi pi-check" (click)="updateOrCreateHorse()"
                 [disabled]="form.invalid"></button>
             </div>
           </form>
@@ -131,6 +132,7 @@
       </div>
     </p-sidebar>
 
+    <!-- Confirmacion de eliminar cabaalo -->
     <p-toast></p-toast>
     <p-confirmDialog #cd [style]="{width:'50vw'}">
       <ng-template pTemplate="header">
@@ -141,10 +143,9 @@
         <button type="button" pButton icon="pi pi-check" class="button-circle" (click)="cd.accept()"></button>
       </ng-template>
     </p-confirmDialog>
-
-
   </ng-container>
 
+<!--  Visto desde perfil dueño -->
   <ng-container *ngIf="userTypeOwner">
     <ng-container *ngIf="this.horses.length<=0">
       <p-fieldset class="containerCaballo">

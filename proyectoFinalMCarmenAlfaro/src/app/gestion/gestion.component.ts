@@ -65,12 +65,13 @@ export class GestionComponent extends CommonComponent implements OnInit {
   }
 
   generatePassword() {
-    const chars =
+    this.psswdUser=''
+    let chars =
       'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    const passwordLength = 8;
+    let passwordLength = 8;
 
     for (let i = 0; i < passwordLength; i++) {
-      const randomIndex = Math.floor(Math.random() * chars.length);
+      let randomIndex = Math.floor(Math.random() * chars.length);
       this.psswdUser += chars[randomIndex];
     }
 

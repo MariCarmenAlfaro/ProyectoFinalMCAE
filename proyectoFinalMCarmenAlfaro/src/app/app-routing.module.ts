@@ -32,6 +32,10 @@ const routes: Routes = [
    { path: 'precios', component: PreciosComponent },
    { path: 'sugerencias-reservas', component: SugerenciasReservasComponent },
    { path: 'clases', component: ClasesComponent },
+   {
+    path: '**',
+    redirectTo: '/home'
+}
 ];
 
 @NgModule({

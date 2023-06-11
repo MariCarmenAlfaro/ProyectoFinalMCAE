@@ -1,5 +1,4 @@
 <div class="perfil">
-
     <p-fieldset>
         <ng-template pTemplate="header">
             <div class="flex align-items-center text-primary">
@@ -7,12 +6,10 @@
                 <span class="font-bold text-lg perfilDatos">¡Hola {{this.datosUser?.userName}}!</span>
             </div>
         </ng-template>
-
         <p>Nombre: <strong>{{this.datosUser?.userName}}</strong> </p>
         <p>Correo electronico: <strong>{{this.datosUser?.emailAddress}}</strong> </p>
         <p> Tipo de ususario: <strong>{{this.datosUser?.userType}}</strong> </p>
         <p> Fecha de registro: <strong>{{this.datosUser?.registrationDate | date:'dd - MM - yyyy'}}</strong> </p>
-
     </p-fieldset>
     <ng-container *ngIf="!this.userType">
         <p-fieldset class="containerPerfil">
@@ -25,7 +22,6 @@
             <ng-container *ngIf="!this.datosClases">
                 <p>¡Oh vaya! Parece ser que aún no estás apuntado a ninguna clase</p>
             </ng-container>
-
             <ng-container *ngFor="let clase of datosClases">
                 <div class="containerClases">
                     <br>
@@ -35,15 +31,12 @@
                     <p>Tu nivel es: <strong>{{clase?.classLevel}}</strong> </p>
                 </div>
             </ng-container>
-
-
         </p-fieldset>
     </ng-container>
 
 
     <br><br>
     <ng-container *ngIf="this.tablaMensualidades">
-
         <p-accordion>
             <p-accordionTab>
                 <p-header>
@@ -85,21 +78,14 @@
                         </ng-template>
                     </p-table>
                 </ng-container>
-
             </p-accordionTab>
-
         </p-accordion>
-
-
     </ng-container>
     <div class="btnDerecha">
-        <button class="button-circleBlackChanges" pButton *ngIf="btnSolicitud" (click)="mostrarFormulario()">Solicitud
-            cambios</button>
+        <button class="button-circleBlackChanges" pButton *ngIf="btnSolicitud" (click)="mostrarFormulario()">Solicitud cambios</button>
     </div>
     <p-sidebar [(visible)]="showForm">
-
         <ng-template pTemplate="header">
-
         </ng-template>
         <ng-container *ngIf="this.formClass">
             <form [formGroup]="changeForm">
@@ -113,7 +99,6 @@
                     <p>Si desea cambiar su dia u hora de clase ¡Solicítelo desde aquí!</p>
                     <p>Por favor, intruduzca claramente el día de la semana o la hora a la que quiere cambiar</p>
                     <p>NO se aceptaran cambios sin dos días de antelación a la clase</p>
-
                     <div class="form-group">
                         <label for="comment">Escriba aquí el cambio: </label>
                         <textarea class="form-control areaComent" rows="5" id="peticion" formControlName="peticion"
@@ -138,7 +123,6 @@
                             <span class="font-bold text-lg perfilDatos">Solicitud</span>
                         </div>
                     </p-header>
-                  
                     <p>Si desea cambiar la cuadra o alimentación de su caballo ¡Solicítelo desde aquí!</p>
                     <div class="form-group">
                         <label for="comment">Escriba aquí el cambio: </label>
@@ -148,18 +132,14 @@
                     </div>
                 </p-panel>
                 <div class="modal-footer">
-
                     <br>
                     <br>
                     <button type="submit" class="button-circle" icon="pi pi-check" pButton (click)="insertComent()"
                         [disabled]="changeForm.invalid"></button>
-
                 </div>
             </form>
         </ng-container>
-
     </p-sidebar>
-
     <p-sidebar [(visible)]="pagarPagos">
         <p-panel>
             <p-header>
