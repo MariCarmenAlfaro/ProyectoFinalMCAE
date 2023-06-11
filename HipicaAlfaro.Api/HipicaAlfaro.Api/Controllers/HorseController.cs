@@ -21,7 +21,7 @@ namespace HipicaAlfaro.Api.Controllers
                 IEnumerable<Horse> list = null;
                 using (var db = new MySqlConnection(_connection))
                 {
-                    var sql = "SELECT horseId, horseName, barnNum, foodType, horseType, observation, cameraUrl, registrationDate, ownerId FROM horses;";
+                    var sql = "SELECT horseId, horseName, barnNum, foodType, horseType, observation, cameraUrl, registrationDate, ownerId FROM horses order by registrationDate;";
 
                     list = db.Query<Horse>(sql);
                 }

@@ -19,7 +19,7 @@ namespace HipicaAlfaro.Api.Controllers
                 IEnumerable<UserProfile> list = null;
                 using (var db = new MySqlConnection(_connection))
                 {
-                    var sql = "select userId, userName, userType, registrationDate, emailAddress,psswdUser from UserProfile;";
+                    var sql = "select userId, userName, userType, registrationDate, emailAddress,psswdUser from UserProfile order by registrationDate;";
 
                     list = db.Query<UserProfile>(sql);
                 }
@@ -176,7 +176,7 @@ namespace HipicaAlfaro.Api.Controllers
 
                     if (userProfile == null)
                     {
-                        return BadRequest("Correo electrónico o contraseña ");
+                        return BadRequest("Correo electrónico o contraseña no válidos");
                     }
 
                     string hexHash = userProfile.PsswdUser;
