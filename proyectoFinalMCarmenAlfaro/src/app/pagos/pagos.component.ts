@@ -1,6 +1,5 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import { PagosService } from './pagos.service';
-import { ConfirmationService, MessageService } from 'primeng/api';
 import { FormControl, FormGroup } from '@angular/forms';
 import { CommonComponent } from '../common/common.component';
 
@@ -79,6 +78,7 @@ export class PagosComponent extends CommonComponent implements OnInit {
       this.showPaymentForm = true;
     }
   }
+
   getPricePayUser() {
     this.pagosService.getPricePayUser().subscribe(
       (rs) => {
@@ -93,6 +93,7 @@ export class PagosComponent extends CommonComponent implements OnInit {
       }
     );
   }
+  
   clear(table) {
     table.clear();
   }

@@ -55,9 +55,7 @@ export class GestionComponent extends CommonComponent implements OnInit {
     public pagosService: PagosService,
     public preciosService: PreciosService,
     protected injector: Injector
-  ) {
-    super(injector);
-  }
+  ) {super(injector);}
 
   ngOnInit(): void {
     this.loading = true;
@@ -74,7 +72,6 @@ export class GestionComponent extends CommonComponent implements OnInit {
       let randomIndex = Math.floor(Math.random() * chars.length);
       this.psswdUser += chars[randomIndex];
     }
-
     return this.psswdUser;
   }
 
@@ -98,6 +95,7 @@ export class GestionComponent extends CommonComponent implements OnInit {
   clear(table) {
     table.clear();
   }
+
   showCreateForm() {
     this.form = new FormGroup({
       userName: new FormControl(''),
@@ -108,7 +106,6 @@ export class GestionComponent extends CommonComponent implements OnInit {
         Validators.required,
         Validators.minLength(8),
         Validators.pattern(/^(?=.*[a-zA-Z])(?=.*\d).*$/)
-
       ]),
     });
     this.showPaymentForm = false;
@@ -120,9 +117,7 @@ export class GestionComponent extends CommonComponent implements OnInit {
   postNewUser() {
     this.gestionService.postNewUser(this.form.value).subscribe(
       (rs) => {
-     
         this.newUserId = rs.insertedId;
-     
         this.showDialog = false;
         if (rs) {
           this.showDialogUser = false;
@@ -143,10 +138,12 @@ export class GestionComponent extends CommonComponent implements OnInit {
       this.addPayment(userId);
     }
   }
+
   addPayment(userId) {
     this.currentUserId = userId;
     this.createPaymentForm();
   }
+
   savePrivateHorse() {
     this.caballosService.createHorse(this.formHorseOwner.value).subscribe(
       (rs) => {
@@ -191,11 +188,9 @@ export class GestionComponent extends CommonComponent implements OnInit {
   }
 
   savePayment() {
- 
     if (this.paymentForm.value.payMethod == '') {
       this.paymentForm.value.payMethod = null;
     }
-
     this.pagosService.createNewPayment(this.paymentForm.value).subscribe(
       (rs) => {
         if (rs) {
@@ -214,6 +209,7 @@ export class GestionComponent extends CommonComponent implements OnInit {
       }
     );
   }
+
   deleteUser(user) {
     user.userType = 'Inactivo';
     this.gestionService.updateUser(user).subscribe(
@@ -267,8 +263,8 @@ export class GestionComponent extends CommonComponent implements OnInit {
         this.showMessage('error', error.error);
       }
     );
-
   }
+
   deleteUserDialog(user) {
     this.confirmationService.confirm({
       message: 'Vas a borrar un usuario, ¿estas seguro/a?',
@@ -286,6 +282,7 @@ export class GestionComponent extends CommonComponent implements OnInit {
     this.showDialogUser = true;
     console.log(this.currentUser);
   }
+
   editUserShow(user) {
     this.showInfoUserDiv = false;
     this.updateUserForm = new FormGroup({
@@ -298,6 +295,7 @@ export class GestionComponent extends CommonComponent implements OnInit {
     });
     this.showEditUser = true;
   }
+
   updateUser() {
     this.gestionService.updateUser(this.updateUserForm.value).subscribe(
       (rs) => {
@@ -315,6 +313,7 @@ export class GestionComponent extends CommonComponent implements OnInit {
       }
     );
   }
+
   showHorsesDisplay(userId) {
     this.currentUserId = userId;
     this.horsesUser = [];
@@ -334,21 +333,21 @@ export class GestionComponent extends CommonComponent implements OnInit {
       }
     );
   }
+
   addHorseByUser() {
     if (this.currentUserId) {
       this.formHorseOwner = new FormGroup({
-        horseName: new FormControl(''),
+        horseName: new FormControl('',Validators.required),
         barnNum: new FormControl(''),
-        foodType: new FormControl(''),
+        foodType: new FormControl('',Validators.required),
         horseType: new FormControl('Privado'),
         observation: new FormControl(''),
         cameraUrl: new FormControl(''),
-        registrationDate: new FormControl(''),
+        registrationDate: new FormControl('', Validators.required),
         ownerId: new FormControl(this.currentUserId),
       });
       this.showAddHorseToUser = true;
       this.showDialog = true;
-      this.showAddHorseToUser = true;
       this.showCreateUser = false;
       this.horsesDisplay = false;
       this.showPaymentForm = false;
@@ -366,7 +365,6 @@ export class GestionComponent extends CommonComponent implements OnInit {
               this.currentUserClases.push(clase)
             }
           });
-        
         }else{
           this.showMessage('error', 'Error al intentar ver tus clases');
         }

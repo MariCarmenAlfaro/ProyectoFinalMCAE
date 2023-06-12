@@ -1,12 +1,52 @@
 <div class="contenedorReservas">
-
     <h2 class="tituloPestañas">Peticiones y Reservas</h2>
     <p-tabView>
+        <!-- Sugerencias sin revisar -->
         <p-tabPanel header="Peticiones">
-            <ng-container *ngIf="this.suggestions">
-                <p-table [value]="this.suggestions" [rows]="5" [paginator]="true"
-                    [tableStyle]="{ 'min-width': '30rem' }" [loading]="loading">
+            <ng-container *ngIf="this.showPeticiones">
+                <div class="col-12">
+                    <p-table #dt1 [value]="this.suggestions" [paginator]="true" [rows]="4"
+                        [tableStyle]="{ 'min-width': '30rem' }" [loading]="loading">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th>Tipo</th>
+                                <th>Nombre</th>
+                                <th>Email</th>
+                                <th>Comentario</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-suggestion>
+                            <tr>
+                                <td>{{ suggestion.commentType }}</td>
+                                <td>{{ suggestion.userName }}</td>
+                                <td>{{ suggestion.emailUser }}</td>
+                                <td>{{ suggestion.peticion }}</td>
+                                <td>
+                                    <button class="button-circle" icon="fa-solid fa-check"
+                                        (click)="checkedSuggestion(suggestion)" pButton tooltipPosition="top"></button>
+                                    <button class="button-circle " icon="fa-solid fa-trash"
+                                        (click)="deleteSugestionDialog(suggestion)" pButton
+                                        tooltipPosition="top"></button>
+                                </td>
+                            </tr>
+                        </ng-template>
 
+                        <ng-template pTemplate="emptymessage">
+                            <tr>
+                                <td colspan="7">Oh vaya! Parece ser que no tienes peticiones todavía</td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </div>
+            </ng-container>
+        </p-tabPanel>
+
+        <!-- Sugerencias revisadas -->
+        <p-tabPanel header="Peticiones realizadas">
+            <ng-container *ngIf="this.showPeticiones">
+                <p-table [value]="this.suggestionArchived" [tableStyle]="{ 'min-width': '30rem' }" [rows]="4"
+                    [paginator]="true">
                     <ng-template pTemplate="header">
                         <tr>
                             <th>Tipo</th>
@@ -16,7 +56,6 @@
                             <th>Acciones</th>
                         </tr>
                     </ng-template>
-
                     <ng-template pTemplate="body" let-suggestion>
                         <tr>
                             <td>{{ suggestion.commentType }}</td>
@@ -24,8 +63,6 @@
                             <td>{{ suggestion.emailUser }}</td>
                             <td>{{ suggestion.peticion }}</td>
                             <td>
-                                <button class="button-circle" icon="fa-solid fa-check"
-                                    (click)="checkedSuggestion(suggestion)" pButton tooltipPosition="top"></button>
                                 <button class="button-circle " icon="fa-solid fa-trash"
                                     (click)="deleteSugestionDialog(suggestion)" pButton tooltipPosition="top"></button>
                             </td>
@@ -33,54 +70,17 @@
                     </ng-template>
                     <ng-template pTemplate="emptymessage">
                         <tr>
-                            <td colspan="7">Oh vaya! Parece ser que no tienes peticiones todavía</td>
+                            <td colspan="7">Oh vaya! Parece ser que no tienes peticiones archivadas todavía</td>
                         </tr>
                     </ng-template>
-
                 </p-table>
             </ng-container>
-
-
         </p-tabPanel>
-        <p-tabPanel header="Peticiones realizadas">
-
-            <p-table [value]="this.suggestionArchived" [tableStyle]="{ 'min-width': '30rem' }" [rows]="5"
-                [paginator]="true">
-
-                <ng-template pTemplate="header">
-                    <tr>
-                        <th>Tipo</th>
-                        <th>Nombre</th>
-                        <th>Email</th>
-                        <th>Comentario</th>
-                        <th>Acciones</th>
-                    </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-suggestion>
-                    <tr>
-                        <td>{{ suggestion.commentType }}</td>
-                        <td>{{ suggestion.userName }}</td>
-                        <td>{{ suggestion.emailUser }}</td>
-                        <td>{{ suggestion.peticion }}</td>
-                        <td>
-                            <button class="button-circle " icon="fa-solid fa-trash"
-                                (click)="deleteSugestionDialog(suggestion)" pButton tooltipPosition="top"></button>
-                        </td>
-                    </tr>
-                </ng-template>
-                <ng-template pTemplate="emptymessage">
-                    <tr>
-                        <td colspan="7">Oh vaya! Parece ser que no tienes peticiones archivadas todavía</td>
-                    </tr>
-                </ng-template>
-            </p-table>
-        </p-tabPanel>
-
+        <!-- Reservas de excursiones sin ver -->
         <p-tabPanel header="Reservas">
-            <ng-container *ngIf="this.reservasRs">
+            <ng-container *ngIf="showReservas">
                 <p-table [value]="this.reservasRs" [tableStyle]="{ 'min-width': '30rem' }" [rows]="5"
                     [paginator]="true">
-
                     <ng-template pTemplate="header">
                         <tr>
                             <th>Tipo</th>
@@ -88,11 +88,9 @@
                             <th>Email</th>
                             <th>Fecha</th>
                             <th>NºPersonas</th>
-
                             <th>Acciones</th>
                         </tr>
                     </ng-template>
-
                     <ng-template pTemplate="body" let-reserva>
                         <tr>
                             <td>{{ reserva.excursionType }}</td>
@@ -116,53 +114,45 @@
                 </p-table>
             </ng-container>
         </p-tabPanel>
-
+        <!-- Reservas de excursiones ya vistas/realizadas -->
         <p-tabPanel header="Reservas realizadas">
-            <p-table [value]="this.reservasArcvhived" [tableStyle]="{ 'min-width': '30rem' }" [rows]="5"
-                [paginator]="true">
-
-                <ng-template pTemplate="header">
-                    <tr>
-                        <th>Tipo</th>
-                        <th>Nombre</th>
-                        <th>Email</th>
-                        <th>Fecha</th>
-                        <th>NºPersonas</th>
-
-                        <th>Acciones</th>
-                    </tr>
-                </ng-template>
-
-                <ng-template pTemplate="body" let-reserva>
-                    <tr>
-                        <td>{{ reserva.excursionType }}</td>
-                        <td>{{ reserva.reservationName }}</td>
-                        <td>{{ reserva.emailAddress }}</td>
-                        <td>{{ reserva.dateExcursion | date:'dd - MM - yyyy' }}</td>
-                        <td>{{ reserva.numPeople }}</td>
-                        <td>
-
-                            <button class="button-circle " icon="fa-solid fa-trash"
-                                (click)="deleteReservaDialog(reserva)" pButton tooltipPosition="top"></button>
-                        </td>
-                    </tr>
-                </ng-template>
-                <ng-template pTemplate="emptymessage">
-                    <tr>
-                        <td colspan="7">Oh vaya! Parece ser que no tienes reservas archivadas todavía</td>
-                    </tr>
-                </ng-template>
-            </p-table>
+            <ng-container *ngIf="showReservas">
+                <p-table [value]="this.reservasArcvhived" [tableStyle]="{ 'min-width': '30rem' }" [rows]="5"
+                    [paginator]="true">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>Tipo</th>
+                            <th>Nombre</th>
+                            <th>Email</th>
+                            <th>Fecha</th>
+                            <th>NºPersonas</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-reserva>
+                        <tr>
+                            <td>{{ reserva.excursionType }}</td>
+                            <td>{{ reserva.reservationName }}</td>
+                            <td>{{ reserva.emailAddress }}</td>
+                            <td>{{ reserva.dateExcursion | date:'dd - MM - yyyy' }}</td>
+                            <td>{{ reserva.numPeople }}</td>
+                            <td>
+                                <button class="button-circle " icon="fa-solid fa-trash"
+                                    (click)="deleteReservaDialog(reserva)" pButton tooltipPosition="top"></button>
+                            </td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="7">Oh vaya! Parece ser que no tienes reservas archivadas todavía</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </ng-container>
         </p-tabPanel>
-
-
     </p-tabView>
-
 </div>
-
-
-
-
+<!-- Mensaje de eliminacion -->
 <p-confirmDialog #cd [style]="{width:'50vw'}">
     <ng-template pTemplate="header">
         <h3>¡Cuidado!</h3>

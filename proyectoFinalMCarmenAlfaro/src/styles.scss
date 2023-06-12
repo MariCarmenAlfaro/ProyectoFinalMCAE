@@ -2,8 +2,6 @@
 @import "primeng/resources/primeng.css";
 @import "primeicons/primeicons.css";
 
-// botón circulo
-
 .p-button.button-circle {
     margin: 0.5%;
     background-color: #fad3e7;
@@ -18,15 +16,11 @@
         background-color: #ec4899;
         color:white
     }
-
     span {
       font-size: 1rem;
     }
-
-    
   }
 .button-circleBlack {
-
         background-color: #1e1e1e;
         color: #fff;
         border-radius: 20%;
@@ -51,7 +45,6 @@
     margin: auto;
   }
 
-/* You can add global styles to this file, and also import other style files */
 *{ 
     margin: 0;
     padding: 0;
@@ -60,13 +53,14 @@
 pre{
     font-family: 'Playfair Display', serif; 
 }
-÷//TODO borrar cuerpo no se usa
+
 .cuerpo{
     background-color: white;
     min-height: 90vh;
     width: 100%;
     display: flex;
 }
+
 .piePagina{
     background-color: rgb(0, 0, 0);
     height: 10vh;
@@ -104,10 +98,9 @@ pre{
 .fotoMontañaDere{
     background-image: url('../src/assets/imgs/herradurasFondo.jpg');
     background-size: cover;
-    background-repeat: no-repeat;
-  
-    
+    background-repeat: no-repeat;    
 }
+
 button.login{
     border-radius: 30%;
     background-color: rgba(255, 255, 255, 0.25);

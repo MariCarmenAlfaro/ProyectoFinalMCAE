@@ -1,7 +1,5 @@
-import { Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
-
+import { Component, Injector, OnInit,  } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-
 import { LoginService } from './login.service';
 import { Router } from '@angular/router';
 import { CommonComponent } from '../common/common.component';
@@ -55,6 +53,4 @@ loginForm = new FormGroup({
          this.showMessage('error', error.error)
        });
   }
-
-
 }

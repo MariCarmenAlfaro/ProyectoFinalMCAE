@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-
 import {ContactComponent} from "./contact/contact.component";
 import {MenuBarComponent} from "./menu-bar/menu-bar.component";
 import {QuienesSomosComponent} from "./quienes-somos/quienes-somos.component";
@@ -32,10 +31,7 @@ const routes: Routes = [
    { path: 'precios', component: PreciosComponent },
    { path: 'sugerencias-reservas', component: SugerenciasReservasComponent },
    { path: 'clases', component: ClasesComponent },
-   {
-    path: '**',
-    redirectTo: '/home'
-}
+   {path: '**', redirectTo: '/home'}
 ];
 
 @NgModule({

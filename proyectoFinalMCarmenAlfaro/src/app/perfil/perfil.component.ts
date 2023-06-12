@@ -1,7 +1,6 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import { PerfilService } from './perfil.service';
 import { LoginService } from '../login/login.service';
-
 import {
   FormBuilder,
   FormControl,
@@ -80,6 +79,7 @@ export class PerfilComponent extends CommonComponent implements OnInit {
       this.userType = true;
     }
   }
+
   readUserById() {
     this.usuario = JSON.parse(window.localStorage.getItem('user'));
     this.perfilService.getReadById(this.usuario.userId).subscribe(
@@ -95,6 +95,7 @@ export class PerfilComponent extends CommonComponent implements OnInit {
       }
     );
   }
+
   readUserClass() {
     this.usuario = JSON.parse(window.localStorage.getItem('user'));
     this.perfilService.getReadByIdExtendedAlumno(this.usuario.userId).subscribe(
@@ -110,6 +111,7 @@ export class PerfilComponent extends CommonComponent implements OnInit {
       }
     );
   }
+
   readMoneyMonth() {
     this.usuario = JSON.parse(window.localStorage.getItem('user'));
     this.perfilService.getReadMoneyMonthById(this.usuario.userId).subscribe(
@@ -125,9 +127,11 @@ export class PerfilComponent extends CommonComponent implements OnInit {
       }
     );
   }
-  mostrarFormulario() {
+
+  showSuggestionForm() {
     this.showForm = true;
   }
+
   insertComent() {
     if (this.alumno) {
       this.formularioCambios = {
@@ -144,7 +148,6 @@ export class PerfilComponent extends CommonComponent implements OnInit {
         peticion: this.changeForm.value.peticion,
       };
     }
-
     this.sugerenciaService.insertSuggestions(this.formularioCambios).subscribe(
       (rs) => {
         if (rs) {
@@ -160,7 +163,7 @@ export class PerfilComponent extends CommonComponent implements OnInit {
     );
   }
 
-  pagarPago(pago) {
+  payPayment(pago) {
     this.pagarPagos = true;
     this.updatePay = {
       payId: pago.payId,
@@ -171,7 +174,7 @@ export class PerfilComponent extends CommonComponent implements OnInit {
     };
   }
 
-  pagarDeuda() {
+  payDebt() {
     if (this.paymentForm.valid) {
       this.pagosService.updatePayment(this.updatePay).subscribe((rs) => {
         this.pagarPagos = false;

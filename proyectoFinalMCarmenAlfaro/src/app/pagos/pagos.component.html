@@ -6,7 +6,6 @@
                 <ng-template pTemplate="caption">
                     <div class="flex">
                         <button pButton class="button-circle" icon="pi pi-filter-slash" (click)="clear(dt1)"></button>
-
                     </div>
                 </ng-template>
                 <ng-template pTemplate="header">
@@ -39,13 +38,11 @@
                                 Método
                             </div>
                         </th>
-
                         <th>
                             <div class="flex align-items-center">
                                 Action
                             </div>
                         </th>
-
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="body" let-pay>
@@ -68,15 +65,10 @@
                                 <span class="ml-1 vertical-align-middle">{{ pay.payMethod }}</span>
                             </div>
                         </td>
-
-
                         <td>
-
                             <button icon="pi pi-pencil" class="button-circle" pButton
                                 (click)="createPaymentForm(pay)"></button>
-
                         </td>
-
                     </tr>
                 </ng-template>
                 <ng-template pTemplate="emptymessage">
@@ -98,7 +90,6 @@
                     <input type="date" class="form-control" placeholder="Fecha de pago" formControlName="payDate">
                     <label for="payDate">Fecha de pago</label>
                 </div>
-               
                     <div class="form-floating mb-2">
                         <p-dropdown formControlName="priceId" [options]="typeServices" optionLabel="typeService"
                             optionValue="priceId" placeholder="Tipo servicio"></p-dropdown>

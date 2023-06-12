@@ -1,6 +1,6 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import { CaballosService } from './caballos.service';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CommonComponent } from '../common/common.component';
 import { GestionService } from '../gestion/gestion.service';
 
@@ -137,13 +137,13 @@ export class CaballoComponent extends CommonComponent implements OnInit {
     } else {
       this.createNewHorse = true;
       this.form = new FormGroup({
-        horseName: new FormControl(''),
+        horseName: new FormControl('', Validators.required),
         barnNum: new FormControl(''),
-        foodType: new FormControl(''),
+        foodType: new FormControl('',Validators.required),
         horseType: new FormControl(''),
         observation: new FormControl(''),
         cameraUrl: new FormControl(''),
-        registrationDate: new FormControl(''),
+        registrationDate: new FormControl('',Validators.required),
         ownerId: new FormControl(null),
       });
       this.currentHorse = true;

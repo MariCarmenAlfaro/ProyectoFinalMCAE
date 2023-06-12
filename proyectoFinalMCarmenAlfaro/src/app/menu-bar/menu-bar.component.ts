@@ -36,6 +36,7 @@ export class MenuBarComponent extends CommonComponent implements OnInit {
     this.readPrice();
     this.admin();
   }
+
   readMenus() {
     this.menuService.getAllMenus().subscribe(
       (rs) => {
@@ -50,6 +51,7 @@ export class MenuBarComponent extends CommonComponent implements OnInit {
       }
     );
   }
+
   readPrice() {
     this.priceService.readServiceById(6).subscribe(
       (rs) => {
@@ -64,6 +66,7 @@ export class MenuBarComponent extends CommonComponent implements OnInit {
       }
     );
   }
+  
   admin() {
     if (this.usuario?.userType === 'Admin') {
       this.editMenuButton = true;

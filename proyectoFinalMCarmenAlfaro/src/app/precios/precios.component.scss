@@ -8,3 +8,11 @@
     color:  rgb(255, 123, 184);
     
 }
+
+.text-primary .font-semibold .text-xl{
+    color: rgb(255, 123, 184);
+}
+.text-primary {
+    --bs-text-opacity: 1;
+    color: rgb(255, 123, 184)!important;
+}

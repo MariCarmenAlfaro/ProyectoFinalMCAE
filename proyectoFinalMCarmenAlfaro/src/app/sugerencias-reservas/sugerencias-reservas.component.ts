@@ -1,7 +1,6 @@
 import { Component, Injector } from '@angular/core';
 import { GestionService } from '../gestion/gestion.service';
 import { CaballosService } from '../caballo/caballos.service';
-import { ConfirmEventType } from 'primeng/api';
 import { SugerenciasService } from './sugerencias.service';
 import { CommonComponent } from '../common/common.component';
 
@@ -21,6 +20,8 @@ export class SugerenciasReservasComponent extends CommonComponent {
   currentReserva;
   peticionArchivo = false;
   loading: boolean;
+  showReservas = false;
+  showPeticiones = false
   constructor(
     public gestionService: GestionService,
     public caballosService: CaballosService,
@@ -49,6 +50,7 @@ export class SugerenciasReservasComponent extends CommonComponent {
           }
         });
         this.loading = false;
+        this.showPeticiones = true
       } else {
         this.showMessage('error', 'Error al leer las sugerencias');
       }
@@ -69,6 +71,7 @@ export class SugerenciasReservasComponent extends CommonComponent {
             }
           });
           this.loading = false;
+          this.showReservas = true
         } else {
           this.showMessage('error', 'Error al leer las reservas');
         }
@@ -89,7 +92,6 @@ export class SugerenciasReservasComponent extends CommonComponent {
       peticion: this.currentSuggestion.emailUser,
       checked: true,
     };
-
     this.sugerenciasService
       .updateSuggestion(this.currentSuggestion.id, this.suggestion)
       .subscribe((rs) => {
@@ -104,6 +106,7 @@ export class SugerenciasReservasComponent extends CommonComponent {
         this.showMessage('error',error.error)
       });
   }
+
   checkedReserva(reserva) {
     this.currentReserva = reserva;
     this.reserva = {
@@ -150,6 +153,7 @@ export class SugerenciasReservasComponent extends CommonComponent {
       },
     });
   }
+  
   deleteSuggestion(id) {
     this.sugerenciasService.deleteSuggestion(id).subscribe((rs) => {
       rs;
@@ -164,6 +168,7 @@ export class SugerenciasReservasComponent extends CommonComponent {
       this.showMessage('error',error.error)
     });
   }
+
   deleteSugestionDialog(suggestion) {
     this.currentSuggestion = suggestion;
     this.confirmationService.confirm({

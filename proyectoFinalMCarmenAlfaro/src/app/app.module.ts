@@ -34,8 +34,7 @@ import { FormsModule } from '@angular/forms';
 import { TabViewModule } from 'primeng/tabview';
 import { LoadingHorseComponent } from './loading-horse/loading-horse.component';
 import { DialogService } from 'primeng/dynamicdialog';
-import { CommonService } from './common.service';
-
+import { CommonService } from './common/common.service';
 import { AccordionModule } from 'primeng/accordion';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { CommonComponent } from './common/common.component';
@@ -81,9 +80,6 @@ import { CommonComponent } from './common/common.component';
     FormsModule,
     TabViewModule,
     AccordionModule 
-  
-
-    
   ],
 
   providers: [
@@ -92,7 +88,6 @@ import { CommonComponent } from './common/common.component';
   ConfirmationService,
    MessageService
 ],
-  
   bootstrap: [AppComponent],
   exports: [CommonComponent]
 })

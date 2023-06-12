@@ -5,6 +5,4 @@ import { Component } from '@angular/core';
   templateUrl: './loading-horse.component.html',
   styleUrls: ['./loading-horse.component.scss']
 })
-export class LoadingHorseComponent {
-
-}
+export class LoadingHorseComponent {}

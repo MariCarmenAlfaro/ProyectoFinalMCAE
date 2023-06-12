@@ -11,27 +11,26 @@ export class PagosService {
   constructor(private http: HttpClient) {}
 
   public getTypesServicesPrice(){
-    var url = `${this.baseUrl}/Price`;
+    let url = `${this.baseUrl}/Price`;
       return this.http.get<any>(url) ;
    }
    public getPricePayUser(){
-    var url = `${this.baseUrl}/Payment/pricePaymentUser`;
+    let url = `${this.baseUrl}/Payment/pricePaymentUser`;
       return this.http.get<any>(url) ;
    }
    
   public getAllPayments(){
-    var url = `${this.baseUrl}/Payment`;
+    let url = `${this.baseUrl}/Payment`;
       return this.http.get<any>(url) ;
    }
 
    public createNewPayment(body:any) {
-    var url = `${this.baseUrl}/Payment`;
+    let url = `${this.baseUrl}/Payment`;
     return this.http.post<any>(url,body) ;
   }
 
   public updatePayment(body:any) {
-    var url = `${this.baseUrl}/Payment/${body.payId}`;
+    let url = `${this.baseUrl}/Payment/${body.payId}`;
     return this.http.put<any>(url,body) ;
   }
-
 }

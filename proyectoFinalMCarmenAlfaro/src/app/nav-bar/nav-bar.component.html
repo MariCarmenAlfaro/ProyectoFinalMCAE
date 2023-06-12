@@ -7,14 +7,11 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="mynavbar">
-
         <ul class="navbar-nav me-auto">
-
           <li class="nav-item">
             <a class="nav-link" routerLink="/quienes-somos">¿Quiénes
               somos?</a>
           </li>
-
           <li class="nav-item">
             <a class="nav-link" routerLink="/servicios">Servicios</a>
           </li>
@@ -24,29 +21,17 @@
           <li class="nav-item">
             <a class="nav-link" routerLink="/menu-bar">Menú Bar</a>
           </li>
-
-          <!-- <li class="nav-item" *ngIf="!loginService.user" >
-              <a class="nav-link" routerLink="/login">Access</a>
-            </li> -->
-            
-           
           <li class="nav-item" *ngIf="!loginService.user">
             <button type="button" class="btn btn-primary login" (click)="showDialog()" >
               Acceso
             </button>
           </li>
-
-          <!-- TODO no se que hace aqui el login -->
-          <!-- <app-login></app-login> -->
-
           <ng-container *ngIf="loginService.user">
             <ng-container *ngIf="loginService.user.userType =='Admin'">
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">  {{loginService.user.userName}}</a>
                 <ul class="dropdown-menu">
                   <li><a class="dropdown-item" routerLink="/perfil">Perfil</a></li>
-                 
-                  
                 </ul>
               </li>
               <li class="nav-item dropdown">
@@ -58,7 +43,6 @@
                   <li><a class="dropdown-item" routerLink="/pagos">Pagos</a></li>
                   <li><a class="dropdown-item" routerLink="/sugerencias-reservas">Reservas-Sugerencias</a></li>
                   <li><a class="dropdown-item" routerLink="/menu-bar">Bar</a></li>
-               
                   <li><a class="dropdown-item" routerLink="/precios">Precios</a></li>
                 </ul>
               </li>
@@ -82,22 +66,13 @@
               </li>
             </ng-container>
             <li class="nav-item" (click)="logout()" routerLink="/home">
-              <a class="nav-link">Logout</a>
+              <a class="nav-link">Salir</a>
             </li>
           </ng-container>
           
-          
-       
         </ul>
-
-       
       </div>
-
-
     </div>
-
-
-
   </nav>
 </div>
 

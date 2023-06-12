@@ -1,7 +1,6 @@
 import { Component, Injector } from '@angular/core';
 import { PreciosService } from './precios.service';
 import { FormControl, FormGroup } from '@angular/forms';
-import { ConfirmEventType } from 'primeng/api';
 import { CommonComponent } from '../common/common.component';
 
 @Component({
@@ -36,8 +35,9 @@ export class PreciosComponent extends CommonComponent {
       typeService: new FormControl(''),
       price: new FormControl(''),
     });
-    this.verificarFormPrecio()
+    this.verifyFormPrice()
   }
+
   readAll() {
     this.priceService.getReadAllPrices().subscribe(
       (rs) => {
@@ -53,7 +53,8 @@ export class PreciosComponent extends CommonComponent {
       }
     );
   }
-  verificarFormPrecio(){
+
+  verifyFormPrice(){
     if(this.newServiceForm.value.price != '' && this.newServiceForm.value.typeService != ''){
       return false
     }else{
@@ -84,6 +85,7 @@ export class PreciosComponent extends CommonComponent {
       }
     );
   }
+  
   editPrices(price) {
     this.currentPrice = price;
     this.priceFormChange = new FormGroup({

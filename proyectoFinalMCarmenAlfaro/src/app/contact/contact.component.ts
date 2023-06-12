@@ -27,6 +27,7 @@ export class ContactComponent extends CommonComponent implements OnInit {
   }
 
   ngOnInit(): void {}
+
   onSubmit() {
     this.comment = {
       commentType: this.commentType,
@@ -35,7 +36,6 @@ export class ContactComponent extends CommonComponent implements OnInit {
       peticion: this.profileForm.value.peticion,
       clubId: this.clubId,
     };
-
     this.sugerenciaService.insertSuggestions(this.comment).subscribe((rs) => {
       if (rs) {
         this.mnjConfirm = true;

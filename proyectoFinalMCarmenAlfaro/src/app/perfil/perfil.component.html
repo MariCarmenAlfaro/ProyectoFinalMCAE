@@ -1,4 +1,5 @@
 <div class="perfil">
+    <!-- Datos del usuario -->
     <p-fieldset>
         <ng-template pTemplate="header">
             <div class="flex align-items-center text-primary">
@@ -11,6 +12,7 @@
         <p> Tipo de ususario: <strong>{{this.datosUser?.userType}}</strong> </p>
         <p> Fecha de registro: <strong>{{this.datosUser?.registrationDate | date:'dd - MM - yyyy'}}</strong> </p>
     </p-fieldset>
+    <!-- Datos de sus clases -->
     <ng-container *ngIf="!this.userType">
         <p-fieldset class="containerPerfil">
             <ng-template pTemplate="header">
@@ -33,9 +35,8 @@
             </ng-container>
         </p-fieldset>
     </ng-container>
-
-
     <br><br>
+    <!-- Tabla mensualidades -->
     <ng-container *ngIf="this.tablaMensualidades">
         <p-accordion>
             <p-accordionTab>
@@ -71,7 +72,7 @@
                                 <td>
                                     <ng-container *ngIf="pago.payMethod === 'Pendiente'">
                                         <button type="button" icon="pi pi-euro" pButton class="button-circle"
-                                            (click)="pagarPago(pago)"></button>
+                                            (click)="payPayment(pago)"></button>
                                     </ng-container>
                                 </td>
                             </tr>
@@ -81,8 +82,9 @@
             </p-accordionTab>
         </p-accordion>
     </ng-container>
+    <!-- Boton y formularios de peticiones -->
     <div class="btnDerecha">
-        <button class="button-circleBlackChanges" pButton *ngIf="btnSolicitud" (click)="mostrarFormulario()">Solicitud cambios</button>
+        <button class="button-circleBlackChanges" pButton *ngIf="btnSolicitud" (click)="showSuggestionForm()">Solicitud cambios</button>
     </div>
     <p-sidebar [(visible)]="showForm">
         <ng-template pTemplate="header">
@@ -110,7 +112,6 @@
                     <br><br>
                     <button class="button-circle" icon="pi pi-check" pButton (click)="insertComent()"
                         [disabled]="changeForm.invalid"></button>
-
                 </div>
             </form>
         </ng-container>
@@ -140,6 +141,7 @@
             </form>
         </ng-container>
     </p-sidebar>
+    <!-- Formulario para pagar -->
     <p-sidebar [(visible)]="pagarPagos">
         <p-panel>
             <p-header>
@@ -148,7 +150,7 @@
                     <span class="font-bold text-lg perfilDatos">Pagar</span>
                 </div>
             </p-header>
-            <form [formGroup]="paymentForm" (ngSubmit)="pagarDeuda()" [class.invalid]="paymentForm.invalid"
+            <form [formGroup]="paymentForm" (ngSubmit)="payDebt()" [class.invalid]="paymentForm.invalid"
                 [class.valid]="paymentForm.valid">
                 <label for="cardNumber">*Número de tarjeta:</label>
                 <input type="text" id="cardNumber" formControlName="cardNumber" placeholder="2906201931012000" required>

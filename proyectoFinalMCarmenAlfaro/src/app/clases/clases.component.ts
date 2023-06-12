@@ -39,6 +39,7 @@ export class ClasesComponent extends CommonComponent implements OnInit {
     ) {
       super(injector)
     }
+
   ngOnInit(): void {
     this.loading = true;
     this.getClasses();
@@ -195,6 +196,7 @@ export class ClasesComponent extends CommonComponent implements OnInit {
   showInfoClasses() {
     this.showDialog = true;
   }
+  
   clear(table) {
     table.clear();
   }

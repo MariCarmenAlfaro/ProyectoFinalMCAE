@@ -1,9 +1,7 @@
 <div class="servicios">
   <h2 class="titulo">¡Todo lo que puedes hacer con nosotros!</h2>
 <br>
-
   <div class="accordion" id="accordionExample">
-
     <!-- Servicio clases dentro de acordeón -->
     <div class="accordion-item">
       <h2 class="accordion-header" id="headingOne">
@@ -95,10 +93,8 @@
             Ubicacion del punto de encuentro <a
               href="https://www.google.com/maps/place/P%C3%A0rquing+Municipal+Santa+Pon%C3%A7a/@39.5191436,2.4817627,17.92z/data=!4m6!3m5!1s0x129789bf21e9e2fd:0xca7307f5aa8005cd!8m2!3d39.5181649!4d2.4824401!16s%2Fg%2F11c1r1g9gr?authuser=0"
               target="_blank" class="rrss"><strong>aquí</strong></a>
-
           </p>
           <h5>El precio es de : <strong>{{this.priceExcPlaya}}</strong> € por persona</h5> <br>
-
           <h4> Excursión por la montaña</h4>
           <p>En Mallorca tenemos de todo, y como menospreciar los increibles paisajes desde las alturas. <br>
             Nuestra excursion de montaña es de <strong>3 horas</strong>, con una pequeña merienda por medio y unas vistas aseguradas. Se
@@ -108,14 +104,13 @@
             Ubicacion del punto de encuentro <a
               href="https://www.google.com/maps/place/Galatz%C3%B3/@39.606981,2.4706407,113m/data=!3m1!1e3!4m6!3m5!1s0x12978abd2c6829c3:0x7d121272d170bac!8m2!3d39.6070025!4d2.4704004!16s%2Fg%2F1232j8_t?authuser=0"
               target="_blank" class="rrss"><strong>aquí</strong></a>
-
           </p>
           <h5>El precio es de : <strong>{{this.priceExcMontana}}</strong>€ por persona</h5>
           <br>
           <h5>Se recomienda traer calzado cómodo y pantalón largo.</h5>
           <br>
-          <!--Formulario para poder reservar-->
 
+          <!--Formulario para poder reservar-->
           <h4>¡Haz tu petición de reserva desde aquí!</h4>
           <p>Puedes reservar una excursión con nosotros rellenando éste formulario. Recibirá de vuelta un correo de
             confirmación si todo es correcto.</p>
@@ -134,7 +129,6 @@
                   <label for="email" class="form-label">Email (Requerido)*</label>
                   <input id="email" type="text" class="form-control" formControlName="email">
                 </div>
-
                 <div class="col-12">
                   <label for="people" class="form-label">Número de personas</label>
                   <select class="form-select" aria-label="Default select example" formControlName="people">
@@ -156,10 +150,8 @@
                     <option selected>Seleccione uno...</option>
                     <option value="Playa">Excursión por la playa</option>
                     <option value="Montaña">Excursión por la montaña</option>
-
                   </select>
                 </div>
-
                 <div class="col-12 botonReserva">
                   <div *ngIf="!mnjConfirm">
                     <button type="submit" class="btn btn-primary btnReservar"
@@ -176,6 +168,7 @@
         </div>
       </div>
     </div>
+
      <!-- Servicio cuadras dentro de acordeón -->
     <div class="accordion-item">
       <h2 class="accordion-header" id="headingThree">
@@ -189,7 +182,6 @@
         <div class="accordion-body">
           <div class="foto">
             <img src="../../assets/imgs/cuadras.png" class="card-img-top" alt="..." style="width: 50%;">
-
           </div>
           <p>Si tienes un caballo y te precupa dónde dejarle... ¡Nuestro club tiene las <strong>mejores instalaciones</strong>  de la
             isla!</p>
@@ -202,6 +194,7 @@
         </div>
       </div>
     </div>
+
      <!-- Servicio cumpleaños dentro de acordeón -->
     <div class="accordion-item">
       <h2 class="accordion-header" id="headingFour">
@@ -229,16 +222,14 @@
           <p>Las celebraciones se realizan durante 5 horas los : </p>
           <p>- <strong>Sábados</strong>  por la <strong>tarde</strong> (temporada de invierno) </p>
           <p>-<strong>Domingos</strong> por la <strong>mañana</strong> (temporada de verano)</p><br>
-         
-
             <p>El coste es <strong>{{this.priceCumple}}</strong> € para <strong>6 personas.</strong></p>
             <p>Se debe contratar con <strong>2 semanas</strong> de antelación.</p>
             <p>Aunque, se podrá invitar un máximo de 12 personas.</p>
             <p>Se confirma totalidad de personas 3 días de antelación y toda persona extra deberá ser abonado el día de la fiesta.</p>
-         
         </div>
       </div>
     </div>
+
      <!-- Servicio fiestas dentro de acordeón -->
     <div class="accordion-item">
       <h2 class="accordion-header" id="headingFive">
@@ -252,7 +243,6 @@
         <div class="accordion-body">
           <div class="foto">
             <img src="../../assets/imgs/navidad.jpg" class="card-img-top" alt="...">
-
           </div>
           <p>En Hípica Alfaro no nos dejamos <strong>nada por celebrar</strong>. </p>
           <p>A lo largo del año se realizan pequeños y amistosos campeonatos de salto entre los alumnos con la excusa de
@@ -263,8 +253,5 @@
         </div>
       </div>
     </div>
-
   </div>
-
 </div>
-

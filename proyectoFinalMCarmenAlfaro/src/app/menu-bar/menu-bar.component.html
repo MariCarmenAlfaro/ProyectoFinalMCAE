@@ -11,46 +11,36 @@
   </div>
 
   <div class="col-12 container-cards mt-2">
-
     <ng-container *ngIf="!menus">
       <div class="card">
         <p-progressSpinner></p-progressSpinner>
     </div>
     </ng-container>
+    <!-- tarjetas meunus -->
     <ng-container *ngFor="let menu of menus">
       <div class="card my-2">
         <div class="card-body">
-
           <div class="card-title">
             <div class="btnEdit">
               <div>
                 <i class="fa-regular fa-heart"></i> <span class="mx-1">{{menu.menuDate}}</span>
               </div>
-
               <button *ngIf="editMenuButton" type="submit" class="button-circle" pButton icon="pi pi-pencil"
                 (click)="editMenu(menu)"></button>
-
             </div>
           </div>
-
-
           <div>Hoy toca... ¡{{ menu.menuName }}!</div>
         </div>
       </div>
     </ng-container>
-
   </div>
-
-
 </div>
-
+<!-- Formulario edición -->
 <p-sidebar [(visible)]="showEditMenu">
   <ng-container *ngIf="currentMenu">
     <form [formGroup]="updateMenuForm">
-
       <i class="fa-regular fa-heart"></i> {{currentMenu.menuDate}}
       <hr>
-
       <input type="text" class="form-control" name="nameMenu" formControlName="nameMenu">
       <br>
       <div class="btnDerecha">
@@ -58,5 +48,4 @@
       </div>
     </form>
   </ng-container>
-
 </p-sidebar>

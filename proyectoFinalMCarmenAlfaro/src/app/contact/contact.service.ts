@@ -5,12 +5,8 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class ContactService {
-
   baseUrl : string = "https://localhost:7089";
-  constructor( private http: HttpClient) {
-   
-   }
-
+  constructor( private http: HttpClient) {}
 }
 
 

@@ -53,11 +53,11 @@ export class ServiciosComponent extends CommonComponent implements OnInit {
   }
 
   reserveExcursion() {
-    var name = this.excursionForm.get('name').value;
-    var email = this.excursionForm.get('email').value;
-    var people = this.excursionForm.get('people').value;
-    var date = this.excursionForm.get('date').value;
-    var type = this.excursionForm.get('type').value;
+    let name = this.excursionForm.get('name').value;
+    let email = this.excursionForm.get('email').value;
+    let people = this.excursionForm.get('people').value;
+    let date = this.excursionForm.get('date').value;
+    let type = this.excursionForm.get('type').value;
 
     this.reservationService
       .postReservation(name, email, people, date, type)
@@ -75,6 +75,7 @@ export class ServiciosComponent extends CommonComponent implements OnInit {
         }
       );
   }
+  
   readPrices() {
     this.preciosService.getReadAllPrices().subscribe(
       (rs) => {
