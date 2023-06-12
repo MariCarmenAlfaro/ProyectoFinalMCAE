@@ -2,8 +2,6 @@
 using HipicaAlfaro.Api.Models;
 using Microsoft.AspNetCore.Mvc;
 using MySql.Data.MySqlClient;
-using System;
-using System.Collections.Generic;
 
 namespace HipicaAlfaro.Api.Controllers
 {

@@ -106,7 +106,6 @@ namespace HipicaAlfaro.Api.Controllers
             {
                 return BadRequest("Error al modificar la sugerencia");
             }
-
         }
 
         [HttpDelete("{id}")]

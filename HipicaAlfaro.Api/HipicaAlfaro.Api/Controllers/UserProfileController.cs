@@ -29,8 +29,8 @@ namespace HipicaAlfaro.Api.Controllers
             {
                 return BadRequest("Error al obtener el perfil");
             }
-
         }
+
         [HttpGet("{id}")]
         public IActionResult ReadById(int id)
         {
@@ -57,7 +57,6 @@ namespace HipicaAlfaro.Api.Controllers
         [HttpPost]
         public IActionResult Create(UserProfile userProfile)
         {
-
             try
             {
                 if (userProfile == null)

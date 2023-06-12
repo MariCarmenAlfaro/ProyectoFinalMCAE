@@ -28,8 +28,8 @@ namespace HipicaAlfaro.Api.Controllers
             {
                 return BadRequest("Error al obtener las clases");
             }
-
         }
+
         [HttpGet("{id}")]
         public IActionResult ReadById(int id)
         {
@@ -84,7 +84,6 @@ namespace HipicaAlfaro.Api.Controllers
             {
                 return BadRequest("Error al obtener las clases");
             }
-
         }
     }
 }

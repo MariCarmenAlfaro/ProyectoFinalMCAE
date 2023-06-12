@@ -22,7 +22,6 @@ namespace HipicaAlfaro.Api.Controllers
                 using (var db = new MySqlConnection(_connection))
                 {
                     var sql = @"SELECT
-                       
                         classHour,
                         GROUP_CONCAT(IF(classDay = 'Lunes', classLevel, NULL)) AS Lunes,
                         GROUP_CONCAT(IF(classDay = 'Martes', classLevel, NULL)) AS Martes,
@@ -83,6 +82,7 @@ namespace HipicaAlfaro.Api.Controllers
                 return BadRequest("Error al obtener la clase de usuario por ID.");
             }
         }
+
         [HttpGet("userByClassId")]
         public IActionResult GetClass(string classDay, string classHour)
         {
@@ -107,6 +107,7 @@ namespace HipicaAlfaro.Api.Controllers
                 return BadRequest("Error al obtener las clases.");
             }
         }
+
         [HttpGet("filterByLevel")]
         public IActionResult GetClassesByLevel(string classLevel)
         {
@@ -151,7 +152,6 @@ namespace HipicaAlfaro.Api.Controllers
                 return BadRequest("Error al insertar la clase.");
             }
         }
-
 
         [HttpDelete("{id}")]
         public ActionResult<bool> Delete(int id)

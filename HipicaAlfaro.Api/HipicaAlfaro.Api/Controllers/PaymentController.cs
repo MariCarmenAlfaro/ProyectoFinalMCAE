@@ -16,7 +16,7 @@ namespace HipicaAlfaro.Api.Controllers
         {
             try
             {
-                IEnumerable<Payment> list = null;
+            IEnumerable<Payment> list = null;
             using (var db = new MySqlConnection(_connection))
             {
                 var sql = "SELECT PayId, UserId, PayDate, PriceId, PayMethod FROM payments;";
