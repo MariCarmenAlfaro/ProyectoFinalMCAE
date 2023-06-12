@@ -1,4 +1,4 @@
-insert into hipica values(1, 2021), (2, 2022),(3,2023);
+insert into hipica values(1, 2023);
 INSERT INTO classes (classId, classDay, classHour, classLevel)
 VALUES
   (1, 'Lunes', '10', 'Bajo'),
@@ -28,21 +28,21 @@ VALUES
 
 INSERT INTO horses (horseId, horseName, barnNum, foodType, horseType, observation, cameraUrl, registrationDate, ownerId)
 VALUES 
-(1, 'Spirit', 3, 'Hierba', 'Clase', 'Bocado fuerte', 'https://www.skylinewebcams.com/es/webcam/espana/islas-baleares/mallorca/mallorca-alcudia.html', '2021-01-31', null),
-(2, 'Chocolate', 5, 'Forraje', 'Clase', 'Se escapa facilmente', 'https://www.skylinewebcams.com/es/webcam/espana/islas-baleares/mallorca/mallorca-alcudia.html', '2021-01-31', null),
+(1, 'Spirit', 3, 'Hierba', 'Clase', 'Bocado fuerte', 'https://www.skylinewebcams.com/es/webcam/espana/islas-baleares/mallorca/mallorca-alcudia.html', '2023-01-31', null),
+(2, 'Chocolate', 5, 'Forraje', 'Clase', 'Se escapa facilmente', 'https://www.skylinewebcams.com/es/webcam/espana/islas-baleares/mallorca/mallorca-alcudia.html', '2023-01-31', null),
 (3, 'Pumba', 2, 'Heno', 'Clase', '', 'https://www.skylinewebcams.com/es/webcam/espana/islas-baleares/mallorca/mallorca-alcudia.html', '2021-01-31', null),
-(4, 'Unay', 1, 'Paja', 'Clase', 'No le gusta la fusta', 'https://www.skylinewebcams.com/es/webcam/espana/islas-baleares/mallorca/mallorca-alcudia.html', '2021-01-31', null),
+(4, 'Unay', 1, 'Paja', 'Clase', 'No le gusta la fusta', 'https://www.skylinewebcams.com/es/webcam/espana/islas-baleares/mallorca/mallorca-alcudia.html', '2023-01-31', null),
 (5, 'Hugo', 4, 'Hierba', 'Clase', '', 'https://www.skylinewebcams.com/es/webcam/espana/islas-baleares/mallorca/mallorca-alcudia.html', '2021-06-29', null),
-(6, 'Shirkan', 6, 'Forraje', 'Clase', 'Miedo a las botellas', 'https://www.skylinewebcams.com/es/webcam/espana/islas-baleares/mallorca/mallorca-alcudia.html', '2021-06-29', null),
-(7, 'Chanel',4, 'Heno', 'Clase', '', 'https://www.skylinewebcams.com/es/webcam/espana/islas-baleares/mallorca/mallorca-alcudia.html', '2021-06-29', null),
-(8, 'Birra', 2, 'Paja', 'Clase', 'Se levanta', 'https://www.skylinewebcams.com/es/webcam/espana/islas-baleares/mallorca/mallorca-alcudia.html', '2021-06-29', null),
-(9, 'Pana', 3, 'Hierba', 'Clase', 'Cuesta cogerla', 'https://www.skylinewebcams.com/es/webcam/espana/islas-baleares/mallorca/mallorca-alcudia.html', '2021-08-09', null),
-(10, 'Luna', 3, 'Forraje', 'Clase', 'Se levanta', 'https://www.skylinewebcams.com/es/webcam/espana/islas-baleares/mallorca/mallorca-alcudia.html', '2021-08-09', null),
-(11, 'Lucifer', 4, 'Heno', 'Clase', '', 'https://www.skylinewebcams.com/es/webcam/espana/islas-baleares/mallorca/mallorca-alcudia.html', '2021-08-09', null),
-(12, 'Vaya', 1, 'Paja', 'Clase', 'Bocado fuerte', 'https://www.skylinewebcams.com/es/webcam/espana/islas-baleares/mallorca/mallorca-alcudia.html', '2021-08-09', null),
-(13, 'Tayson', 5, 'Forraje', 'Clase', '', 'https://www.skylinewebcams.com/es/webcam/espana/islas-baleares/mallorca/mallorca-alcudia.html', '2021-10-16', null),
-(14, 'Bosy', 2, 'Heno', 'Clase', '', 'https://www.skylinewebcams.com/es/webcam/espana/islas-baleares/mallorca/mallorca-alcudia.html', '2021-10-16', null),
-(15, 'Yemen', 1, 'Paja', 'Clase', '', 'https://www.skylinewebcams.com/es/webcam/espana/islas-baleares/mallorca/mallorca-alcudia.html', '2021-10-16', null);
+(6, 'Shirkan', 6, 'Forraje', 'Clase', 'Miedo a las botellas', 'https://www.skylinewebcams.com/es/webcam/espana/islas-baleares/mallorca/mallorca-alcudia.html', '2023-06-29', null),
+(7, 'Chanel',4, 'Heno', 'Clase', '', 'https://www.skylinewebcams.com/es/webcam/espana/islas-baleares/mallorca/mallorca-alcudia.html', '2023-06-29', null),
+(8, 'Birra', 2, 'Paja', 'Clase', 'Se levanta', 'https://www.skylinewebcams.com/es/webcam/espana/islas-baleares/mallorca/mallorca-alcudia.html', '2023-06-29', null),
+(9, 'Pana', 3, 'Hierba', 'Clase', 'Cuesta cogerla', 'https://www.skylinewebcams.com/es/webcam/espana/islas-baleares/mallorca/mallorca-alcudia.html', '2023-08-09', null),
+(10, 'Luna', 3, 'Forraje', 'Clase', 'Se levanta', 'https://www.skylinewebcams.com/es/webcam/espana/islas-baleares/mallorca/mallorca-alcudia.html', '2023-08-09', null),
+(11, 'Lucifer', 4, 'Heno', 'Clase', '', 'https://www.skylinewebcams.com/es/webcam/espana/islas-baleares/mallorca/mallorca-alcudia.html', '2023-08-09', null),
+(12, 'Vaya', 1, 'Paja', 'Clase', 'Bocado fuerte', 'https://www.skylinewebcams.com/es/webcam/espana/islas-baleares/mallorca/mallorca-alcudia.html', '2023-08-09', null),
+(13, 'Tayson', 5, 'Forraje', 'Clase', '', 'https://www.skylinewebcams.com/es/webcam/espana/islas-baleares/mallorca/mallorca-alcudia.html', '2023-10-16', null),
+(14, 'Bosy', 2, 'Heno', 'Clase', '', 'https://www.skylinewebcams.com/es/webcam/espana/islas-baleares/mallorca/mallorca-alcudia.html', '2023-10-16', null),
+(15, 'Yemen', 1, 'Paja', 'Clase', '', 'https://www.skylinewebcams.com/es/webcam/espana/islas-baleares/mallorca/mallorca-alcudia.html', '2023-10-16', null);
 
 
 
